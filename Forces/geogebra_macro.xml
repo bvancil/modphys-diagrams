@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<geogebra format="4.2" version="4.2.11.0"  xsi:noNamespaceSchemaLocation="http://www.geogebra.org/ggt.xsd" xmlns="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+<macro cmdName="ForceDiagram" toolName="Force Diagram" toolHelp="select 4 vectors" iconFile="" showInToolBar="true" copyCaptions="true">
+<macroInput a0="F_{C→n→A}" a1="F_{E→g→A}" a2="F_{D→n→A}" a3="F_{B→n→A}" a4="O&apos;"/>
+<macroOutput a0="F_{net}" a1="u" a2="w" a3="z" a4="a" a5="H&apos;" a6="H&apos;&apos;" a7="H&apos;&apos;&apos;" a8="I"/>
+<construction title="" author="" date="">
+<element type="vector" label="F_{C→n→A}">
+	<show object="true" label="true"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelOffset x="5" y="21"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="0" playing="false"/>
+	<coords x="2.269952498697734" y="4.455032620941839" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="cartesian"/>
+</element>
+<element type="vector" label="F_{E→g→A}">
+	<show object="true" label="true"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="0" playing="false"/>
+	<coords x="5.0" y="3.0" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="cartesian"/>
+</element>
+<element type="vector" label="F_{D→n→A}">
+	<show object="true" label="true"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelOffset x="18" y="-2"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="0" playing="false"/>
+	<coords x="3.0" y="-1.0" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="polar"/>
+</element>
+<element type="vector" label="F_{B→n→A}">
+	<show object="true" label="true"/>
+	<objColor r="0" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelOffset x="8" y="5"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="0" playing="false"/>
+	<coords x="-3.0" y="-4.0" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="cartesian"/>
+</element>
+<element type="point" label="O&apos;">
+	<show object="true" label="false"/>
+	<objColor r="0" g="0" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<animation step="1" speed="1" type="1" playing="false"/>
+	<coords x="6.0" y="0.0" z="1.0"/>
+	<pointSize val="5"/>
+	<pointStyle val="0"/>
+</element>
+<command name="Translate">
+	<input a0="O&apos;" a1="F_{B→n→A}"/>
+	<output a0="H&apos;"/>
+</command>
+<element type="point" label="H&apos;">
+	<show object="true" label="false"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="3.0" y="-4.0" z="1.0"/>
+	<pointSize val="3"/>
+	<pointStyle val="0"/>
+</element>
+<command name="Vector">
+	<input a0="O&apos;" a1="H&apos;"/>
+	<output a0="u"/>
+</command>
+<element type="vector" label="u">
+	<show object="true" label="false"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="-3.0" y="-4.0" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="cartesian"/>
+	<startPoint exp="O&apos;"/>
+</element>
+<command name="Translate">
+	<input a0="H&apos;" a1="F_{C→n→A}"/>
+	<output a0="H&apos;&apos;"/>
+</command>
+<element type="point" label="H&apos;&apos;">
+	<show object="true" label="false"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="5.269952498697734" y="0.4550326209418394" z="1.0"/>
+	<pointSize val="3"/>
+	<pointStyle val="0"/>
+</element>
+<command name="Vector">
+	<input a0="H&apos;" a1="H&apos;&apos;"/>
+	<output a0="w"/>
+</command>
+<element type="vector" label="w">
+	<show object="true" label="false"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="2.2699524986977337" y="4.455032620941839" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="cartesian"/>
+	<startPoint exp="H&apos;"/>
+</element>
+<command name="Translate">
+	<input a0="H&apos;&apos;" a1="F_{D→n→A}"/>
+	<output a0="H&apos;&apos;&apos;"/>
+</command>
+<element type="point" label="H&apos;&apos;&apos;">
+	<show object="true" label="false"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="8.269952498697734" y="-0.5449673790581606" z="1.0"/>
+	<pointSize val="3"/>
+	<pointStyle val="0"/>
+</element>
+<command name="Vector">
+	<input a0="H&apos;&apos;" a1="H&apos;&apos;&apos;"/>
+	<output a0="z"/>
+</command>
+<element type="vector" label="z">
+	<show object="true" label="false"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="3.0" y="-1.0" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="cartesian"/>
+	<startPoint exp="H&apos;&apos;"/>
+</element>
+<command name="Translate">
+	<input a0="H&apos;&apos;&apos;" a1="F_{E→g→A}"/>
+	<output a0="I"/>
+</command>
+<element type="point" label="I">
+	<show object="true" label="false"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="13.269952498697734" y="2.4550326209418394" z="1.0"/>
+	<pointSize val="3"/>
+	<pointStyle val="0"/>
+</element>
+<command name="Vector">
+	<input a0="H&apos;&apos;&apos;" a1="I"/>
+	<output a0="a"/>
+</command>
+<element type="vector" label="a">
+	<show object="true" label="false"/>
+	<objColor r="255" g="0" b="0" alpha="0.0"/>
+	<layer val="0"/>
+	<labelMode val="0"/>
+	<coords x="5.0" y="3.0" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="cartesian"/>
+	<startPoint exp="H&apos;&apos;&apos;"/>
+</element>
+<command name="Vector">
+	<input a0="O&apos;" a1="I"/>
+	<output a0="F_{net}"/>
+</command>
+<element type="vector" label="F_{net}">
+	<show object="true" label="true"/>
+	<objColor r="0" g="0" b="255" alpha="0.0"/>
+	<layer val="0"/>
+	<labelOffset x="14" y="17"/>
+	<labelMode val="0"/>
+	<coords x="7.269952498697734" y="2.4550326209418394" z="0.0"/>
+	<lineStyle thickness="7" type="0" typeHidden="1"/>
+	<coordStyle style="cartesian"/>
+	<startPoint exp="O&apos;"/>
+</element>
+</construction>
+</macro>
+</geogebra>
