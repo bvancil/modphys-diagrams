@@ -1,0 +1,255 @@
+\documentclass[12pt]{article}
+\usepackage[letterpaper,margin=0.5in]{geometry} 
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{asymptote}
+\usepackage{array}
+\usepackage{longtable}
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Baskerville}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+\def\imagetop#1{\vtop{\null\hbox{#1}}}
+
+\title{Triangle Trigonometry}
+\author{Mr. B. Vancil}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\begin{asydef}
+import geometry;
+void measureangles(triangle t) {
+	pen absentline = linetype(new real[] {0,50});
+	real anglecompression = 3;
+	real radius = markangleradius()/anglecompression;
+	markangle("\scriptsize$"+format("%.1f",t.alpha())+"^\circ$",t.B,t.A,t.C,absentline, radius=radius);
+	markangle("\scriptsize$"+format("%.1f",t.beta())+"^\circ$",t.C,t.B,t.A,absentline, radius=radius);
+	markangle("\scriptsize$"+format("%.1f",t.gamma())+"^\circ$",t.A,t.C,t.B,absentline, radius=radius);
+}
+\end{asydef}
+
+\maketitle
+
+\section{How are the angles of a triangle related to the sides?}
+
+Consider the triangle $\triangle ABC$ below.
+\begin{center}
+\begin{asy}
+unitsize(.5cm);
+real a=4;
+real b=5;
+real c=6;
+triangle t = triangleabc(a,b,c);
+show(La=format("%f",a),Lb=format("%f",b),Lc=format("%f",c),t);
+measureangles(t);
+\end{asy}
+\end{center}
+We might ask the question of how these side lengths are related to the angle measurements.  We have already learned an important fact about triangle angles and side lengths.  We line each up in order, finding
+\begin{center}
+\begin{tabular}{>{$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}>{\qquad}l}
+4 & < & 5 & < & 6 & for the side lengths; \\
+44.1^\circ & < & 55.8^\circ & < & 82.8^\circ & for the angles.
+\end{tabular}
+\end{center}
+What's going on is even more obvious once if we use letter labels instead,
+\begin{center}
+\begin{tabular}{>{$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}>{\qquad}l}
+BC & < & CA & < & AB & for the side lengths; \\
+\text{m}\angle A & < & \text{m}\angle B & < & \text{m}\angle C & for the angles
+\end{tabular}
+\end{center}
+since
+\begin{center}
+\begin{tabular}{>{$}c<{$}@{\ }c@{\ }>{$}c<{$}}
+\angle A & is opposite from & \overline{BC} \\
+\angle B & is opposite from & \overline{CA} \\
+\angle C & is opposite from & \overline{AB}.
+\end{tabular}
+\end{center}
+\begin{center}
+\fbox{The operation \textbf{opposite} preserves inequalities.}
+\end{center}
+
+Since we know about similarity transformations (dilations), we know that there is no hope in finding a mathematical relationship between a single side and a single angle because dilations preserve angles but not lengths.  For instance, here is $\triangle A'B'C'$, which is double the size of our original triangle.
+\begin{center}
+\begin{asy}
+unitsize(.5cm);
+real a=8;
+real b=10;
+real c=12;
+triangle t = triangleabc(a,b,c);
+show(LA="$A'$",LB="$B'$",LC="$C'$",La=format("%f",a),Lb=format("%f",b),Lc=format("%f",c),t);
+measureangles(t);
+\end{asy}
+\end{center}
+
+If we can't find a relationship between an angle and, say, the opposite side, where does that leave us?
+\section{What properties of a triangle do not change under a similarity transformation?}
+Corresponding angles are clearly congruent, but we also know that corresponding sides of similar triangles are proportional.  For our triangle, all of the corresponding sides have the ratio $1:2$:
+\begin{equation*}
+4:8=5:10=6:12  
+\end{equation*}
+In general,
+\begin{equation*}
+\frac{AB}{A'B'}=\frac{BC}{B'C'}=\frac{CA}{C'A'},
+\end{equation*}
+and in particular any two of them form a nice proportion
+\begin{equation*}
+\frac{AB}{A'B'}=\frac{BC}{B'C'}.
+\end{equation*}
+Each ratio of this proportion compares corresponding sides of the two triangles.  We can rearrange the proportion to get one whose ratios compare two sides of a single triangle:
+\begin{equation*}
+\frac{AB}{BC}=\frac{A'B'}{B'C'}
+\end{equation*}
+Notice that the left ratio involves only the original triangle, whereas the right ratio involves only the transformed triangle.  Therefore, this ratio of side lengths will be the same for any similar triangles, no matter how big or small!  There was nothing special about the side lengths of $\triangle ABC$ that we picked, so this works for any pair of side lengths.  It's still not enough to relate to the angles yet, but we have found a useful tool, as we will see in the next section.
+
+\section{How can we use ratios to find triangle side lengths?}
+
+Think of fractions (ratios) needed to find a side given a known side.  For example, suppose we had a triangle $\triangle ABC$ for which we know one side length $BC$ and want to find side length $AC$.
+\begin{center}
+\begin{asy}
+unitsize(.5cm);
+real a=3;
+real b=6;
+real c=8;
+triangle t = triangleabc(a,b,c);
+show(LA="$A$",LB="$B$",LC="$C$",La="3",Lb="?",Lc="",t);
+\end{asy}
+\end{center}
+If we knew $AC/BC$, then we could easily find $AC$.  For instance, if we knew $AC/BC=2$, then we would know that
+\begin{equation*}
+AC = \frac{AC}{BC}\cdot BC=2\cdot BC=2\cdot 3=6.
+\end{equation*}
+That same ratio could help us find an unknown side of a similar triangle $\triangle DEF$.
+\begin{center}
+\begin{asy}
+unitsize(.5cm);
+real a=3*5/3;
+real b=6*5/3;
+real c=8*5/3;
+triangle t = triangleabc(a,b,c);
+show(LA="$D$",LB="$E$",LC="$F$",La="5",Lb="?",Lc="",t);
+\end{asy}
+\end{center}
+\begin{equation*}
+DF = 2\cdot EF=2\cdot 5=10.
+\end{equation*}
+%-----------------------MULTIPLE REPRESENTATIONS----------------------------
+\newpage
+\thispagestyle{empty}
+\begin{longtable}{|p{.2\linewidth}|p{.4\linewidth}|p{.2\linewidth}|}\hline
+
+\raggedright Diagram of $\triangle ABC$ & Words & Symbols \\\hline
+
+\begin{minipage}[t]{.2\linewidth}
+\vspace{0pt}
+\begin{asy}
+unitsize(.25cm);
+triangle t = triangleabc(5,7,8);
+show(La="10 km",Lb="14 km",Lc="",t);
+\end{asy}
+\end{minipage}
+& $AC$ is seven-fifths of $BC$.  $BC$ is five-sevenths of $AC$. 
+&$\dfrac{AC}{BC}=\dfrac{7}{5}$.  $\dfrac{BC}{AC}=\dfrac{5}{7}$. \\\hline
+
+\begin{minipage}[t]{.2\linewidth}
+\vspace{0pt}
+\begin{asy}
+unitsize(.5cm);
+triangle t = triangleabc(3,5,4);
+show(LA="A",LB="C",LC="B",La="15 m",Lb="25 m",Lc="",t);
+\end{asy}
+\end{minipage}
+& 
+& \\\hline
+
+\vspace{3cm}
+& $AC$ is thirteen-tenths of $AB$. 
+& \\\hline
+
+\vspace{3cm}
+& 
+& $AB/BC=2.8$ \\\hline
+
+\end{longtable}
+%--------------------SOLVING PROBLEMS WITH REPRESENTATIONS----------------------
+\newpage
+\thispagestyle{empty}
+\begin{longtable}{|p{.2\linewidth}|p{.3\linewidth}|p{.3\linewidth}|}\hline
+
+\raggedright Triangle with unknown side & To find the unknown side, I would need to know the ratio\ldots & Give an example ratio and show how to find the unknown side. \\\hline
+
+\begin{minipage}[t]{.2\linewidth}
+\vspace{0pt}
+\begin{asy}
+unitsize(.5cm);
+triangle t = triangleabc(2.5,4,5);
+show(La="?",Lb="",Lc="5",t);
+\end{asy}
+\end{minipage}
+& To find $BC$, I would need to know the ratio $\frac{BC}{AB}$. 
+& If the ratio $\frac{BC}{AB}=\frac{1}{2}$, then $BC$ is half of $AB$, so $BC=2\frac{1}{2}=2.5$. \\\hline
+
+\begin{minipage}[t]{.2\linewidth}
+\vspace{0pt}
+\begin{asy}
+unitsize(.5cm);
+triangle t = triangleabc(3,4,5);
+show(La="?",Lb="4 m",Lc="",t);
+\end{asy}
+\end{minipage}
+& 
+& If the ratio \underline{\hspace{2cm}} is 0.7, then\ldots \\\hline
+
+\begin{minipage}[t]{.2\linewidth}
+\vspace{0pt}
+\begin{asy}
+unitsize(.5cm);
+triangle t = triangleabc(6,6,2);
+show(La="6 m",Lb="",Lc="?",t);
+\end{asy}
+\end{minipage}
+& 
+& \\\hline
+
+\begin{minipage}[t]{.2\linewidth}
+\vspace{0pt}
+\begin{asy}
+unitsize(.5cm);
+triangle t = triangleabc(4,4,5);
+show(La="",Lb="?",Lc="5 cm",t);
+\end{asy}
+\end{minipage}
+& 
+& \\\hline
+
+\begin{minipage}[t]{.2\linewidth}
+\vspace{0pt}
+\begin{asy}
+unitsize(.18cm);
+triangle t = triangleabc(5,13,12);
+show(La="10 cm",Lb="",Lc="",t);
+\end{asy}
+\end{minipage}
+& 
+& If the ratio $AB/BC=1.2$, then\ldots \\\hline
+
+\begin{minipage}[t]{.2\linewidth}
+\vspace{0pt}
+\begin{asy}
+unitsize(.18cm);
+triangle t = triangleabc(5,13,12);
+show(La="10 cm",Lb="",Lc="",t);
+\end{asy}
+\end{minipage}
+& 
+& If the ratio $AB/BC=1.2$, then\ldots \\\hline
+
+\end{longtable}
+%---------------------------------------------------
+\end{document}  

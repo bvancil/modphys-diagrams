@@ -1,0 +1,136 @@
+\documentclass[t]{beamer}
+%\documentclass[t,handout]{beamer}
+%\usepackage{pgfpages} 
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm]
+%\nofiles
+
+%\documentclass{article}
+%\usepackage{beamerarticle}
+
+\mode<presentation>
+{
+  \usetheme{Sumner}
+  \setbeamercovered{invisible}
+}
+
+%\usepackage[letterpaper,margin=0.5in]{geometry} 
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{tikz}
+%\usepackage{asymptote}
+%\usepackage{array}
+%\usepackage{longtable}
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+%\setromanfont[Mapping=tex-text]{Baskerville}
+%\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+%\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+%\def\imagetop#1{\vtop{\null\hbox{#1}}}
+
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+
+\newcommand{\unit}[1]{\ \text{#1}}
+\newcommand{\correct}{}
+\newcommand{\question}[6]{
+\begin{frame}{#1}
+	\renewcommand{\correct}{}
+	\large
+	#2
+	\begin{enumerate}[a]
+	\item {#3}
+	\item {#4}
+	\item {#5}
+	\item {#6}
+	\end{enumerate}
+\end{frame}
+\begin{frame}{#1 (answer)}
+	\renewcommand{\correct}{\bf (\textcolor{active}{\checkmark}) }
+	\large
+	#2
+	\begin{enumerate}[a]
+	\item {#3}
+	\item {#4}
+	\item {#5}
+	\item {#6}
+	\end{enumerate}
+\end{frame}
+}
+\newcommand{\header}[1]{\textbf{\color{royalblueweb}{#1}}}
+
+% convenience functions
+\newcommand{\dt}{\Delta t}
+\newcommand{\tp}{t+\Delta t} % t' read t-prime
+\newcommand{\later}[1]{\textcolor{royalblueweb}{#1}}
+\newcommand{\now}[1]{\textcolor{burntorange}{#1}}
+
+\title{When force isn't constant}
+\subtitle{Or, the Velocity Verlet method}
+\author{Mr.~B.~Vancil}
+\institute[Sumner]
+{
+	Science Department\\
+	Sumner Academy of Arts \& Sciences
+}
+\date{}                                           % Activate to display a given date or no date
+
+\subject{Physics}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{When force isn't constant} \Large \vspace{-0.5cm}
+	We can't use our constant acceleration (CAPM) formulas!  Why? 
+	\pause
+	
+	So, we will chop our {\LARGE BIG time interval} into a lot of {\normalsize very, very small time intervals} and assume that the force changes slowly enough so acceleration is approximately constant over each {\normalsize very, very small time interval}. 
+	\begin{tikzpicture}[thick]
+  		\draw(0,0) -- (8,0) node[midway,above] {\LARGE BIG time interval};
+		\draw(0,0) -- (0, 3pt) node[above] {0 seconds};
+		\draw(8,0) -- (8, 3pt) node[above] {final clock reading};
+		\foreach \x in {0,.25,...,8}
+			\draw(\x,0pt)--(\x,-3pt);
+		\draw (0,-6pt)--(.25,-6pt) node[anchor=north west] {\normalsize very, very small time intervals};
+	 \end{tikzpicture}\pause
+	
+	Summary of notation:\normalsize
+	
+	\begin{tabular}{c|c}
+	now (clock reading $\now{t}$) & a bit later (clock reading $\later{\tp}$) \\\hline
+	$\now{x(t)}$, $\now{v(t)}$, $\now{a(t)}$ & $\later{x(\tp)}$, $\later{v(\tp)}$, $\later{a(\tp)}$
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{Velocity Verlet Method}\large\vspace{-0.5cm}
+It's not quite good enough to assume acceleration is constant.  When we calculate the new position, we \emph{will} use our standard
+$$\later{x(\tp)}=\now{x(t)}+\now{v(t)}\dt+\frac{1}{2}\now{a(t)}\left(\dt\right)^{2},$$
+but when we calculate the new velocity, we will use the average of the old and new velocities, 
+$$\later{v(\tp)}=\now{v(t)}+\frac{\now{a(t)}+\later{a(\tp)}}{2}\dt.$$
+Of course, to calculate acceleration, we will have to use Newton's 2nd Law:
+\begin{align*}
+\now{a(t)}&=\frac{\now{F(x(t),t)}}{m} \\
+\later{a(\tp)}&=\frac{\later{F(x(\tp),\tp)}}{m}
+\end{align*}	
+\end{frame}
+
+\begin{frame}{Velocity Verlet Method algorithm}
+	\begin{enumerate}
+	\item Set the initial clock reading $t=0$, initial position $x(0)$ and velocity $v(0)$.
+	\item Calculate initial acceleration from N2L: $a(0)=\frac{F(x(0),0)}{m}$.
+	\item Choose a time step $\dt$.
+	\item Calculate the next position from $\later{x(\tp)}=\now{x(t)}+\now{v(t)}\dt+\frac{1}{2}\now{a(t)}\left(\dt\right)^{2}$.
+	\item Calculate the next acceleration from $\later{a(\tp)}=\frac{\later{F(x(\tp),\tp)}}{m}$.
+	\item Calculate the new velocity from $\later{v(\tp)}=\now{v(t)}+\frac{\now{a(t)}+\later{a(\tp)}}{2}\dt.$
+	\item Add $\dt$ to $t$.
+	\item Repeat steps 4-7 as long as desired.
+	\item Decrease $\dt$ and repeat steps 3-8 until your result seems reasonable and doesn't change too much each time you decrease it.
+	\end{enumerate}
+\end{frame}
+\end{document}

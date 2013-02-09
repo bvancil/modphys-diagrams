@@ -1,0 +1,105 @@
+  \documentclass[final]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false} !
+  %\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
+  \mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
+    \usetheme{default}    %% you should define your own theme e.g. for big headlines using your own logos 
+    \beamertemplatenavigationsymbolsempty
+    \definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+    \definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+    \definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+    \definecolor{silver}{rgb}{0.75294117647058822,0.75294117647058822,0.75294117647058822}
+    \setbeamercolor{normal text}{fg=royalblue}
+    \setbeamercolor{frametitle}{fg=royalblueweb}
+    \setbeamerfont{frametitle}{size=\huge,series=\bfseries,family=\fontspec{Shady Lane}}
+    \setbeamertemplate{frametitle} {
+    	\begin{centering}\vspace{-1.5cm}\insertframetitle\par\end{centering}}
+    \setbeamercolor{block title}{fg=silver}
+    \setbeamerfont{block title}{size=\normalsize}
+    \setbeamertemplate{enumerate items}[circle]
+    \setbeamercolor{structure}{fg=burntorange}
+    \setbeamercolor{enumerate item projected}{fg=white}
+    \setbeamerfont{item projected}{size=\normalsize}
+    \setbeamertemplate{enumerate item}{
+    	\usebeamerfont*{item projected}%
+	 \usebeamercolor[bg]{item projected}%
+	 \begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
+	 	\pgfpathcircle{\pgfpoint{0pt}{.75ex}}{1.2ex}
+	 	\pgfusepath{fill}
+	 	\pgftext[base]{\color{fg}\insertenumlabel}
+	 \end{pgfpicture}%
+	}
+  \usefonttheme{serif}
+  
+  }
+  \usepackage{fontspec}
+  \defaultfontfeatures{Mapping=tex-text}
+  \usepackage{xunicode}
+  \usepackage{xltxtra}
+  \setmainfont{Gentium Book Basic}
+  \setsansfont{Shady Lane}
+  %\boldmath % makes all math bold!!!!!!!!!!!!!!!!!
+  
+  \usepackage[english]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  %\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                       % e.g. for DIN-A0 poster
+  %\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+  \usepackage[size=custom,width=45.72,height=60.96,scale=2.1,debug]{beamerposter}                     % e.g. for custom size poster (18in x 24in w/ printable 17in x 23in)
+  %\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+  \geometry{margin=.5in}
+  %\usepackage{array}
+  %\usepackage{booktabs}
+  %\def\imagetop#1{\vtop{\vspace{-1.5cm}\null\hbox{#1}\vspace{-1.5cm}}}
+  %\usepackage{tikz}
+  \newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}} % use \mathbf for bold roman, \boldsymbol for bold italic, and \vec for overrightarrow; N.B. Doesn't work well to just use \mathbf if you use \boldmath above
+
+
+\newcounter{allrulecounter}
+\newcounter{rulecounter}
+\newenvironment{rulelist}{%
+	\begin{list}{%
+		%\usebeamerfont*{item projected}%
+	 	\usebeamercolor[bg]{item projected}%
+	 	\begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
+	 		\pgfpathcircle{\pgfpoint{0pt}{.75ex}}{1.2ex}
+	 		\pgfusepath{fill}
+	 		\pgftext[base]{\color{fg}\arabic{rulecounter}}
+	 	\end{pgfpicture}\ %
+		}{%
+		\setlength\leftmargin{1.5in}%
+		\setlength\labelwidth{2in}
+		\usecounter{rulecounter}%
+		}
+	\setcounter{rulecounter}{\value{allrulecounter}}%
+	}{%
+	\setcounter{allrulecounter}{\value{rulecounter}}%
+	\end{list}}
+	
+  \title[Whiteboarding]{Whiteboarding Procedures}
+  \author[Vancil]{Brian Vancil}
+  \institute[Sumner]{Sumner Academy of Arts & Sciences}
+  \date{2012-07-18}
+  \begin{document}
+  \begin{frame}{Whiteboarding Procedures} 
+  \vspace{-3cm}
+    \vfill\normalsize
+    \begin{block}{In your group}
+      \begin{rulelist}
+      % http://groups.physics.umn.edu/physed/Research/CGPS/roles.html
+        \item Choose roles: Manager, Recorder/Checker, Skeptic, Energizer/Summarizer
+        \item Assemble supplies from your class bucket only.
+	\item When whiteboarding \emph{problems}, include at least one intentional mistake that students having difficulty with the concepts might make.  No ``Where's Waldo?'' mistakes!
+	\item When finished, place whiteboard backwards on the main whiteboard ledge.
+      \end{rulelist}
+    \end{block}
+    \begin{block}{In class discussion}
+      \begin{rulelist}
+	\item One person explains the group's approach to the problem.
+	\item Everyone scrutinizes the work silently for two minutes.
+	\item Ask questions---don't make statements---to \emph{lead} the presenter to realize inconsistency or errors in the work.
+	\item After all groups have gone, erase and clean the whiteboards.
+      \end{rulelist}
+    \end{block}
+    \vfill
+    \centerline{\usebeamerfont{frametitle}\LARGE\textcolor{royalblueweb}{Happy questioning!}}
+  \end{frame}
+  \end{document}

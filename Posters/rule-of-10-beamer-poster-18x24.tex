@@ -1,0 +1,84 @@
+  \documentclass[final]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false} !
+ %\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
+  	\mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
+	\usetheme{default}    %% you should define your own theme e.g. for big headlines using your own logos 
+	\beamertemplatenavigationsymbolsempty
+	\definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+	\definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+  	\definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+	\definecolor{silver}{rgb}{0.75294117647058822,0.75294117647058822,0.75294117647058822}
+  	\setbeamercolor{frametitle}{fg=blue!80!black}
+    	\setbeamertemplate{frametitle} {
+	\begin{center} 
+    		\vspace{-2.5cm}\textbf{\insertframetitle} \par 
+		\normalsize\textbf{\insertframesubtitle}
+	\end{center}
+	}
+	\setbeamertemplate{enumerate items}[circle]
+	\setbeamercolor{structure}{fg=burntorange}
+	\setbeamercolor{enumerate item projected}{fg=white}
+	\setbeamerfont{item projected}{size=\normalsize}
+	\setbeamertemplate{enumerate item}
+		{
+		  \usebeamerfont*{item projected}%
+		  \usebeamercolor[bg]{item projected}%
+		  \begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
+		    \pgfpathcircle{\pgfpoint{0pt}{.75ex}}{1.2ex}
+		    \pgfusepath{fill}
+		    \pgftext[base]{\color{fg}\insertenumlabel}
+		  \end{pgfpicture}%
+		}
+	
+  }
+  \usepackage[english]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  \usepackage{bbding}
+  %\usepackage{times}
+  %\usefonttheme{professionalfonts}  % times is obsolete
+  \usefonttheme[onlymath]{serif}
+  \boldmath
+  %\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                       % e.g. for DIN-A0 poster
+  %\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+  \usepackage[size=custom,width=45.72,height=60.96,scale=1.8,debug]{beamerposter}                     % e.g. for custom size poster (18in x 24in w/ printable 17in x 23in)
+  %\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+  % ...
+  %
+  \geometry{margin=1in}
+  \def\imagetop#1{\vtop{\vspace{-1.5cm}\null\hbox{#1}\vspace{-1.5cm}}}
+  \usepackage{tikz}
+  
+  \newcommand{\header}[1]{\textcolor{royalblueweb}{\textbf{#1}}}
+  \newcommand{\spacing}{\vspace{1.0em}}
+    \newcommand{\parasep}{\vspace{-0.0\baselineskip}\textcolor{silver}{\large\hfill\FiveStar\hfill\FiveStar\hfill\FiveStar\hfill}\vspace{-0.0\baselineskip}}
+    
+  % From Andrew Smith <andrew.smith@ASD20.ORG> MODELING PHYSICS LISTSERVE
+  \title[Rules of Ten]{Rules of Ten: rules of thumb for data collection and processing}
+  \author[Vancil]{Brian Vancil}
+  \institute[Sumner]{Sumner Academy of Arts & Sciences}
+  \date{2012-04-07}
+  
+  \begin{document}
+  \begin{frame}{Rules of Ten} 
+  \framesubtitle{rules of thumb for data collection and processing}
+  \vspace{-1.5em}\parasep
+	\begin{enumerate}
+	
+\item \header{Collect at least 10 data points.}  A data point is one pairing of independent and dependent variable measurements.  Without enough data points, we cannot reliably find trends in the data. \spacing
+
+\item \header{The largest independent variable measurement should be at least 10 times the smallest independent variable measurement.}  Nature sometimes surprises us at larger or smaller scales than we think to look. \spacing
+
+\item \header{We like the uncertainty in our measurements to be less than 10\% of the range of the measurements.}  There is no point in trying to understand our results mathematically if the variation we see is around the same size as the uncertainty in the measurements. \spacing
+
+\item \header{We like the root mean square error (RMSE) for a fit to be less than 10\% of the range of dependent variable measurements.}  A large RMSE means that our mathematical model does not fit the data very well. \spacing
+
+\item \header{We will consider the vertical intercept negligible if it is less than 5\% of the range of the dependent variable measurements.}  A vertical intercept is likely to be meaningful if it has a decent magnitude compared with our dependent variable measurements.
+
+	\end{enumerate}
+        \spacing\parasep
+        %\vfill
+	\begin{center}\footnotesize
+	 Adapted from a list by Andrew~Smith
+	\end{center}
+  \end{frame}
+  \end{document}

@@ -1,0 +1,104 @@
+  \documentclass[final]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false} !
+ %\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
+  	\mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
+	\usetheme{default}    %% you should define your own theme e.g. for big headlines using your own logos 
+	\beamertemplatenavigationsymbolsempty
+	\definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+	\definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+  	\definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+  	\setbeamercolor{frametitle}{fg=blue!80!black}
+    	\setbeamertemplate{frametitle} {
+	\begin{centering} 
+    		\textbf{\insertframetitle} \par
+	\end{centering}
+}
+  }
+  \usepackage[english]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  %\usepackage{times}\usefonttheme{professionalfonts}  % times is obsolete
+  \usefonttheme[onlymath]{serif}
+  \boldmath
+  %\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                       % e.g. for DIN-A0 poster
+  %\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+  \usepackage[size=custom,width=45.72,height=60.96,scale=1.8,debug]{beamerposter}                     % e.g. for custom size poster (18in x 24in w/ printable 17in x 23in)
+  %\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+  % ...
+  %
+  \geometry{margin=.5in}
+  \usepackage{array}
+  \usepackage{booktabs}
+  \newcolumntype{P}[1]{>{\raggedright\large}p{#1}}
+  \def\imagetop#1{\vtop{\vspace{-1.5cm}\null\hbox{#1}\vspace{-1.5cm}}}
+  \usepackage{tikz}
+  
+  \newcommand{\xx}{\textcolor{variable}{x}}
+  \newcommand{\yy}{\textcolor{variable}{y}}
+  \newcommand{\versus}{vs\ }
+  \newcommand{\plotscale}{2.0}
+  \newcommand{\plotline}{6pt}
+  \newcommand{\formatmm}[1]{\textcolor{royalblue}{\textbf{#1}}}
+  \colorlet{plot}{burntorange}
+  \colorlet{variable}{blue!80!black}
+  
+  % From Hestenes' list of 4 basic mathematical models
+  \title[Mathematical Models]{Basic Classes of Mathematical Models}
+  \author[Vancil]{Brian Vancil}
+  \institute[Sumner]{Sumner Academy of Arts & Sciences}
+  \date{2012-04-07}
+  
+  \begin{document}
+  \begin{frame}{Basic Classes of Mathematical Models} 
+    \defaultaddspace=.25em
+    %\vspace{-2cm}
+    \begin{center}
+    \begin{tabular}{P{.48\linewidth}P{.25\linewidth}@{\quad}>{\arraybackslash}P{.20\linewidth}} \toprule[.1em]
+    \normalsize Mathematical model with example & \normalsize Kind of change & \normalsize Graph shape  \\ \midrule[.1em] \addlinespace
+    
+    \formatmm{Linear model}\ \ \  $\yy=A\xx+B$ & 
+    Rate of change is constant. &
+    \imagetop{\begin{tikzpicture}[scale=\plotscale,domain=0:4,line width=\plotline,smooth]
+    \draw[color=plot] plot (\x,.6*\x+1);
+    \draw[<->] (0,4) -- (0,0) -- (4,0); 
+    \end{tikzpicture}} 
+    \\ \addlinespace \midrule \addlinespace
+    
+    \formatmm{Quadratic model}\ \ \  $\yy=A\xx^{2}+B\xx+C$ & 
+    Change in rate of change is constant. &
+    \imagetop{\begin{tikzpicture}[scale=\plotscale,domain=0:4,line width=\plotline,smooth,samples=40]
+    \draw[color=plot] plot (\x,{4-0.7*(\x-2)*(\x-2)});
+    \draw[<->] (0,4) -- (0,0) -- (4,0); 
+    \end{tikzpicture}}    
+    \\ \addlinespace \midrule \addlinespace
+
+    \formatmm{Exponential model}\ \ \  $\yy=Ab^{\xx}$ or $\yy=Ae^{\frac{\xx}{\xi}}$ & 
+    Rate of change is proportional to amount. &
+    \imagetop{\begin{tikzpicture}[scale=\plotscale,domain=0:4,line width=\plotline,smooth,samples=40]
+    \draw[color=plot] plot (\x,{pow(pow(4,.25),\x)});
+    \draw[<->] (0,4) -- (0,0) -- (4,0); 
+    \end{tikzpicture}}    
+    \\ \addlinespace \midrule \addlinespace
+    
+    \formatmm{Harmonic model}\ \ \  $\yy=A\cos\left(k\xx+\phi\right)$ or $\yy=A\sin\left(k\xx+\phi'\right)$ or $\yy=\mathfrak{Re}\left\{Ae^{i(k\xx+\phi)}\right\}$& 
+    Change in rate of change is proportional to amount. &
+    \imagetop{\begin{tikzpicture}[scale=\plotscale,domain=0:4,line width=\plotline,smooth,samples=40]
+    \draw[color=plot] plot (\x,{2*cos((\x*6.28-1)r)}); 
+    \draw[->] (0,-2) -- (0,2);
+    \draw[->] (0,0) -- (4,0);
+    \end{tikzpicture}}    
+    \\ \addlinespace  \midrule \addlinespace
+
+    \formatmm{Sudden change model}\ \ \  $\yy=A\ \theta(\xx-x_{0})$ & 
+    Change is finite and instantaneous. &
+    \imagetop{\begin{tikzpicture}[scale=\plotscale,domain=0:4,line width=\plotline,smooth,samples=40]
+    \draw[color=plot, domain=0:2] plot (\x,1);
+    \draw[color=plot, domain=2:4] plot (\x,3);
+    \draw[<->] (0,4) -- (0,0) -- (4,0); 
+    \end{tikzpicture}}    
+    \\ \addlinespace
+    
+    \bottomrule[.1em]
+    \end{tabular}
+    \end{center}
+  \end{frame}
+  \end{document}

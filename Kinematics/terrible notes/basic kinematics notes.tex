@@ -1,0 +1,402 @@
+\documentclass[t]{beamer}
+%\documentclass[t,handout]{beamer}
+%\usepackage{pgfpages} 
+%\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm]
+%\nofiles
+
+%\documentclass{article}
+%\usepackage{beamerarticle}
+
+\mode<presentation>
+{
+  \usetheme{Sumner}
+}
+
+%\usepackage[letterpaper,margin=0.5in]{geometry} 
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{tikz}
+%\usepackage{asymptote}
+%\usepackage{array}
+%\usepackage{longtable}
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+%\setromanfont[Mapping=tex-text]{Baskerville}
+%\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+%\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+%\def\imagetop#1{\vtop{\null\hbox{#1}}}
+
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+
+\newcommand{\unit}[1]{\ \text{#1}}
+\newcommand{\correct}{}
+\newcommand{\question}[6]{
+\begin{frame}{#1}
+	\renewcommand{\correct}{}
+	\large
+	#2
+	\begin{enumerate}[a]
+	\item {#3}
+	\item {#4}
+	\item {#5}
+	\item {#6}
+	\end{enumerate}
+\end{frame}
+\begin{frame}{#1 (answer)}
+	\renewcommand{\correct}{\bf (\textcolor{active}{\checkmark}) }
+	\large
+	#2
+	\begin{enumerate}[a]
+	\item {#3}
+	\item {#4}
+	\item {#5}
+	\item {#6}
+	\end{enumerate}
+\end{frame}
+}
+\newcommand{\header}[1]{\textbf{\color{royalblueweb}{#1}}}
+
+\title{Notes on kinematics}
+\subtitle{Basic notions of measuring events}
+\author{Mr.~B.~Vancil}
+\institute[Sumner]
+{
+	Science Department\\
+	Sumner Academy of Arts \& Science
+}
+\date{Fall 2011}                                           % Activate to display a given date or no date
+
+\subject{physics, kinematics}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Measuring events}
+\Large
+\structure{How do we measure events?}
+\begin{columns}[t]
+\begin{column}<2->{.45\linewidth}
+\header{\underline{time}}
+\begin{itemize}
+\item<4-> clock reading \visible<9->{($t$)}
+\item<5-> time interval \visible<9->{($\Delta t$)}
+\end{itemize}
+\end{column}
+\begin{column}<3->{.45\linewidth}
+\header{\underline{length}}
+\begin{itemize}
+\item<6-> position \visible<9->{($x$)}
+\item<7-> displacement \visible<9->{($\Delta x$)}
+\item<8-> distance \visible<9->{($d$)}
+\end{itemize}
+\end{column}
+\end{columns}
+\structure{Discussion}
+\begin{itemize}
+\item<10-> Try to design a situation in which ``clock reading'' and ``time interval'' have different values.  Draw a picture.
+\item<11-> Try to design a situation in which ``position'', ``displacement'', and ``distance'' have different values.  Draw a picture.
+\item<12-> What does ``\header{instant}'' mean?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{What does ``instantaneous'' mean?}\huge
+\beamerdefaultoverlayspecification{<+->}
+\setbeamercovered{transparent}
+	\begin{itemize}
+		\item How many seconds does a clock reading last?
+		\item How long does an instant last?
+		\item If an object is moving continuously, how long does it stay on any one position?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Measuring on a graph}
+Given a ``position versus clock reading'' ($x$ v. $t$) graph, we want to be able to interpret the relationship between events.
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:4] (\x,{10-3*(\x)});
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:6] (\x+4,{-2+1*(\x)});
+\fill[color=royalblueweb] (0,10) circle (3pt);
+\draw[color=royalblueweb] (0,10) node[right] {A};
+\fill[color=royalblueweb] (4,-2) circle (3pt);
+\draw[color=royalblueweb] (4,-2) node[below] {B};
+\fill[color=royalblueweb] (10,4) circle (3pt);
+\draw[color=royalblueweb] (10,4) node[above] {C};
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}\Large
+\begin{enumerate}
+\item Interpret point A.
+\item Interpret point B.
+\item Interpret point C.
+\end{enumerate}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Measuring horizontally on a graph, 1}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:4] (\x,{10-3*(\x)});
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:6] (\x+4,{-2+1*(\x)});
+\fill[color=royalblueweb] (0,10) circle (3pt);
+\draw[color=royalblueweb] (0,10) node[right] {A};
+\fill[color=royalblueweb] (4,-2) circle (3pt);
+\draw[color=royalblueweb] (4,-2) node[below] {B};
+\fill[color=royalblueweb] (10,4) circle (3pt);
+\draw[color=royalblueweb] (10,4) node[above] {C};
+\draw[very thick,color=burntorange] (0,0) -- (10,0);
+\draw[very thick,color=black,dashed] (0,10) -- (0,0);
+\draw[very thick,color=black,dashed] (10,4) -- (10,0);
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}
+\LARGE
+What is the interpretation of the burnt orange horizontal line segment?
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Measuring horizontally on a graph, 2}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:4] (\x,{10-3*(\x)});
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:6] (\x+4,{-2+1*(\x)});
+\fill[color=royalblueweb] (0,10) circle (3pt);
+\draw[color=royalblueweb] (0,10) node[right] {A};
+\fill[color=royalblueweb] (4,-2) circle (3pt);
+\draw[color=royalblueweb] (4,-2) node[below] {B};
+\fill[color=royalblueweb] (10,4) circle (3pt);
+\draw[color=royalblueweb] (10,4) node[above] {C};
+\draw[very thick,color=burntorange] (4,4) -- (10,4);
+\draw[very thick,color=black,dashed] (4,-2) -- (4,4);
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}
+\LARGE
+What is the interpretation of the burnt orange horizontal line segment?
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Measuring vertically on a graph, 1}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:4] (\x,{10-3*(\x)});
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:6] (\x+4,{-2+1*(\x)});
+\fill[color=royalblueweb] (0,10) circle (3pt);
+\draw[color=royalblueweb] (0,10) node[right] {A};
+\fill[color=royalblueweb] (4,-2) circle (3pt);
+\draw[color=royalblueweb] (4,-2) node[below] {B};
+\fill[color=royalblueweb] (10,4) circle (3pt);
+\draw[color=royalblueweb] (10,4) node[above] {C};
+\draw[very thick,color=burntorange] (0,4) -- (0,-2);
+\draw[very thick,color=black,dashed] (0,4) -- (10,4);
+\draw[very thick,color=black,dashed] (0,-2) -- (4,-2);
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}
+\LARGE
+What is the interpretation of the burnt orange vertical line segment?
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Measuring vertically on a graph, 2}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:4] (\x,{10-3*(\x)});
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:6] (\x+4,{-2+1*(\x)});
+\fill[color=royalblueweb] (0,10) circle (3pt);
+\draw[color=royalblueweb] (0,10) node[right] {A};
+\fill[color=royalblueweb] (4,-2) circle (3pt);
+\draw[color=royalblueweb] (4,-2) node[below] {B};
+\fill[color=royalblueweb] (10,4) circle (3pt);
+\draw[color=royalblueweb] (10,4) node[above] {C};
+\draw[very thick,color=burntorange] (10,10) -- (10,4);
+\draw[very thick,color=black,dashed] (0,10) -- (10,10);
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}
+\LARGE
+What is the interpretation of the burnt orange vertical line segment?
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Measuring diagonally on a graph}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:4] (\x,{10-3*(\x)});
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:6] (\x+4,{-2+1*(\x)});
+\fill[color=royalblueweb] (0,10) circle (3pt);
+\draw[color=royalblueweb] (0,10) node[right] {A};
+\fill[color=royalblueweb] (4,-2) circle (3pt);
+\draw[color=royalblueweb] (4,-2) node[below] {B};
+\fill[color=royalblueweb] (10,4) circle (3pt);
+\draw[color=royalblueweb] (10,4) node[above] {C};
+\draw[very thick,color=burntorange] (2,4) -- (4,-2);
+\draw[very thick,color=burntorange] (0,10) -- (10,4);
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}
+\LARGE
+What are the interpretations of the burnt orange diagonal line segments?
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Measuring diagonally on a graph}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:4] (\x,{10-3*(\x)});
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:6] (\x+4,{-2+1*(\x)});
+\fill[color=royalblueweb] (0,10) circle (3pt);
+\draw[color=royalblueweb] (0,10) node[right] {A};
+\fill[color=royalblueweb] (4,-2) circle (3pt);
+\draw[color=royalblueweb] (4,-2) node[below] {B};
+\fill[color=royalblueweb] (10,4) circle (3pt);
+\draw[color=royalblueweb] (10,4) node[above] {C};
+\draw[very thick,color=black,dashed] (0,10) -- (4,10) -- (4,-2) -- (10,-2) -- (10,4);
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}\Large
+\begin{enumerate}
+\item How fast is the object moving from A to B?
+\item How fast is the object moving from B to C?
+\item How fast is the object moving from A to C?
+\end{enumerate}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Measuring diagonally on a graph}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=4,domain=0:3] (\x,{10-.5*(\x)});
+\definecolor{amethyst}{rgb}{0.6,0.4,0.8}
+\draw[thick,color=amethyst] plot[samples=4,domain=0:4] (\x,{0+.4*(\x)});
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}\LARGE
+When and where will the two objects intersect?
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{An interesting graph}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (-.5,-2.2) grid (10.2,10.2);
+\draw[->](-.5,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-2.2) -- (0, 10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\foreach \x in {-2,-1,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x};
+\draw[thick,color=royalblueweb] plot[samples=50,domain=0:8] ({9*(1-(\x/4-1)^2)},\x);
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}\LARGE
+How would you interpret this graph of position versus clock reading?
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Our goal}
+\begin{columns}[T]
+\begin{column}{.6\linewidth}
+\begin{tikzpicture}[scale=0.5]
+\draw[very thin, color=silver] (0,-3) grid (10,10);
+\draw[->](0,0) -- (10.2,0) node[right] {$t\unit{(s)}$};
+\draw[->](0,-3) -- (0,10.2) node[above] {$x\unit{(m)}$};
+\foreach \t in {0,1,...,10}
+	\draw (\t,1pt) -- (\t,-1pt) node[anchor=north] {\t};
+\draw (1pt,0) -- (-1pt,0) node[anchor=east] {0};
+\foreach \x in {1,2,...,10}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x0};
+\foreach \x in {-1,-2,-3}
+	\draw (1pt,\x) -- (-1pt,\x) node[anchor=east] {\x0};
+\definecolor{amethyst}{rgb}{0.6,0.4,0.8}
+\draw[very thick,color=amethyst] plot[samples=40,domain=0:9] (\x,{.5*2.5*(\x)^2/10}) node[above] {other car};
+\draw[very thick,color=royalblueweb,dashed] plot[samples=50,domain=0:6.5] (\x,{-3+20*\x/10}) node[left] {your car};
+\end{tikzpicture} 
+\end{column}
+\begin{column}{.4\linewidth}\large
+To make a connection between our everyday experience and meters per second, it is useful to know that 10 mph is the same as 4.4704 meters per second.  A car traveling at 20 meters per second is traveling about 45 mph.  The acceleration of the other car was chosen to be 2.5 meters per second per second.
+\end{column}
+\end{columns}
+\end{frame}
+\end{document}

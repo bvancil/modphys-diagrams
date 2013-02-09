@@ -1,0 +1,86 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt,twocolumn]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+\geometry{twoside, inner=1.9cm, outer=1.2cm, top=1.2cm, bottom=1.2cm}
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Baskerville}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+\title{From where do our everyday interactions come?}
+\author{Brian Vancil}
+%\date{}                                           % Activate to display a given date or no date
+
+\usepackage{tikz}
+\usetikzlibrary{mindmap} 
+\definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+\definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+\definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+\definecolor{silver}{rgb}{0.75294117647058822,0.75294117647058822,0.75294117647058822}
+	
+\begin{document}
+\maketitle
+
+\begin{figure}[!ht]
+\caption{Known and guessed-at interactions in nature}
+\label{intdiag}
+\centering
+\begin{tikzpicture}[concept color=silver,text=white,
+	root concept/.append style={concept color=burntorange,text=white},
+	level 1 concept/.append style={every child/.style={concept color=silver,text=black}, sibling angle=40,level distance=4.5cm},
+	level 2 concept/.append style={every child/.style={concept color=royalblueweb,text=white}, sibling angle=40},
+	level 3 concept/.append style={every child/.style={concept color=silver,text=black}, sibling angle=40},
+	level 4 concept/.append style={every child/.style={concept color=royalblueweb,text=white}, sibling angle=90},
+	level 5/.style={every child/.style={concept color=silver,text=black}, sibling angle=40},
+	mindmap]
+	\node [concept] {Theory of Everything?}
+		[counterclockwise from=250]
+		child {node[concept] {Grand Unified Theory?}
+			[counterclockwise from=250]
+			child {node[concept] {strong int\-eraction}
+				[counterclockwise from=270]
+				child {node[concept] {nuclear interaction}} 
+				}
+			child {node[concept] {electroweak interaction}
+				[counterclockwise from=252.5]
+				child {node[concept] {weak interaction}}
+				child {node [concept] {electro\-magnetic interaction}
+					[counterclockwise from=225]
+					child {node [concept] {electric interaction}
+						[counterclockwise from=215]
+						child {node [concept] {normal interaction}}
+						child {node [concept] {tensional interaction}}
+						child {node [concept] {elastic interaction}}
+						child {node [concept] {frictional interaction}}
+						}
+					child {node [concept] {magnetic interaction}}
+					}
+				}
+			}
+		child {node[concept] {gravitational interaction}};
+\end{tikzpicture}
+\end{figure}
+We know of only a few fundamental interactions in nature, and one human project in physics has been to explain everything that we observe in terms of simpler interactions.  If you look at Figure~\ref{intdiag}, as you move down the diagram, you will find interactions that describe more and more specific circumstances.  Each is useful, but on their own they explain very little.  In the history of science, humans have worked upward in Figure~\ref{intdiag}, taking scientific models that appeared to be different but were really different aspects of the same thing and unifying them into a single simpler theory that explained more.
+For instance, the electric interaction is responsible for the following everyday interactions:
+\begin{description}
+\item[normal interaction]The repelling squishiness of matter as two objects push against each other is due to two sources: (1) electric interaction involving negatively charged electron clouds around positively charged nuclei and (2) the Pauli exclusion principle---not really an interaction!---between the electrons.  Something as simple as sitting in a chair involves a normal interaction.  So does air pressure and air resistance.
+\item[tensional interaction]The electric bonding of negatively charged electron clouds to positively charged nuclei creates an attractive intermolecular interaction so that when a substance is stretched by a bit, it tends to pull back together.  Parts of a rope pull on other nearby parts of a rope through a tensional interaction.
+\item[elastic interaction]An extreme form of the tensional interaction, in which matter changes its shape by a lot.  Springs and elastic are good examples.
+\item[frictional interaction]Friction is not completely understood, but it involves the grinding together and shearing of irregular surfaces along each other.  Hydrocarbon molecules also play a role between the surfaces.  Something as simple as walking across a floor requires friction.
+\item[electric interaction]Electrically charged objects attract or repel each other depending on whether their charges are opposite or the same, respectively.  If you have ever experienced static electricity, you know this well.
+\end{description}
+As an example of how the human project of searching for simpler explanations progressed, the \textbf{magnetic interaction} is familiar from magnets, but it was discovered in the 1800s that electric and magnetic interactions are really both part of a single \textbf{electromagnetic interaction}, which is responsible for the static electric interactions already mentioned, electricity, magnetism, and even light (really the entire spectrum of electromagnetic radiation).  In the second half of the 1900s, physicists learned to describe both electromagnetic interaction and the \textbf{weak interaction} (responsible for many forms of radioactive decay) by a single theory of the \textbf{electroweak interaction}.
+
+Attempts have been made to unify the \textbf{strong interaction} (responsible for both the nuclear interaction that holds protons and neutrons together in the nucleus of an atom and for the interaction that holds quarks together within protons and neutrons) with the electroweak interaction into a single interaction.  These theories go by the name of Grand Unified Theories, but all of them predict types of matter that we haven't seen yet.
+
+Also in the 1900s, physicists worked to unify the gravitational interaction with the other types of interactions to create a so-called Theory of Everything.  Most of those attempts failed, but we humans have learned a lot from the failures, and we are still at it.  In addition to the human project of unifying interactions, there is also an opposite human project of using these interactions to describe more and more complex systems of particles, everything from neutron stars to superconductors to everyday materials.  Will there ever be an end to the human drive to organize and explain the universe?
+\end{document}  

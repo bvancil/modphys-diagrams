@@ -1,0 +1,78 @@
+% XeLaTeX can use any Mac OS X font. See the setromanfont command below.
+% Input to XeLaTeX is full Unicode, so Unicode characters can be typed directly into the source.
+
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt]{article}
+\usepackage[margin=0.5in]{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+
+\usepackage{array}
+\usepackage{booktabs}
+
+% Will Robertson's fontspec.sty can be used to simplify font choices.
+% To experiment, open /Applications/Font Book to examine the fonts provided on Mac OS X,
+% and change "Hoefler Text" to any of these choices.
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Baskerville} % Hoefler Text has terrible numbers
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+\title{Motion Terms and Symbols \\ for Uniform Motion and Uniform Acceleration }
+%\author{Brian Vancil}
+\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\vspace{-2cm}
+
+% For many users, the previous commands will be enough.
+% If you want to directly input Unicode, add an Input Menu or Keyboard to the menu bar 
+% using the International Panel in System Preferences.
+% Unicode must be typeset using a font containing the appropriate characters.
+% Remove the comment signs below for examples.
+
+% \newfontfamily{\A}{Geeza Pro}
+% \newfontfamily{\H}[Scale=0.9]{Lucida Grande}
+% \newfontfamily{\J}[Scale=0.85]{Osaka}
+
+% Here are some multilingual Unicode fonts: this is Arabic text: {\A السلام عليكم}, this is Hebrew: {\H שלום}, 
+% and here's some Japanese: {\J 今日は}.
+
+\begin{center}
+How do we describe motion in time and space?
+  \begin{tabular}{@{} l>{\raggedright\arraybackslash}p{6cm}cc @{}}
+    \toprule
+    term & description & 1-D symbol & vector symbol \\ \hline 
+    \midrule
+    motion & description of position of a particle at all times & $x(t)$ & $\vec{x}(t)$ \\ \hline
+    frame of reference & coordinate system (choice of positive direction and measurement unit) used to describe motion & & \\ \hline
+    
+    clock reading & time read from a clock & t & t \\ \hline 
+    time interval & time elapsed from initial to final measurement & $\Delta t$ & $\Delta t$ \\ \hline 
+    position & location in space measured on a coordinate system & $x$ & $\vec{x}$ \\ \hline 
+    displacement & change in position from initial to final measurement & $\Delta x$ & $\Delta\vec{x}$ \\ \hline 
+    distance & length of the shortest path between two positions & $d$ & $d$ \\ \hline 
+    average velocity & rate of displacement per unit time interval from initial to final measurements & $\overline{v}$ & $\overline{\vec{v}}$ \\ \hline 
+    instantaneous velocity & average velocity over a very short time interval & $v$ & $\vec{v}$ \\ \hline 
+    average speed & rate of distance per unit time interval &  $\overline{|v|}$ & $\overline{v}$ \\ \hline
+    instantaneous speed & average speed over a very short time interval; magnitude (absolute value) of velocity;  & $|v|$ & $v$ \\ \hline
+    change in velocity & change in velocity from initial to final values & $\Delta v$ & $\Delta\vec{v}$ \\ \hline 
+    average acceleration & rate of velocity change per unit time interval from initial to final measurements & $\overline{a}$ & $\overline{\vec{a}}$ \\ \hline 
+    instantaneous acceleration & average acceleration over a very short time interval & $a$ & $\vec{a}$ \\
+    \bottomrule
+  \end{tabular}
+
+Compare to Chapter 11, sections 1 and 2 (pages 362-379) of the textbook.
+\end{center}
+
+\end{document}  

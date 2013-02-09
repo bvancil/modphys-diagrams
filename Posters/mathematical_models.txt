@@ -1,0 +1,21 @@
+(Frank's take on Hestenes function models)
+
+BASIC CLASSES OF MODELS:
+
+1) Linear model:
+* Rate of change = constant.
+* Common representations are graphs and equations
+for straight lines (e.g., velocity, acceleration,
+force, momentum, energy).
+
+2) Quadratic model:
+* Change (in rate of change) = constant.
+* Usual representations are graphs and equations for parabolas (e.g., accelerated motion, kinetic and elastic potential energy).
+
+3) Exponential model:
+* Rate of change is proportional to amount.
+* Representations include graphs and equations of exponential growth and decay (e.g., population growth, radioactive decay).
+
+4) Harmonic model:
+* Change (in rate of change) is proportional to amount.
+* Usual representations are graphs and equations of trigonometric functions (e.g., waves and vibrations, harmonic oscillators, situations in electricity and magnetism such as simple AC circuits and LC circuits). 

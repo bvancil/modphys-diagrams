@@ -1,0 +1,27 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{pgf,tikz}
+\usetikzlibrary{arrows}
+\pagestyle{empty}
+\begin{document}
+\definecolor{qqttcc}{rgb}{0,0.2,0.8}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+\draw[->,color=black] (-0.87,0) -- (7.79,0);
+\foreach \x in {,1,2,3,4,5,6,7}
+\draw[shift={(\x,0)},color=black] (0pt,2pt) -- (0pt,-2pt) node[below] {\footnotesize $\x$};
+\draw[color=black] (7.55,0.67) node [anchor=south west] { t};
+\draw[->,color=black] (0,-44.19) -- (0,58.03);
+\foreach \y in {-40,-30,-20,-10,10,20,30,40,50}
+\draw[shift={(0,\y)},color=black] (2pt,0pt) -- (-2pt,0pt) node[left] {\footnotesize $\y$};
+\draw[color=black] (0.08,54.69) node [anchor=west] { x};
+\draw[color=black] (0pt,-10pt) node[right] {\footnotesize $0$};
+\clip(-0.87,-44.19) rectangle (7.79,58.03);
+\draw[line width=1.6pt,dash pattern=on 41pt off 41pt,color=qqttcc, smooth,samples=100,domain=-0.8663232141063284:7.787767744009165] plot(\x,{0-35+20*(\x)});
+\draw[line width=1.6pt, smooth,samples=100,domain=0.0:7.787767744009165] plot(\x,{2.5/2*(\x)^2});
+\draw[line width=1.6pt,dash pattern=on 41pt off 41pt,color=qqttcc, smooth,samples=100,domain=-0.8663232141063284:7.787767744009165] plot(\x,{(20-5*(\x)*>*0)*(-35+20*(\x)-5/2*(\x)^2)+(¬(20-5*(\x)*>*0))*5});
+\begin{scriptsize}
+\draw[color=qqttcc] (1.05,-33.01) node {my car};
+\draw[color=black] (0.95,5.67) node {stopped car};
+\end{scriptsize}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<script
+src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(function() {
+ $("#button").click(function() {
+  $("#output").append("<p><b>F⃑</b><sup>"+$('[name=type]').val()[0]+"</sup><sub>"+$('[name=dealer]').val()+" on "+$('[name=feeler]').val()+"</sub>≔the "+$('[name=cnc]').val()+" "+$('[name=type]').val()+" force of the "+$('[name=dealer]').val()+" on the "+$('[name=feeler]').val()+"</p>");
+});
+});
+</script>
+<style type="text/css">
+button {
+font-size: 100%;
+}
+</style>
+<head>
+<title>Force namer!</title>
+</head>
+<body>
+<h1>Name a force!</h1>
+<p>the&nbsp;<select name="cnc"><option value="contact">contact</option><option
+  value="non-contact">non-contact</option></select>&nbsp;<select name="type"><option value=""></option><option value="electric">electric</option><option value="frictional">frictional</option><option value="gravitational">gravitational</option><option value="magnetic">magnetic</option><option value="normal">normal</option><option
+ value="tension">tension</option></select> force of the&nbsp;<input name="dealer"/> on the&nbsp;<input name="feeler"/>
+<button name="submit" value="Add" id="button">Add</button></p>
+<h1>Named forces</h1>
+<div id="output">
+
+</div>
+</body>
+</html>

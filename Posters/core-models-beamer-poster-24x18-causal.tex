@@ -1,0 +1,84 @@
+  \documentclass[final]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false} !
+ %\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
+  	\mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
+	\usetheme{default}    %% you should define your own theme e.g. for big headlines using your own logos 
+	\beamertemplatenavigationsymbolsempty
+	\definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+	\definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+  	\definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+  	\setbeamercolor{frametitle}{fg=black}
+    	\setbeamertemplate{frametitle} {
+	\begin{centering} 
+    		\vspace{-0cm}\textbf{\LARGE\insertframetitle} \par
+	\end{centering}
+}
+  }
+  \usepackage[english]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  %\usepackage{times}\usefonttheme{professionalfonts}  % times is obsolete
+  \usefonttheme[onlymath]{serif}
+  %\boldmath
+  %\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                       % e.g. for DIN-A0 poster
+  %\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+  \usepackage[size=custom,width=60.96,height=45.72,scale=1.75,debug]{beamerposter}                     % e.g. for custom size poster (18in x 24in w/ printable 17in x 23in)
+  %\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+  % ...
+  %
+  \geometry{margin=.5in}
+  %\usepackage{multirow}
+  \usepackage{array}
+  \newcolumntype{P}[1]{>{\raggedright}p{#1}}
+  \newcolumntype{M}[1]{>{\raggedright}m{#1}}
+  \newcolumntype{Q}{>{\raggedright}p{.16\linewidth}}
+  \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+  \def\imagetop#1{\vtop{\vspace{-1.5cm}\null\hbox{#1}\vspace{-1.5cm}}}
+  \usepackage[style=1]{mdframed} % for framed boxes; newer package use framemethod=TikZ
+  
+  \newcommand{\var}[1]{\textcolor{variable}{#1}}
+  \colorlet{plot}{burntorange}
+  \colorlet{variable}{blue!80!black}
+  \colorlet{header}{black}
+  \colorlet{trans}{blue}
+  \colorlet{rot}{red}
+  \colorlet{energy}{trans!50!rot}
+  
+  \newcommand{\header}[1]{\textcolor{header}{\footnotesize #1}}
+  \newcommand{\roundbox}[2]{\textcolor{#1}{#2}}
+  \newcommand{\roundboxh}[2]{\begin{mdframed}[roundcorner=20pt,linecolor=#1]\textcolor{#1}{#2}\end{mdframed}}
+  \newcommand{\roundboxn}[2]{%
+  	\begin{mdframed}[roundcorner=20pt,linecolor=#1]
+  	{\centering\textcolor{#1}{#2}}
+	\end{mdframed}}
+  \newcommand{\roundboxmath}[3]{%
+  	\begin{mdframed}[roundcorner=20pt,linecolor=#1]
+  	{\centering\textcolor{#1}{#2}
+	\par $#3$}
+	\end{mdframed}}
+  \newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}} % use \mathbf for bold roman, \boldsymbol for bold italic, and \vec for overrightarrow
+	
+  \title[Core Models]{Core Models for Mechanics} % Adapted from MIT RELATE MAPS SIM stuff
+  \author[Vancil]{Brian Vancil}
+  \institute[Sumner]{Sumner Academy of Arts & Sciences}
+  \date{2012-04-07}
+  
+  \begin{document}
+  \begin{frame}{Core Models for Mechanics} 
+    % \defaultaddspace=.25em
+    %\vspace{-2cm}
+\begin{center}
+\begin{tabular}{P{.08\linewidth}C{.17\linewidth}C{.17\linewidth}C{.17\linewidth}C{.17\linewidth}C{.17\linewidth}} 
+ 	\header{Interactions} & \multicolumn{2}{c}{\roundbox{trans}{External forces}} & & \multicolumn{2}{c}{\roundbox{rot}{External torques about axis $a$}} \\ 
+	\header{System} & \roundboxn{trans}{Single-particle system} & \roundboxn{trans}{Multi-particle system} & \roundboxn{energy}{Multi-rigid-body system} & \roundboxn{rot}{Single-rigid-body system} & \roundboxn{rot}{Multi-rigid-body system} \\
+    \header{Agent of change} & \roundboxn{trans}{$\sum\vect{F}$} & \roundboxn{trans}{$\vect{I}=\sum\langle\vect{F}\rangle_{\!t}\Delta t$} & \roundboxn{energy}{$W=\sum\langle\vect{F}\rangle_{\!x}\cdot\Delta\vect{x}+\sum\langle\vect{\tau}_{a}\rangle_{\!\theta}\cdot\Delta\vect{\theta}$} & \roundboxn{rot}{$\sum\vect{\tau}_{a}$} & \roundboxn{rot}{$\vect{J}_{a}=\sum\langle\vect{\tau}_{a}\rangle_{\!t}\Delta t$} \\
+    \header{Model} & 
+    \roundboxmath{trans}{Translational dynamics and net force}{\vect{a}=\frac{d\vect{v}}{dt}=\frac{1}{m}\sum \vect{F}} & 
+    \roundboxmath{trans}{Translational momentum and impulse}{\Delta\vect{p}=\vect{I}} & 
+    \roundboxmath{energy}{Mechanical energy and work}{\Delta E=W} & 
+    \roundboxmath{rot}{Rotational dynamics and net torque}{\vect{\alpha}=\frac{d\vect{\omega_{a}}}{dt}=\frac{1}{I_{a}}\sum\vect{\tau}_{a}} &
+    \roundboxmath{rot}{Angular momentum and impulse}{\Delta\vect{L}_{a}=\vect{J}_{a}} \\
+    \header{Constant quantity} & \roundboxn{trans}{translational velocity} & \roundboxn{trans}{translational momentum} & \roundboxn{energy}{mechanical energy} & \roundboxn{rot}{angular velocity} & \roundboxn{rot}{angular momentum} \\
+\end{tabular}
+\end{center}
+  \end{frame}
+  \end{document}
