@@ -2,11 +2,11 @@
 
 struct MotionMap {
   pen ref_p = black+linewidth(1.4);
-  real arrow_size = 12; // arrow head size
-  real length = 8cm;
+  real arrow_size = 6; // arrow head size
+  real length;
   real n; // for number of marks
   real dx; // for tick marks
-  real dy = .2cm; // for vertical offsets
+  real dy = .1cm; // for vertical offsets
   Label axis_L;
   
   void draw() {
@@ -22,7 +22,7 @@ struct MotionMap {
       draw((i*this.dx,0)--(i*this.dx,-2*this.dy), this.ref_p);
     }
   }
-  void operator init(Label axis_L="$\vec{s}$", real length=10cm, real num_ticks=10) {
+  void operator init(Label axis_L="$\vec{s}$~[\quad]", real length=10cm, real num_ticks=10) {
     this.axis_L = axis_L;
     this.length = length;
     this.n = num_ticks;
@@ -35,5 +35,5 @@ void draw(MotionMap m) {
   m.draw();
 }
 
-MotionMap m = MotionMap();
+MotionMap m = MotionMap(num_ticks=12);
 draw(m);

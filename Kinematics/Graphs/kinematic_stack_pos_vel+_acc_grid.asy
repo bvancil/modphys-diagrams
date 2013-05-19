@@ -52,7 +52,7 @@ picture pos_pic;
 kingraph(pos_pic, rotate(0)*Label("$\vec{s}$[m]",align=3*N), vMin=0, vMax=10);
 
 picture vel_pic;
-kingraph(vel_pic, rotate(0)*Label("$\vec{v}$[m/sec]",align=3*N));
+kingraph(vel_pic, rotate(0)*Label("$\vec{v}$[m/sec]",align=3*N), vMin=0, vMax=10);
 
 picture acc_pic;
 kingraph(acc_pic, rotate(0)*Label("$\vec{a}$[m/sec/sec]",align=3*N));
