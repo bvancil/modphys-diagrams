@@ -1,0 +1,115 @@
+  \documentclass[final]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false} !
+  %\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
+  \mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
+    \usetheme{default}    %% you should define your own theme e.g. for big headlines using your own logos 
+    \beamertemplatenavigationsymbolsempty
+    \definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+    \definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+    \definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+    \definecolor{silver}{rgb}{0.75294117647058822,0.75294117647058822,0.75294117647058822}
+    \setbeamercolor{normal text}{fg=royalblue}
+    \setbeamercolor{frametitle}{fg=royalblueweb}
+    \setbeamerfont{frametitle}{size=\huge,series=\bfseries,family=\fontspec{Shady Lane}}
+    \setbeamertemplate{frametitle} {
+    	\begin{centering}\vspace{-1.5cm}\insertframetitle\par\end{centering}}
+	\setbeamertemplate{blocks}[rounded][shadow=false]
+	\setbeamercolor*{block title example}{fg=royalblueweb,bg=silver}
+	\setbeamercolor*{block body example}{fg=royalblue,bg=silver!50}
+    \setbeamercolor{block title}{fg=silver}
+    \setbeamerfont{block title}{size=\normalsize}
+    \setbeamertemplate{enumerate items}[circle]
+    \setbeamercolor{structure}{fg=burntorange}
+    \setbeamercolor{enumerate item projected}{fg=white}
+    \setbeamerfont{item projected}{size=\normalsize}
+    \setbeamertemplate{enumerate item}{
+    	\usebeamerfont*{item projected}%
+	 \usebeamercolor[bg]{item projected}%
+	 \begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
+	 	\pgfpathcircle{\pgfpoint{0pt}{.75ex}}{1.2ex}
+	 	\pgfusepath{fill}
+	 	\pgftext[base]{\color{fg}\insertenumlabel}
+	 \end{pgfpicture}%
+	}
+  \usefonttheme{serif}
+ } 
+  \usepackage{fontspec}
+  \defaultfontfeatures{Mapping=tex-text}
+  \usepackage{xunicode}
+  \usepackage{xltxtra}
+  \setmainfont{Gentium Book Basic}
+  \setsansfont{Shady Lane}
+  %\boldmath % makes all math bold!!!!!!!!!!!!!!!!!
+  
+  \usepackage[english]{babel}
+  %\usepackage[utf8]{inputenc}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  %\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                       % e.g. for DIN-A0 poster
+  %\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+  \usepackage[size=custom,width=45.72,height=60.96,scale=2.1,debug]{beamerposter}                     % e.g. for custom size poster (18in x 24in w/ printable 17in x 23in)
+  %\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+\geometry{margin=.5in}
+  %\usepackage{array}
+  %\usepackage{booktabs}
+  %\def\imagetop#1{\vtop{\vspace{-1.5cm}\null\hbox{#1}\vspace{-1.5cm}}}
+  %\usepackage{tikz}
+\newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}} % use \mathbf for bold roman, \boldsymbol for bold italic, and \vec for overrightarrow; N.B. Doesn't work well to just use \mathbf if you use \boldmath above
+\newcommand{\punchit}[1]{\emph{\textcolor{burntorange}{#1}}}
+
+
+\newcounter{allrulecounter}
+\newcounter{rulecounter}
+\newenvironment{rulelist}{%
+	\begin{list}{%
+		%\usebeamerfont*{item projected}%
+	 	\usebeamercolor[bg]{item projected}%
+	 	\begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
+	 		\pgfpathcircle{\pgfpoint{0pt}{.75ex}}{1.2ex}
+	 		\pgfusepath{fill}
+	 		\pgftext[base]{\color{fg}\arabic{rulecounter}}
+	 	\end{pgfpicture}\ %
+		}{%
+		\setlength\leftmargin{1.5in}%
+		\setlength\labelwidth{2in}
+		\usecounter{rulecounter}%
+		}
+	\setcounter{rulecounter}{\value{allrulecounter}}%
+	}{%
+	\setcounter{allrulecounter}{\value{rulecounter}}%
+	\end{list}}	
+
+\title[Defend the model]{Defend the mathematical model}
+\author[Vancil]{Brian Vancil}
+\institute[Sumner]{Sumner Academy of Arts & Science}
+\date{2013-06-15}
+  
+  % Motivation: http://noschese180.wordpress.com/2013/06/14/day-173-slinky-spring-constant-vs-number-of-coils/comment-page-1/#comment-521
+  
+%  1. A “defend the mathematical model” protocol for whiteboarding labs. Students would have to argue things like that the model makes reasonable preditions for (a) large values of the IV and (b) small values of the IV, (c) that the scaling (as you mentioned above) makes sense, and that (d) the error bars wouldn’t accommodate a simpler or alternate model, all in order to justify the fit. (I had trouble with (d) this year when students would argue for a linear model when a constant one was more reasonable.) Think of these as conceptual tools for the R of CER.
+
+  \begin{document}
+  \begin{frame}{Defend the Model} 
+  \vspace{-3cm}
+    \vfill\normalsize
+        \begin{exampleblock}{Example}
+        		Let's say you did a sampling of various cars and found that gas mileage $G$ (in mpg) decreases as the mass of a car $m$ (in pounds) increases.  You fit a line (your \emph{mathematical model}) to your data and find:
+			\begin{equation*}
+				G = -0.0043\text{ mpg/pound}\cdot m + 60\text{ mpg}
+			\end{equation*}
+        \end{exampleblock}
+    \vfill
+    \begin{block}{Conceptual tools}
+      \begin{rulelist}
+        \item Does my mathematical model make reasonable predictions for \punchit{large values} of the independent variable? \\
+%        \begin{exampleblock}{Example}
+%        		You might notice that the graph of your mathematical model $G(m)$ decreases as a constant rate.  At some mass it will be equal to 0~mpg, which means that a car with this mass would go zero miles for every gallon of gas it burns.  At \emph{any} higher mass, the gas mileage will be negative, meaning that a car with this higher mass would go \emph{negative} miles(?!) for every gallon of gas it burns.  What does this mean?
+%        \end{exampleblock}
+
+        \item Does my mathematical model make reasonable predictions for \punchit{small values} of the independent variable?
+        \item Does the type of my mathematical model (e.g. constant, linear, inversely proportional) have reasonable \punchit{scaling behavior} (e.g. when I change the horizontal variable by a factor of $n$, what happens to the vertical variable?)?
+        \item Could the \punchit{uncertainty} in my measurements be consistent with a simpler or alternate mathematical model?
+      \end{rulelist}
+    \end{block}
+    \vfill
+    \centerline{\usebeamerfont{frametitle}\Large\textcolor{royalblueweb}{Happy Modeling!}}
+  \end{frame}
+  \end{document}
