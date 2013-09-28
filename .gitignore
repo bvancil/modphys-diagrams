@@ -8,5 +8,7 @@
 *.snm
 *.synctex.gz
 *.toc
+# Backup files
+*~
 # System files
 .DS_Store

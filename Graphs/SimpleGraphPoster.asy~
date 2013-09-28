@@ -1,5 +1,0 @@
-real page_width = 8.5 inch;
-real page_height = 11 inch;
-size(page_width, page_height);
-pen axis_p = linewidth(2.0)+black;
-draw((0,10)--(0,0)--(10,0), axis_p, Arrows);
