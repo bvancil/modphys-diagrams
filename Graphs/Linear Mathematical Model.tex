@@ -1,0 +1,87 @@
+  \documentclass[dvipsnames,final]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false} !  
+ %\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
+  	\mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
+	\usetheme{default}    %% you should define your own theme e.g. for big headlines using your own logos 
+	\beamertemplatenavigationsymbolsempty
+	\definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+	\definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+  	\definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+  	\colorlet{description}{RoyalBlue} 
+  	\colorlet{unit}{ForestGreen} 
+  	\colorlet{symbol}{red}
+  	\setbeamercolor{frametitle}{fg=RoyalBlue}
+    	\setbeamertemplate{frametitle} {
+	\begin{centering} 
+    		\textbf{\insertframetitle} \par
+	\end{centering}}
+}
+	
+	\usepackage{fontspec}% provides font selecting commands 
+	
+	\defaultfontfeatures{Mapping=tex-text} % fix TeX quotes
+	\usepackage{xunicode}% provides unicode character macros 
+	\usepackage{xltxtra} % provides some fixes/extras 
+	\setmainfont{Gentium Book Basic}
+	\setsansfont{Arial}
+	\setmonofont{Courier New}
+	\usepackage[english]{babel}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  \usefonttheme{serif}
+  \usepackage[orientation=landscape,size=letter,scale=4,debug]{beamerposter}
+  %\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                       % e.g. for DIN-A0 poster
+  %\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+  %\usepackage[size=custom,width=45.72,height=60.96,scale=1.8,debug]{beamerposter}                     % e.g. for custom size poster (18in x 24in w/ printable 17in x 23in)
+  %\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+  % ...
+  %
+  \geometry{margin=.5in}
+  \usepackage{tikz}
+  \title[Linear Model]{Linear Mathematical Model}
+  \author[Vancil]{Brian Vancil}
+  \institute[Sumner]{Sumner Academy of Arts & Science}
+  \date{2013-09-28}
+  
+  \makeatletter
+  \renewcommand{\boxed}[2]{\textcolor{#1}{%
+  	\tikz[baseline={([yshift=-1ex]current bounding box.center)}] \node [rectangle, minimum width=1ex, rounded corners, draw] {\normalcolor\m@th$\displaystyle#2$};}}
+	\makeatother
+	\newcommand{\twolinetext}[3]{% color, line 1, line 2
+		\textcolor{#1}{\begin{pmatrix}\text{\textbf{#2}}\\\text{\textbf{#3}}\end{pmatrix}}}	
+	\newcommand{\questionmark}{%
+		\tikz[baseline={(current bounding box.center)}] \node[rectangle, inner sep=6pt, rounded corners, scale=4, fill=description!20] {?};
+	}
+  \begin{document}
+  \begin{frame}{Linear Mathematical Model} 
+    %\vspace{-2cm}
+	\begin{center}
+		It all begins with the linear equation you learned in Algebra 1:
+		\begin{equation*}
+		y=mx+b
+		\end{equation*}
+		Since $x$ and $y$ are just dummy variables, you need to look at your graph to replace them as shown below.  In science, we also include units.
+		\vspace{1em}
+		\newcommand{\slopeunit}{%
+			\frac{%
+				\twolinetext{unit}{Vertical}{Unit}
+			}{%
+				\twolinetext{unit}{Horizontal}{Unit}
+			}}		
+		\begin{equation*}
+		\color{description}
+		\twolinetext{symbol}{Vertical}{Symbol}
+		=
+		\underbrace{%
+			\questionmark\,
+			\slopeunit
+		}_{\parbox{9em}{The coefficient of the horizontal variable is the slope of the best-fit straight line.}}
+		\twolinetext{symbol}{Horizontal}{Symbol}
+		+\!\!\!\!\!\!\!\!\!\!
+		\underbrace{%
+			\questionmark
+			\vphantom{\slopeunit}
+			\twolinetext{unit}{Vertical}{Unit}
+		}_{\parbox{11em}{The constant coefficient is the vertical intercept, which is the value of the vertical variable when the horizontal variable is zero.}}
+		\end{equation*}
+\end{center}
+  \end{frame}
+  \end{document}
