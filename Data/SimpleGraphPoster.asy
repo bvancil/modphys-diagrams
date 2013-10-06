@@ -30,9 +30,9 @@ draw((make_uniform_scales+(0,1)){up}..{left}(0,ymax/2), annotation_p, Arrow);
 draw((make_uniform_scales+(1,0)){right}..{down}(xmax/2,0), annotation_p, Arrow);
 
 label("\textcolor{description}{Horizontal Variable Description}\textcolor{black}{/}\textcolor{unit}{Unit}",(xmax/2+.1,-1.5), annotation_p);
-label("\textcolor{symbol}{Symbol}", (xmax,0), E, annotation_p);
+label("\textcolor{symbol}{\textit{Symbol}}", (xmax,0), E, annotation_p);
 
 label(rotate(90)*"\textcolor{description}{Vertical Variable Description}\textcolor{black}{/}\textcolor{unit}{Unit}", (-2,ymax/2), annotation_p);
-label("\textcolor{symbol}{Symbol}", (0,ymax), N, annotation_p);
+label("\textcolor{symbol}{\textit{Symbol}}", (0,ymax), N, annotation_p);
 
 label("\color{description}\begin{minipage}[t][2.5in][c]{6in}\centering{Vertical Variable Description Versus Horizontal Variable Description Plus Context to Help the Audience Understand}\end{minipage}", (xmax/2,ymax), N, annotation_p);
