@@ -10,5 +10,6 @@
 *.toc
 # Backup files
 *~
+.*.swp
 # System files
 .DS_Store
