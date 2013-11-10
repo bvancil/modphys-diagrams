@@ -1,0 +1,66 @@
+  \documentclass[dvipsnames,final]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false} !  
+ %\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
+  	\mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
+	\usetheme{default}    %% you should define your own theme e.g. for big headlines using your own logos 
+	\beamertemplatenavigationsymbolsempty
+	\definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+	\definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+  	\definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+  	\colorlet{description}{RoyalBlue} 
+  	\colorlet{unit}{ForestGreen} 
+  	\colorlet{symbol}{red}
+  	\setbeamercolor{frametitle}{fg=RoyalBlue}
+    	\setbeamertemplate{frametitle} {
+	\begin{centering} 
+    		\textbf{\insertframetitle} \par
+	\end{centering}}
+	\setbeamertemplate{itemize item}{\small\raise20pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+}
+	
+	\usepackage{fontspec}% provides font selecting commands 
+	
+	\defaultfontfeatures{Mapping=tex-text} % fix TeX quotes
+	\usepackage{xunicode}% provides unicode character macros 
+	\usepackage{xltxtra} % provides some fixes/extras 
+	\setmainfont{Gentium Book Basic}
+	\setsansfont{Arial}
+	\setmonofont{Courier New}
+	\usepackage[english]{babel}
+  \usepackage{amsmath,amsthm, amssymb, latexsym}
+  \usefonttheme{serif}
+  \usepackage[orientation=landscape,size=letter,scale=4]{beamerposter}
+  %\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                       % e.g. for DIN-A0 poster
+  %\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+  %\usepackage[size=custom,width=45.72,height=60.96,scale=1.8,debug]{beamerposter}                     % e.g. for custom size poster (18in x 24in w/ printable 17in x 23in)
+  %\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+  % ...
+  %
+  \geometry{margin=.5in}
+  \usepackage{tikz}
+ 	\usepackage{booktabs}
+  
+  \title[Tables]{Table Headings and Tips}
+  \author[Vancil]{Brian Vancil}
+  \institute[Sumner]{Sumner Academy of Arts & Science}
+  \date{2013-10-06}
+  
+  \begin{document}
+  \begin{frame}{Raw Data Column with $n$ Trials}
+  %\vspace{-2cm}
+	\begin{center}
+		\Huge
+		\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}} \toprule[10pt]
+			\multicolumn{4}{c}{\textcolor{description}{Raw Variable Description}} \\
+			\multicolumn{4}{c}{\textcolor{symbol}{\textit{Symbol}}/\textcolor{unit}{Unit}} \\
+			\multicolumn{4}{c}{$\pm$ Uncertainty}\\
+			Trial 1 & Trial 2 & \ldots & Trial $n$ \\
+ 			\midrule[5pt]
+		\end{tabular}
+		\Large
+		\begin{itemize}
+			\item Write all values with the same precision.
+			\item For uncertainty, use the least count or half the range of trials, whichever is larger.
+		\end{itemize}
+	\end{center}
+	\end{frame}
+\end{document}
