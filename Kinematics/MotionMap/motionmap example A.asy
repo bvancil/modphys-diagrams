@@ -132,17 +132,18 @@ struct MotionMap {
     // int pos_min = floor(this.pos_min); // start at minimum
     int pos_min = 0; //start at zero
     int pos_max = ceil(this.pos_max+.25); // allow for arrow
+    
     for(int i = pos_min; i < pos_max; ++i) {
       draw((i,-this.dy*1.3)--(i,-this.dy*0.7),this.ref_p); // numbers control tick size
     }
-    draw((pos_min,-this.dy)--(pos_max,-this.dy),this.ref_p,this.arrow);
+    draw((pos_min,-this.dy)--(pos_max,-this.dy),this.ref_p,this.arrow); 
     label("+",(pos_max,-this.dy),E,this.ref_p);
   }
   void draw() {
     pair[] locations;
+    real curr_x;
     real last_x=-9e99;
     real y_shift=0;
-    real curr_x;
     real last_v=15;
     real curr_v;
     for(int i=0; i<this.n; ++i) {
@@ -226,33 +227,25 @@ void draw(MotionMap m) {
   m.draw();
 }
 
-void make_motion_map(string suffix, real pos(real), int t, bool grayscale = false)
-{
-  clear();
-  draw(MotionMap(pos, t, grayscale=grayscale));
-  shipout(outprefix()+"_"+suffix);
-  return;
+real x1(real t) { // 5s @ 1m/s, 2s & 0m/s, 
+  if (t < 4) return 3+t;
+  if (t < 6) return 7-3*(t-4);
+  if (t < 10) return 1;
+  return 1+2*(t-10);
 }
-
-// real x1(real t) { // 5s @ 1m/s, 2s & 0m/s, 
-//   if (t < 5) return t;
-//   if (t < 7) return 5;
-//   return t-2;
-// }
-
 // Synatx:
-//MotionMap m = MotionMap(x1, 10); // based on position function x1 for t in [0,10]s
-//draw(m);
+MotionMap m = MotionMap(x1, 13); // based on position function x1 for t in [0,10]s
+draw(m);
 // OR
 //draw(MotionMap(x1, 10));
      
 //real x2(real t) { return t*t/2; } // accelerate
 //draw(MotionMap(x2, 4, grayscale=false));
 
-// real v1(real t) { return t; } // accelerate
-// MotionMap m = MotionMap(v1,4);
-// m.draw_acc = true;
-// draw(m);
+//real v1(real t) { return t; } // accelerate
+//MotionMap m = MotionMap(v1,4);
+//m.draw_acc = true;
+//draw(m);
 
 
 /* TODO:

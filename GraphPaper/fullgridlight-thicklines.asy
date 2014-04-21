@@ -1,4 +1,4 @@
-pen grid_p = gray(0.7)+linewidth(1.6);
+pen grid_p = gray(0.8)+linewidth(1.6);
 real paperwidth = 8.5inches;
 real paperheight = 11inches;
 real width = paperwidth - 3cm; // margins

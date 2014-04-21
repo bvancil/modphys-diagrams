@@ -17,10 +17,10 @@ void kingraph(picture pic, Label vL="", real vMin=vMin_ticks, real vMax=vMax_tic
 }
 
 picture pos_pic;
-kingraph(pos_pic, "$s$");
+kingraph(pos_pic, "$\vec{s}$");
 
 picture vel_pic;
-kingraph(vel_pic, "$v$");
+kingraph(vel_pic, "$\vec{v}$");
 
 // boring code for stacking the graphs.  You can change the stack statement at the bottom to choose which graphs to include in what order.  The only interesting part of the stack function is the htick/vtick settings, which can be used to change the size of the horizontal and vertical units of the graphs.
 void stack(picture pics[]) {

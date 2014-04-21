@@ -30,7 +30,7 @@ axis HZero(bool extend=true) {
 }
 axis HZero = HZero();
 
-void kingraph(picture pic, Label vL="", real vMin=-6, real vMax=6, Label hL=Label("$t$~[\quad]",embed=Shift, align=5.2*E), real hMin=0, real hMax=12) {
+void kingraph(picture pic, Label vL="", real vMin=-6, real vMax=6, Label hL=Label("$t$/",embed=Shift, align=5.2*E), real hMin=0, real hMax=20) {
   scale(pic, Linear, Linear);
   xlimits(pic, hMin, hMax);
   ylimits(pic, vMin, vMax);
@@ -45,10 +45,10 @@ void kingraph(picture pic, Label vL="", real vMin=-6, real vMax=6, Label hL=Labe
 }
 
 picture pos_pic;
-kingraph(pos_pic,  rotate(0)*Label("$\vec{s}$~[\quad]",align=3*N), vMin=0, vMax=10);
+kingraph(pos_pic,  rotate(0)*Label("$\vec{s}$/",align=3*N), vMin=-6, vMax=6);
 
 picture vel_pic;
-kingraph(vel_pic, rotate(0)*Label("$\vec{v}$~[\qquad]",align=3*N), vMin=0, vMax=12);
+kingraph(vel_pic, rotate(0)*Label("$\vec{v}$/",align=3*N), vMin=-6, vMax=6);
 
 //xequals(pos_pic,3,Dotted);
 //xequals(vel_pic,3,Dotted);

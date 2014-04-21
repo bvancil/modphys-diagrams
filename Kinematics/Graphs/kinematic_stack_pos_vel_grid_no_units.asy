@@ -30,7 +30,7 @@ axis HZero(bool extend=true) {
 }
 axis HZero = HZero();
 
-void kingraph(picture pic, Label vL="", real vMin=-6, real vMax=6, Label hL=Label("$t$~[\quad]",embed=Shift, align=5.2*E), real hMin=0, real hMax=12) {
+void kingraph(picture pic, Label vL="", real vMin=-6, real vMax=6, Label hL=Label("$t$",embed=Shift, align=2*E), real hMin=0, real hMax=12) {
   scale(pic, Linear, Linear);
   xlimits(pic, hMin, hMax);
   ylimits(pic, vMin, vMax);

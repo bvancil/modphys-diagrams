@@ -1,15 +1,11 @@
-// Asymptote code for kinematic_stack_pos_vel_acc_grid.asy
+// Asymptote code for kinematic_stack_pos_vel_grid_wide.asy
 import graph;
 
-pen axis_p = linewidth(1.4)+black+fontsize(9);
-pen grid_p = linewidth(0.8)+gray(0.5);
+pen axis_p = linewidth(1.6)+black+fontsize(12);
+pen grid_p = linewidth(1.2)+gray(0.4);
 pen ticklabel_p = fontsize(.01);
-int hticks = 10;
-int vMin_ticks = -5;
-int vMax_ticks = 5;
-real axis_extra = 0.7; // extend the axis just a bit past the last tick mark
 real phi=(1+sqrt(5))/2; // golden ratio
-
+  
 axis VZero(bool extend=true) {
   return new void(picture pic, axisT axis) {
     axis.type = 0; // Value
@@ -28,18 +24,18 @@ axis HZero(bool extend=true) {
     axis.value = pic.scale.y.T(pic.scale.y.scale.logarithmic ? 1 : 0); // I'm good with Linear 0
     axis.position = 1; // relative position of axis label
     axis.side = right;
-    axis.align = W;
+    axis.align = 2.2*N;
     axis.extend = extend;
     };
 }
 axis HZero = HZero();
 
-void kingraph(picture pic, Label vL="", real vMin=vMin_ticks, real vMax=vMax_ticks, Label hL=Label("$t$/s",embed=Shift, align=5.2*E), real hMin=0, real hMax=hticks) {
+void kingraph(picture pic, Label vL="", real vMin=-6, real vMax=6, Label hL=Label("$t$/",embed=Shift, align=3*E), real hMin=0, real hMax=12) {
   scale(pic, Linear, Linear);
   xlimits(pic, hMin, hMax);
   ylimits(pic, vMin, vMax);
   real[] hTicks_a = sequence(1, floor(hMax));
-  real[] vTicks_a = sequence(floor(vMin), floor(vMax));
+  real[] vTicks_a = sequence(floor(vMin), ceil(vMax));
   ticks hTicks = LeftTicks(format=Label(" ", align=E, p=ticklabel_p), Ticks=hTicks_a, extend=true, pTick=grid_p); // The space clears the labels on the ticks.
   ticks vTicks = RightTicks(format=Label(" ", align=W, p=ticklabel_p), Ticks=vTicks_a, extend=true, pTick=grid_p);
   xaxis(pic=pic, L="", axis=BottomTop, p=grid_p, ticks=hTicks);
@@ -49,23 +45,19 @@ void kingraph(picture pic, Label vL="", real vMin=vMin_ticks, real vMax=vMax_tic
 }
 
 picture pos_pic;
-kingraph(pos_pic, rotate(0)*Label("$\vec{s}$/m",align=3*N), vMin=0, vMax=10);
+kingraph(pos_pic,  rotate(0)*Label("$\vec{s}$/",align=3*N), vMin=-5, vMax=5);
 
 picture vel_pic;
-kingraph(vel_pic, rotate(0)*Label("$\vec{v}$/(m/s)",align=3*N));
-
-picture acc_pic;
-kingraph(acc_pic, rotate(0)*Label("$\vec{a}$/(m/s/s)",align=3*N));
+kingraph(vel_pic, rotate(0)*Label("$\vec{v}/$",align=3*N), vMin=-5, vMax=5);
 
 //xequals(pos_pic,3,Dotted);
 //xequals(vel_pic,3,Dotted);
-//xequals(acc_pic,3,Dotted);
 
 // boring code for stacking the graphs.  The only interesting part is the htick/vtick settings, which can be used to change the size of the horizontal and vertical units of the graphs.
 void stack(picture pics[]) {
   real margin=0mm;
-  real vtick = .4cm;
-  real htick = vtick*phi;
+  real htick = 1.0cm;
+  real vtick = htick/phi;
   frame[] frames = new frame[pics.length];
   for(int i=0; i<pics.length; ++i) {
     unitsize(pics[i], htick, vtick);
@@ -77,5 +69,5 @@ void stack(picture pics[]) {
   }
 }
 
-stack(new picture[] {pos_pic, vel_pic, acc_pic});
+stack(new picture[] {pos_pic, vel_pic});
 

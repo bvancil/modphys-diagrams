@@ -1,0 +1,75 @@
+% XeLaTeX can use any Mac OS X font. See the setromanfont command below.
+% Input to XeLaTeX is full Unicode, so Unicode characters can be typed directly into the source.
+
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+\geometry{margin=1cm}
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{tikz}
+
+% Will Robertson's fontspec.sty can be used to simplify font choices.
+% To experiment, open /Applications/Font Book to examine the fonts provided on Mac OS X,
+% and change "Hoefler Text" to any of these choices.
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Didot}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+\title{Cutting Paper Evenly: An Exercise in Anal-Retentiveness}
+\author{Brian Vancil}
+%\date{}                                           % Activate to display a given date or no date
+
+\newcommand{\equals}{=}
+
+\begin{document}
+\maketitle
+The following are diagrams for cutting $8\frac12''\times11''$ paper evenly.
+% Used in sage:
+%def mixed(x):
+%	whole = floor(x)
+%	part = x-whole
+%	return latex(whole)+latex(part)
+%	
+%def measure(x):
+%	whole = floor(x)
+%	part = 16*(x-whole)
+%	if part <= 1: 
+%		part = latex(part)
+%	else: 
+%		part = mixed(part)
+%	return latex(whole)+'\\frac{'+part+'}{16}}'
+	
+\begin{tikzpicture}[scale=0.7] % divide in 2
+\draw[xstep=4.24,ystep=5.49] (0,0) grid (8.5,11);
+\node at (4.25,0) [label=below:$4\frac14''$] {};
+\node at (0,5.5) [label=left:$5\frac12''$] {};
+\end{tikzpicture}\hspace{1cm}
+\begin{tikzpicture}[scale=0.7] % divide in 3
+\draw[xstep=2.83,ystep=3.66] (0,0) grid (8.5,11);
+\node at (2.83333333333333,0) [label=below:$2\frac{13\frac{1}{3}}{16}''$] {};
+\node at (5.66666666666667,0) [label=below:$5 \frac{ 10 \frac{2}{3} }{16}''$] {};
+\node at (0,3.66666666666667) [label=left:$3 \frac{ 10 \frac{2}{3} }{16}''$] {};
+\node at (0,7.33333333333333) [label=left:$7 \frac{ 5 \frac{1}{3} }{16}''$] {};
+\end{tikzpicture}\vspace{1cm}
+
+\begin{tikzpicture}[scale=0.7] % divide in 4
+\draw[xstep=2.124,ystep=2.74] (0,0) grid (8.5,11);
+\node at (2.125,0) [label=below:$2\frac14''$] {};
+\node at (4.25,0) [label=below:$4\frac14''$] {};
+\node at (6.375,0) [label=below:$6\frac38''$] {};
+\node at (0,2.75) [label=left:$2\frac34''$] {};
+\node at (0,5.5) [label=left:$5\frac12''$] {};
+\node at (0,8.25) [label=left:$8\frac14''$] {};
+\end{tikzpicture}
+\end{document}  

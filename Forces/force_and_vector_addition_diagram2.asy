@@ -63,7 +63,7 @@ struct Vector {
   }
   void drawvector(coordsys R = currentcoordsys) {
     path vec_path = origin(R)--(origin(R)+this.vec);
-    draw(vec_path, this.p, Arrow(12));
+    draw(vec_path, this.p, Arrow(SimpleHead, 8));
   }
   void draw(coordsys R = currentcoordsys, bool value=true) {
     this.drawvector(R);
@@ -82,19 +82,22 @@ struct Vector {
 }
 from Vector unravel Vector;
 
-string fn(string type, string description) {
-  return "\overrightarrow{\textbf{F}}^{"+type+"}_{\textrm{\scriptsize "+description+"}}";
+string fn(string type, string dealer, string feeler) {
+  return "\overrightarrow{\textbf{F}}^{"+type+"}({\textrm{"+dealer+" on "+feeler+"}})";
+}
+string net_force_name() {
+  return "\sum \textbf{F}";
 }
 
 coordsys C=defaultcoordsys;
 dot(origin(C), dot_p);
-Vector u = Vector(fn("g","E$\rightarrow$O"), "N", (0,-6));
+Vector u = Vector(fn("g","E","O"), "N", (0,-6));
 u.draw(C);
-Vector v = Vector(fn("n","A$\rightarrow$O"), "N", (5,3));
+Vector v = Vector(fn("n","E","O"), "N", 4*dir(80));
 v.draw(C);
-Vector w = Vector(fn("n","B$\rightarrow$O"), "N", 8*dir(250));
+Vector w = Vector(fn("n","P","O"), "N", 5*dir(180));
 w.draw(C);
-Vector Fnet = Vector(fn("","net"), "N", u.vec+v.vec+w.vec, blue);
+Vector Fnet = Vector(net_force_name(), "N", u.vec+v.vec+w.vec, blue);
 
 pair Op = (6,0);
 coordsys Cp=cartesiansystem(Op,(1,0),(0,1));
