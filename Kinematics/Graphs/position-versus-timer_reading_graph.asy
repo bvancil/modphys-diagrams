@@ -45,7 +45,7 @@ axis HZero(bool extend=true) {
 axis HZero = HZero();
 
 
-void make_pos_graph(string suffix, real pos(real), real t0, real t1, Label t_label=Label("$t$/s", embed=Shift, align=4*E), Label pos_label=rotate(0)*Label("$\vec{s}$/m",align=3*N))
+void make_pos_graph(string suffix, real pos(real), real t0, real t1, Label t_label=Label("$t$/s", embed=Shift, align=4*E), Label pos_label=rotate(0)*Label("$x$/m",align=3*N))
 {
   erase();
   size(10.91310503944411cm);

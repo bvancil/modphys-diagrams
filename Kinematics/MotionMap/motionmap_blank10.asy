@@ -22,7 +22,7 @@ struct MotionMap {
       draw((i*this.dx,0)--(i*this.dx,-2*this.dy), this.ref_p);
     }
   }
-  void operator init(Label axis_L="$\vec{s}$/", real length=10cm, real num_ticks=10) {
+  void operator init(Label axis_L="$x$/m", real length=15cm, real num_ticks=10) {
     this.axis_L = axis_L;
     this.length = length;
     this.n = num_ticks;
@@ -35,5 +35,5 @@ void draw(MotionMap m) {
   m.draw();
 }
 
-MotionMap m = MotionMap(num_ticks=12);
+MotionMap m = MotionMap(num_ticks=10);
 draw(m);

@@ -8,7 +8,7 @@ real s1(real t)
   if (t<8) return 3+1.5*(t-6);
   return 6;
 }
-//make_pos_graph("1", s1, 0, 10);
+make_pos_graph("1", s1, 0, 10);
 
 real s2(real t)
 {
@@ -16,7 +16,7 @@ real s2(real t)
   if (t<7) return 1-(t-5)/2;
   return 1*(t-7);
 }
-//make_pos_graph("2", s2, 0, 10);
+make_pos_graph("2", s2, 0, 10);
 
 real s3(real t)
 {
@@ -25,7 +25,7 @@ real s3(real t)
   if (t<8) return 0+(t-5)*5/3;
   return 5;
 }
-//make_pos_graph("3", s3, 0, 10);
+make_pos_graph("3", s3, 0, 10);
 
 real s4(real t)
 {
