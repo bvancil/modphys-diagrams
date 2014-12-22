@@ -49,7 +49,7 @@ void kingraph(picture pic, Label vL="", real vMin=vMin_ticks, real vMax=vMax_tic
 }
 
 picture pos_pic;
-kingraph(pos_pic, rotate(0)*Label("$\vec{s}$/m",align=3*N), vMin=0, vMax=10);
+kingraph(pos_pic, rotate(0)*Label("$\vec{x}$/m",align=3*N), vMin=0, vMax=10);
 
 picture vel_pic;
 kingraph(vel_pic, rotate(0)*Label("$\vec{v}$/(m/s)",align=3*N));
