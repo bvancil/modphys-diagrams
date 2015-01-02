@@ -9,6 +9,7 @@
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}
 \usepackage{amssymb}
+\usepackage{natbib}
 
 \usepackage{fontspec,xltxtra,xunicode}
 \defaultfontfeatures{Mapping=tex-text}
@@ -16,7 +17,7 @@
 \setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
 \setmonofont[Scale=MatchLowercase]{Andale Mono}
 
-\title{From where do our everyday interactions come?}
+\title{Where do our everyday interactions come from?}
 \author{Brian Vancil}
 %\date{}                                           % Activate to display a given date or no date
 
@@ -39,8 +40,8 @@
 	level 1 concept/.append style={every child/.style={concept color=silver,text=black}, sibling angle=40,level distance=4.5cm},
 	level 2 concept/.append style={every child/.style={concept color=royalblueweb,text=white}, sibling angle=40},
 	level 3 concept/.append style={every child/.style={concept color=silver,text=black}, sibling angle=40},
-	level 4 concept/.append style={every child/.style={concept color=royalblueweb,text=white}, sibling angle=90},
-	level 5/.style={every child/.style={concept color=silver,text=black}, sibling angle=40},
+	level 4 concept/.append style={every child/.style={concept color=royalblueweb,text=white}, sibling angle=100},
+	level 5/.style={every child/.style={concept color=silver,text=black}, sibling angle=35},
 	mindmap]
 	\node [concept] {Theory of Everything?}
 		[counterclockwise from=250]
@@ -54,33 +55,38 @@
 				[counterclockwise from=252.5]
 				child {node[concept] {weak interaction}}
 				child {node [concept] {electro\-magnetic interaction}
-					[counterclockwise from=225]
-					child {node [concept] {electric interaction}
-						[counterclockwise from=215]
+					[counterclockwise from=210]
+					child[grow=220] {node [concept] {electric interaction}
+						[counterclockwise from=200]
 						child {node [concept] {normal interaction}}
 						child {node [concept] {tensional interaction}}
 						child {node [concept] {elastic interaction}}
 						child {node [concept] {frictional interaction}}
+						child {node [concept] {static electric interaction}}
 						}
-					child {node [concept] {magnetic interaction}}
+					child[grow=315] {node [concept] {magnetic interaction}}
+					child[grow=350] {node [concept] {light interaction}}
 					}
 				}
 			}
 		child {node[concept] {gravitational interaction}};
 \end{tikzpicture}
 \end{figure}
-We know of only a few fundamental interactions in nature, and one human project in physics has been to explain everything that we observe in terms of simpler interactions.  If you look at Figure~\ref{intdiag}, as you move down the diagram, you will find interactions that describe more and more specific circumstances.  Each is useful, but on their own they explain very little.  In the history of science, humans have worked upward in Figure~\ref{intdiag}, taking scientific models that appeared to be different but were really different aspects of the same thing and unifying them into a single simpler theory that explained more.
-For instance, the electric interaction is responsible for the following everyday interactions:
+Humans know four types of interactions that govern the workings of the universe: gravitational, electromagnetic, weak, and strong.  A fifth interaction, the Higgs interaction, is hidden to us in our everyday lives but is needed for consistency of the theory.
+
+One human project in physics has been to explain everything that we observe in terms of simpler interactions.  This project has been going on for a long time.  If you look at the bottom of Figure~\ref{intdiag}, you will see interactions that each describe a limited range of \emph{phenomena} (what physicists call circumstances in nature).  It was once believed that light, electricity, and magnetism were entirely different interactions, but the work of James Clerk Maxwell in the 1860s, modernized by physicists in the first half of the 20th century, revealed them to be three facets of a single electromagnetic interaction.  In the 1960s and 1970s, newly built particle accelerators found a zoo of new particles with strange behavior.  Why were there so many particles, and what laws governed their interactions?  Physicists found that only two interactions, what were originally called the strong and weak nuclear forces, explain both the zoo of particles (which were different combinations of simpler particles called quarks) and everything from how the nucleus of an atom stays together (even though positive electric charges repel) to how radioactive isotopes decay.  In 1979 Sheldon Lee Glashow, Abdus Salam, and Steven Weinberg won the Nobel Prize in Physics for unifying two of these interactions, the weak and electromagnetic, into a single electroweak interaction \citep{NobelMediaAB:2014}.   Physicists hope that they will be able to unify the electroweak and strong interactions into a single "grand unified interaction" and from there unify it with gravity.  This dream is the motivation for both String Theory and Loop Quantum Gravity.  At this time we only have toy models and brilliant mathematics to point the way moving up Figure~\ref{intdiag}.  Physicists hope that the Large Hadron Collider at CERN in Geneva, Switzerland will provide experimental evidence to help us discover the right theory.
+
+With the notable exception of gravity, practically every force that we experience on a daily basis is a result of the electromagnetic interaction.  The strong and weak interactions are important, for if they suddenly turned off, our atomic nuclei would explode.  However, they are very short-range interactions and don't show up even at microscopic distances.  This is very unlike gravitational and electromagnetic interactions, which can act over long distances.  Besides explaining almost all chemistry, the electric interaction is responsible for the following everyday interactions:
 \begin{description}
-\item[normal interaction]The repelling squishiness of matter as two objects push against each other is due to two sources: (1) electric interaction involving negatively charged electron clouds around positively charged nuclei and (2) the Pauli exclusion principle---not really an interaction!---between the electrons.  Something as simple as sitting in a chair involves a normal interaction.  So does air pressure and air resistance.
-\item[tensional interaction]The electric bonding of negatively charged electron clouds to positively charged nuclei creates an attractive intermolecular interaction so that when a substance is stretched by a bit, it tends to pull back together.  Parts of a rope pull on other nearby parts of a rope through a tensional interaction.
-\item[elastic interaction]An extreme form of the tensional interaction, in which matter changes its shape by a lot.  Springs and elastic are good examples.
-\item[frictional interaction]Friction is not completely understood, but it involves the grinding together and shearing of irregular surfaces along each other.  Hydrocarbon molecules also play a role between the surfaces.  Something as simple as walking across a floor requires friction.
-\item[electric interaction]Electrically charged objects attract or repel each other depending on whether their charges are opposite or the same, respectively.  If you have ever experienced static electricity, you know this well.
+\item[normal interaction] The repelling squishiness of matter as two objects push against each other is due to two sources: (1) electric interaction involving negatively charged electron clouds around positively charged nuclei and (2) the Pauli exclusion principle---not really an interaction!---between the electrons.  Something as simple as sitting in a chair involves a normal interaction.  So does air pressure and air resistance, which are simply air molecules squishing into other matter.
+\item[tensional interaction] The electric bonding of negatively charged electron clouds to positively charged nuclei creates an attractive intermolecular interaction so that when a substance is stretched by a bit, it tends to pull back together.  Parts of a rope pull on other nearby parts of a rope through a tensional interaction.
+\item[elastic interaction] This is an extreme form of the tensional interaction, in which matter changes its shape by a lot.  Springs and elastic are good examples.  You can even think of matter as being made of atoms connected by tiny electric "springs".  If you stretch a rubber band, each of the electric "springs" between the molecules stretches by just a little bit.
+\item[frictional interaction] Friction is not completely understood, but it involves the grinding together and shearing (pushing sideways) of irregular surfaces along each other.  Hydrocarbon molecules are also thought to play a role between the surfaces.  Something as simple as walking across a floor requires friction.  If you can find a way to reduce friction, you can save our economy a lot of money and make yourself a giant pile of Benjamins for a bed.
+\item[static electric interaction] Electrically charged objects attract or repel each other depending on whether their charges are opposite or the same, respectively.  If you have ever experienced static electricity, you know this well.
 \end{description}
-As an example of how the human project of searching for simpler explanations progressed, the \textbf{magnetic interaction} is familiar from magnets, but it was discovered in the 1800s that electric and magnetic interactions are really both part of a single \textbf{electromagnetic interaction}, which is responsible for the static electric interactions already mentioned, electricity, magnetism, and even light (really the entire spectrum of electromagnetic radiation).  In the second half of the 1900s, physicists learned to describe both electromagnetic interaction and the \textbf{weak interaction} (responsible for many forms of radioactive decay) by a single theory of the \textbf{electroweak interaction}.
 
-Attempts have been made to unify the \textbf{strong interaction} (responsible for both the nuclear interaction that holds protons and neutrons together in the nucleus of an atom and for the interaction that holds quarks together within protons and neutrons) with the electroweak interaction into a single interaction.  These theories go by the name of Grand Unified Theories, but all of them predict types of matter that we haven't seen yet.
-
-Also in the 1900s, physicists worked to unify the gravitational interaction with the other types of interactions to create a so-called Theory of Everything.  Most of those attempts failed, but we humans have learned a lot from the failures, and we are still at it.  In addition to the human project of unifying interactions, there is also an opposite human project of using these interactions to describe more and more complex systems of particles, everything from neutron stars to superconductors to everyday materials.  Will there ever be an end to the human drive to organize and explain the universe?
+\bibliographystyle{newapa}
+\bibliography{interactions}
 \end{document}  
+
+
