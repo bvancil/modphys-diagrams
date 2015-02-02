@@ -1,15 +1,18 @@
 # Generated output
+*.aux
 *.bbl
 *.blg
 *.log
-*.pdf
-*.png
-*.aux
 *.nav
 *.out
+*.pdf
+*.png
+*.pre
 *.snm
 *.synctex.gz
 *.toc
+*-[1-9].asy
+
 # Backup files
 *~
 .*.swp

@@ -1,0 +1,298 @@
+% XeLaTeX can use any Mac OS X font. See the setromanfont command below.
+% Input to XeLaTeX is full Unicode, so Unicode characters can be typed directly into the source.
+
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+\geometry{margin=1cm, inner=2cm}
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{xcolor}
+\definecolor{royalblue}{rgb}{0,0.13725490196078433,0.4}
+\definecolor{royalblueweb}{rgb}{0.25490196078431371,0.41176470588235292,0.88235294117647056}  
+\definecolor{burntorange}{rgb}{0.8,0.3333333333333333,0}
+\definecolor{silver}{rgb}{0.75294117647058822,0.75294117647058822,0.75294117647058822}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{asymptote}
+\usepackage{wrapfig}
+\usepackage[pdfborder={0 0 0}, colorlinks=true, urlcolor=royalblueweb,pdfinfo={Title={Step-by-Step Instructions for Making a Force Vector Addition Diagram},Subject={Physics}}]{hyperref}
+\usepackage{booktabs}
+\usepackage{wrapfig}
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Baskerville}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Optima}
+\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+\title{Step-by-Step Instructions for Making a Force Vector Addition Diagram}
+\author{Brian Vancil and Loren Thalacker}
+%\date{}                                           % Activate to display a given date or no date
+
+
+
+
+\newcounter{StepCounter}
+\newcommand{\Step}[2]{%
+\begin{minipage}[l]{0.5\textwidth}
+\hangindent=3em
+\parindent 0pt
+\hangafter 1
+Step \stepcounter{StepCounter}\arabic{StepCounter}.  \textbf{[#1]} #2
+\end{minipage}}
+\newcommand{\Hint}[1]{\textcolor{black}{\emph{Hint: #1}}}
+%\newcommand{\mywrap}[1]{\begin{wrapfigure}{r}{0pt}
+%\caption{Step \arabic{StepCounter}}
+%
+%#1
+%
+%}
+\newcommand{\F}[1]{\mathbf{F}_{#1}}
+\newcommand{\zerovector}{\mathbf{0}}
+
+\begin{document}
+\begin{asydef}
+usepackage("amsmath");
+texpreamble("\newcommand{\F}[1]{\mathbf{F}_{#1}}");
+import geometry;
+dotfactor *= 1.5;
+linemargin=5mm;
+//unitsize(8cm/160000); // 160,000N:8cm
+/*
+A 16000 kg shipping container is being pulled by a crane at a 20 degree angle from vertical.  
+It hasn't started moving yet.
+The tension on the cable is 
+*/
+// Style
+pen force_p = linewidth(1.4);
+arrowbar myarrow = EndArrow(arrowhead=DefaultHead, size=arrowsize(force_p)*0.3, angle=12);
+pen mark_p = linewidth(1);
+pen tentative_p = gray(0.3);
+
+// Setup coordinate system
+vector ihat = (1,0);
+vector jhat = (0,1);
+
+currentcoordsys = cartesiansystem((0,0),i=ihat,j=jhat);
+line horizontal_line = line((0,0),(1,0));
+line vertical_line=line((0,0),(0,1));
+
+
+// Force Vectors
+string F_label(string type) {
+  return "$\mathbf{F}_{"+type+"}$";
+}
+string F_label_mag(string type, string magnitude) {
+  return "$\mathbf{F}_{"+type+"}="+magnitude+"\text{ N}$";
+}
+vector F_g = (0,-160000);
+vector F_t = 40000*dir(70);
+vector F_temp = -(F_g+F_t);
+vector F_n = dot(F_temp,jhat)*jhat;
+vector F_f = dot(F_temp,ihat)*ihat;
+vector[] F_vectors = {F_g,F_t,F_n,F_f};
+string[] F_labels = {F_label("g"), F_label("t"), F_label("n"), F_label("f")};
+// Start with a Free-Body Diagram.
+path F_g_bad_path = origin()--(0,-4cm);
+path F_t_bad_path = origin()--2cm*dir(70);
+path F_n_bad_path = origin()--(0,3cm);
+path F_f_bad_path = origin()--(-2cm,0);
+
+
+\end{asydef}
+
+\maketitle
+
+\section{Materials Needed}
+\begin{itemize}
+	\item graph paper (so that you already have horizontal and vertical reference lines) or blank paper
+	\item pencil and good eraser
+	\item ruler (to measure lengths and draw straight lines)
+	\item protractor (to draw lines in a given direction and to measure angles)
+	\item compass (to draw circles of a given radius)
+\end{itemize} 
+\section{Steps}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{wrapfigure}{r}{0.4\textwidth}
+\vspace{-4cm}
+\centering
+\begin{asy}
+drawline(origin(),origin()+ihat,mark_p+dotted); //reference horizontal line
+draw("$\F g=160,\!000\text{ N}$", F_g_bad_path, E, force_p, myarrow);
+draw("$\F t=40,\!000\text{ N}$", F_t_bad_path, force_p, myarrow);
+draw("$\F n$", F_n_bad_path, W, force_p, myarrow);
+draw("$\F f$", F_f_bad_path, force_p, myarrow);
+dot(origin());
+markrightangle(-ihat, origin(), jhat, size=5mm, mark_p);
+markangle("$20^\circ$", n=1, radius=15mm, line(origin(),dir(70)), line(origin(),jhat), mark_p);
+markangle("$70^\circ$", n=1, radius=5mm, line(origin(),ihat), line(origin(),dir(70)), mark_p);
+\end{asy}
+\end{wrapfigure}
+
+\Step{FBD}{We assume you're starting with a Free-Body Diagram (FBD) of forces acting on a system.  Here's our example FBD for the forces acting on a 16,000~kg shipping container, which hasn't started moving yet, being pulled by a crane at a 20 degree angle from vertical.  The tension in the cable from the crane is 40,000~N.
+We didn't label the objects acting on our system because it doesn't really affect our example.  We're assuming it's not moving, which means it has a constant velocity, so Newton's 1st Law (the Law of Inertia) tells us that the forces are balanced (net force $\sum \F{}=\zerovector$).  \Hint{Make sure your angles and known forces are labeled.} \Hint{The weight of an object is the same as the gravitational force acting on it.} }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{1cm}
+\begin{wrapfigure}{r}{0.4\textwidth}
+\vspace{-1cm}
+\centering
+\begin{asy}
+dot("start", origin(), W);
+\end{asy}
+\end{wrapfigure}
+
+
+\Step{Qualitative VAD Start}{We are going to start drawing a qualitative (not-to-scale) Vector Addition Diagram so that we know what our scale drawing will look like.  Draw a starting dot, labeling it "start".}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{wrapfigure}{r}{0.4\textwidth}
+\vspace{-4.5cm}
+\centering
+\begin{asy}
+unitsize(8cm/160000); // 160,000N:8cm
+dot("start", origin(), W);
+vector F_net = (0,0);
+point[] vertices = {origin()};
+for (int i=0; i<F_vectors.length; ++i) {
+	draw(F_labels[i], origin()+F_net--origin()+F_net+F_vectors[i], force_p, myarrow);
+	F_net += F_vectors[i];
+	vertices.push(origin()+F_net);
+}
+markrightangle(vertices[3], vertices[0], vertices[1], size=2mm, mark_p);
+markangle("\scriptsize $20^\circ$", n=1, radius=8mm, line(vertices[1],vertices[2]), line(vertices[1],vertices[0]), mark_p);
+//This next line doesn't seem to work!
+//markangle("\scriptsize $160^\circ$", n=1, radius=8mm, line(vertices[2],vertices[3]), line(vertices[2],vertices[1]), mark_p);
+markrightangle(vertices[2], vertices[3], vertices[4], size=2mm, mark_p);
+\end{asy}
+\end{wrapfigure}
+
+\Step{Qualitative VAD Head-to-Tail}{Draw all force vectors from the FBD head-to-tail by shifting them around.  Your goal is to arrange them so that the net force is in the right direction.  If forces are balanced, the "finish" point should match the "start" point.  Things to keep in mind: (1)~If you know the direction of a force but not its magnitude (like $\F n$ and $\F f$ above), you can only change the magnitude (length) while keeping the direction the same.  (2)~If you know the magnitude of a force but not its direction (like none of our forces above), you can only change the direction.  (3)~If you know both the magnitude and direction of the force (like $\F g$ and $\F t$ above), you should try to draw them the same direction and keep the magnitude roughly to scale.  If you have trouble trying to arrange the forces, you can try using the Vector Addition Simulation at \href{http://bit.ly/vectoradd}{\texttt{bit.ly/vectoradd}}. \Hint{Label the angles to make sure you have them right.}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{1cm}
+\begin{wrapfigure}{r}{0.4\textwidth}
+\vspace{-2cm}
+\centering
+\begin{tabular}{@{}r@{\ \ :\ \ }l@{}} 
+\multicolumn{2}{c}{Scale} \\ \toprule
+Force Magnitude / N & Length / cm \\ \midrule
+160,000 & 16\phantom{.0} \\
+ 40,000 & \phantom{0}4\phantom{.0} \\
+ 10,000 & \phantom{0}1\phantom{.0} \\
+  1,000 & \phantom{0}0.1 \\
+\bottomrule
+\end{tabular}
+\end{wrapfigure}
+
+\Step{Select Scale}{If you know the largest magnitude force, select that to make your scale.  If you don't know it, you can estimate the largest size or use a rather large magnitude force that you know.  Decide how big you want it to be based on the size of your paper.  Then form a scale.  Figure out what length to make each known force using your scale.  \Hint{Figure out how many newtons are represented by each 1~\textrm{cm} and each 0.1~\textrm{cm}.  This will help for when you measure later.}}
+
+\vfill\eject
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{wrapfigure}{r}{0.4\textwidth}
+\vspace{-1cm}
+\centering
+\begin{asy}
+unitsize(16cm/160000); // 160,000N:16cm
+dot("start", origin(), W);
+F_labels[0]="\vbox{\hbox{"+F_label_mag("g","160,\!000")+"}\hbox{16~cm}}";
+F_labels[1]="\vbox{\hbox{"+F_label_mag("t","40,\!000")+"}\hbox{4~cm}}";
+vector F_net = (0,0);
+point[] vertices = {origin()};
+for (int i=0; i<2; ++i) {
+	draw(F_labels[i], origin()+F_net--origin()+F_net+F_vectors[i], force_p, myarrow);
+	F_net += F_vectors[i];
+	vertices.push(origin()+F_net);
+}
+markangle("\scriptsize $20^\circ$", n=1, radius=8mm, line(vertices[1],vertices[2]), line(vertices[1],vertices[0]), mark_p);
+//This next line doesn't seem to work!
+//markangle("\scriptsize $160^\circ$", n=1, radius=8mm, line(vertices[2],vertices[3]), line(vertices[2],vertices[1]), mark_p);
+\end{asy}
+\end{wrapfigure}
+
+\Step{Quantitative VAD: Draw Known Forces}{Use your ruler and protractor to draw a scale model of the Force Vector Addition Diagram.  Label the lengths and angles as you go.  One approach is to draw the known forces first.}
+
+\vfill\eject
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{wrapfigure}{r}{0.4\textwidth}
+\vspace{-3cm}
+\centering
+\begin{asy}
+unitsize(16cm/160000); // 160,000N:16cm
+dot("start", origin(), W);
+F_labels[0]="\vbox{\hbox{"+F_label_mag("g","160,\!000")+"}\hbox{16~cm}}";
+F_labels[1]="\vbox{\hbox{"+F_label_mag("t","40,\!000")+"}\hbox{4~cm}}";
+vector F_net = (0,0);
+point[] vertices = {origin()};
+for (int i=0; i<F_vectors.length; ++i) {
+	if (i<2) draw(F_labels[i], origin()+F_net--origin()+F_net+F_vectors[i], force_p, myarrow);
+	F_net += F_vectors[i];
+	vertices.push(origin()+F_net);
+}
+drawline(vertices[2], vertices[3], tentative_p);
+drawline(vertices[3], vertices[4], tentative_p);
+
+markangle("\scriptsize $20^\circ$", n=1, radius=8mm, line(vertices[1],vertices[2]), line(vertices[1],vertices[0]), mark_p);
+//This next line doesn't seem to work!
+//markangle("\scriptsize $160^\circ$", n=1, radius=8mm, line(vertices[2],vertices[3]), line(vertices[2],vertices[1]), mark_p);
+\end{asy}
+\end{wrapfigure}
+
+\Step{Quantitative VAD: Draw Unknown Forces}{If you know the direction of a force and not the magnitude, you can draw it lightly as a straight line, sometimes working backwards to do so.  If you know the magnitude but not the direction, you can use a compass to draw a circle of the known length.  Here we draw a vertical line (parallel to $\F g$) from the head of $\F t$ along the direction of $\F n$.  Since we don't know where $\F n$ will stop, we have to draw the horizontal direction of $\F f$ backwards from the start, since we want it to finish there.  We can use the intersection of the lines as a waypoint to draw the remaining vectors.}
+
+\vfill\eject
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{wrapfigure}{r}{0.4\textwidth}
+\vspace{-1cm}
+\centering
+\begin{asy}
+unitsize(16cm/160000); // 160,000N:16cm
+dot("start", origin(), W);
+F_labels[0]="\vbox{\hbox{"+F_label_mag("g","160,\!000")+"}\hbox{16~cm}}";
+F_labels[1]="\vbox{\hbox{"+F_label_mag("t","40,\!000")+"}\hbox{4~cm}}";
+vector F_net = (0,0);
+//write((pair)F_n); // 122412.295N*jhat
+//write((pair)F_f); // -13680.806N*ihat
+F_labels[2]="\vbox{\hbox{"+F_label_mag("n","122,\!000")+"}\hbox{12.2~cm}}";
+F_labels[3]="\vbox{\hbox{"+F_label_mag("f","14,\!000")+"}\hbox{1.4~cm}}";
+point[] vertices = {origin()};
+for (int i=0; i<F_vectors.length; ++i) {
+	draw(F_labels[i], origin()+F_net--origin()+F_net+F_vectors[i], force_p, myarrow);
+	F_net += F_vectors[i];
+	vertices.push(origin()+F_net);
+}
+
+markrightangle(vertices[3], vertices[0], vertices[1], size=2mm, mark_p);
+markangle("\scriptsize $20^\circ$", n=1, radius=8mm, line(vertices[1],vertices[2]), line(vertices[1],vertices[0]), mark_p);
+//This next line doesn't seem to work!
+//markangle("\scriptsize $160^\circ$", n=1, radius=8mm, line(vertices[2],vertices[3]), line(vertices[2],vertices[1]), mark_p);
+markrightangle(vertices[2], vertices[3], vertices[4], size=2mm, mark_p);
+\end{asy}
+
+\end{wrapfigure}
+
+\Step{Quantitative VAD: Measure Unknown Forces}{Draw the missing forces.  Erase any stray lines.  Use your ruler and protractor to measure any unknown lengths and angles.  Label the lengths and angles.  Use the scale to find unknown lengths in terms of the force magnitude in newtons.}
+
+\vspace{1cm}
+\hspace{1cm}\begin{tabular}{@{}r@{\ \ :\ \ }l@{}} 
+\multicolumn{2}{c}{Scale} \\ \toprule
+Force Magnitude / N & Length / cm \\ \midrule
+160,000 & 16\phantom{.0} \\
+ 40,000 & \phantom{0}4\phantom{.0} \\
+ 10,000 & \phantom{0}1\phantom{.0} \\
+  1,000 & \phantom{0}0.1 \\
+ 14,000 & \phantom{0}1.4 \\
+122,000 & 12.2 \\
+\bottomrule
+\end{tabular}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}  
