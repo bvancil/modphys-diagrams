@@ -1,0 +1,404 @@
+%!TEX TS-program = sage+XeLaTeX
+% rubber: module xelatex
+\documentclass[letterpaper,11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+\usepackage{sagetex}
+
+
+\usepackage{mathpazo}
+\usepackage{fontspec}% provides font selecting commands 
+\defaultfontfeatures{Mapping=tex-text} % fix TeX quotes
+%\setmainfont{Gentium}
+%\setmainfont{Palatino}
+%\setmainfont{Hoefler Text}
+\setmainfont{Charis SIL}
+%\setmainfont{Optima}
+\setsansfont{Arial}
+\setmonofont{Courier New}
+
+\usepackage[margin=.5in]{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{nccmath}
+
+\author{Brian Vancil}
+\title{}
+\date{\today}
+%\theoremstyle{definition}
+%\newtheorem{obj}{Objective}
+%\theoremstyle{definition}
+%\newtheorem{Q}{}
+\newcounter{Qcounter}
+\newcommand{\Q}{\noindent\stepcounter{Qcounter}\textbf{\arabic{Qcounter}.}\ } % Do this before a new problem.
+\newcommand{\A}[1]{} % will be redefined later to print the answers on the key.
+
+\newcommand{\Radial}[1]{\textcolor{blue}{#1}} % used to highlight the radial part of the vector
+\newcommand{\RadialUncertainty}[1]{\textcolor{blue!60}{#1}} % used to highlight uncertainty to make stuff easier to read.
+\newcommand{\Angular}[1]{\textcolor{red}{#1}} % used to highlight the angular part of the vector
+\newcommand{\AngularUncertainty}[1]{\textcolor{red!60}{#1}} % used to highlight uncertainty to make stuff easier to read.
+\newcommand{\blankfor}[1]{\underline{\hspace{#1em}}}
+
+\newenvironment{answers}
+{\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+  \renewcommand{\theenumi}{\alph{enumi}}
+  \renewcommand{\labelenumi}{(\theenumi)}
+}
+{\end{enumerate}}
+
+\newcommand{\myheading}{%
+\noindent{{\large\fontspec{Anaktoria}Vector Addition Diagram Practice}\hfill Name:~\underline{\hspace{3cm}\A{KEY}\hspace{3cm}}~Period:~\underline{\hspace{1cm}}}\\
+%{\scriptsize
+%\begin{obj}objective\end{obj}
+%}
+{\footnotesize\noindent\textbf{Instructions:} For the list of force vectors in each problem below, draw an accurate Vector~Addition~Diagram to scale in your lab notebook (or on separate sheets of paper if you don't have it).  Be sure to indicate the problem, write your scale calculations (how many newtons (N) for each centimeter), label the vector, and annotate any angles you measured on the diagram.  No credit will be given without work shown.  Write the magnitude and direction of the net force for your answer.
+
+Remember that the notation ``$50\,\text{N}\angle20^{\circ}\text{S of W}$'' means that a force vector with magnitude 50 newtons (N) points in the direction that is $20^{\circ}$ toward south from the direction west using a conventionally oriented compass rose.}
+}
+
+\pagestyle{empty}
+\begin{document}
+\thispagestyle{empty}
+\myheading
+
+\begin{sagesilent}
+import random # for choice
+
+# Conversions between radians and degrees
+radians(theta) = theta/180*pi
+degrees(theta) = theta/pi*180
+
+# Polar to rectangular conversion
+V(r, theta) = (r*cos(radians(theta)), r*sin(radians(theta)))
+
+def NESW(theta):
+    "Turn angle N of E into (degrees, toward direction, from reference direction)"
+    while(theta<0):
+        theta += 360
+    if theta <= 45:
+        return (theta, 'N', 'E')
+    elif theta <= 90:
+        return (90-theta, 'E', 'N')
+    elif theta <= 135:
+        return (theta-90, 'W', 'N')
+    elif theta <= 180:
+        return (180-theta, 'N', 'W')
+    elif theta <= 225:
+        return (theta-180, 'S', 'W')
+    elif theta <= 270:
+        return (270-theta, 'W', 'S')
+    elif theta <= 315:
+        return (theta-270, 'E', 'S')
+    else: # theta < 360
+        return (360-theta, 'S', 'E')
+    
+def unNESW(angle, direction, reference):
+    "Returns direction N of E, as usual in mathematics as an angle between 0 and 360"
+    dirs = ['E','N','W','S']
+    direction = dirs.index(direction)*90 # convert cardinal direction to angle
+    reference = dirs.index(reference)*90 # convert cardinal direction to angle
+    toward = direction - reference
+    if toward < -90: toward += 360
+    if toward > 90: toward -= 360
+    if toward > 0:
+        orientation = 1
+    else :
+        orientation = -1
+    return reference+orientation*angle
+    # everything below never runs
+    if angle < 0:
+        return [None, 'invalid angle']
+    if reference == 'E':
+        if direction == 'N':
+            return angle
+        if direction == 'S':
+            return 360-angle
+    if reference == 'N':
+        if direction == 'W':
+            return 90+angle
+        if direction == 'E':
+            return 90-angle
+    if reference == 'W':
+        if direction == 'S':
+            return 180+angle
+        if direction == 'N':
+            return 180-angle
+    if reference == 'S':
+        if direction == 'E':
+            return 270+angle
+        if direction == 'W':
+            return 270-angle
+    return [None, 'invalid (direction, reference) pair']
+    
+def VecDesc(r, theta):
+    "LaTeX string describing a single vector"
+    theta, dir, ref = NESW(theta)
+    return str(r)+r"\,\text{N}\angle "+str(theta)+r"^{\circ}\text{"+dir+r" of "+ref+r"}"
+
+def VecGradingDesc(r, theta):
+    "LaTeX string describing a single vector with uncertainty for grading"
+    theta, dir, ref = NESW(theta)
+    return r"\RadialUncertainty{(}\Radial{"+str(r)+r"}\RadialUncertainty{\pm"+str(ceil(r/10))+r")}\,\Radial{\text{N}}\Angular{\angle} \AngularUncertainty{(}\Angular{"+str(theta)+r"}\AngularUncertainty{\pm"+str(5)+r")}\Angular{^{\circ}\text{"+dir+r" of "+ref+r"}}"
+
+def VecName(subscript):
+    "LaTeX string naming a single vector"
+    return r"\vec{\mathbf{F}}_{"+str(subscript)+r"}"
+    
+def VecDef(subscript, r, theta):
+    "LaTeX string defining a single vector"
+    return r"$"+VecName(subscript)+r"="+VecDesc(r, theta)+r"$"
+    
+# Define the problem data
+class DoubleVectorSum:
+    "Now that I've written this procedurally, this could probably be refactored with methods in the class, but oh well."
+    def __init__(self,A,a,B,b):
+        self.A = A
+        self.a = a
+        self.B = B
+        self.b = b
+        Ss = (V(A,a)+V(B,b)).n()
+        S=round(Ss.norm(),ndigits=1)
+        s=round(degrees(atan2(Ss[1],Ss[0])).n())        
+        self.Ss = Ss
+        self.S = S
+        self.s = s
+    @classmethod
+    def random(cls):
+        scaleFactor = random.choice([1,10,100])
+        A = ZZ.random_element(20,100)*scaleFactor
+        a = ZZ.random_element(0,359)
+        B = ZZ.random_element(20,100)*scaleFactor
+        b = ZZ.random_element(0,359)
+        return cls(A,a,B,b)
+    def __str__(self):
+        "LaTeX string defining a single problem"
+        return r"\Q " + r"; ".join([VecDef('1', self.A, self.a),VecDef('2',self.B,self.b)]) + r"\\\indent $\sum\vec{\mathbf{F}}=$\A{$" + VecGradingDesc(self.S,self.s) + r"$}"
+
+class TripleVectorSum:
+    "Now that I've written this procedurally, this could probably be refactored with methods in the class, but oh well."
+    def __init__(self,A,a,B,b,C,c):
+        self.A = A
+        self.a = a
+        self.B = B
+        self.b = b
+        self.C = C
+        self.c = c
+        Ss = (V(A,a)+V(B,b)+V(C,c)).n()
+        S=round(Ss.norm(),ndigits=1)
+        s=round(degrees(atan2(Ss[1],Ss[0])).n())
+        self.S = S
+        self.s = s
+    @classmethod
+    def random(cls):
+        scaleFactor = random.choice([1,10,100])
+        A = ZZ.random_element(20,100)*scaleFactor
+        a = ZZ.random_element(0,359)
+        B = ZZ.random_element(20,100)*scaleFactor
+        b = ZZ.random_element(0,359)
+        C = ZZ.random_element(20,100)*scaleFactor
+        c = ZZ.random_element(0,359)
+        return cls(A,a,B,b,C,c)
+    def __str__(self):
+        "LaTeX string defining a single problem"
+        return r"\Q " + r"; ".join([VecDef('1', self.A, self.a),VecDef('2',self.B,self.b), VecDef('3',self.C,self.c)]) + r"\\\indent $\sum\vec{\mathbf{F}}=$\A{$" + VecGradingDesc(self.S,self.s) + r"$}"
+
+class QuadrupleVectorSum:
+    "Now that I've written this procedurally, this could probably be refactored with methods in the class, but oh well." 
+    def __init__(self,A,a,B,b,C,c,D,d):
+        self.A = A
+        self.a = a
+        self.B = B
+        self.b = b
+        self.C = C
+        self.c = c
+        self.D = D
+        self.d = d
+        Ss = (V(A,a)+V(B,b)+V(C,c)+V(D,d)).n()
+        S=round(Ss.norm(),ndigits=1)
+        s=round(degrees(atan2(Ss[1],Ss[0])).n())
+        self.S = S
+        self.s = s
+    @classmethod
+    def random(cls):
+        scaleFactor = random.choice([1,10,100])
+        A = ZZ.random_element(20,100)*scaleFactor
+        a = ZZ.random_element(0,359)
+        B = ZZ.random_element(20,100)*scaleFactor
+        b = ZZ.random_element(0,359)
+        C = ZZ.random_element(20,100)*scaleFactor
+        c = ZZ.random_element(0,359)
+        D = ZZ.random_element(20,100)*scaleFactor
+        d = ZZ.random_element(0,359)        
+        return cls(A,a,B,b,C,c,D,d)
+    def resultant(self):
+        return r"\\\indent  $\sum\vec{\mathbf{F}}=$\A{$" + VecDesc(self.S,self.s) + r"$}"
+    def __str__(self):
+        "LaTeX string defining a single problem"
+        return r"\Q " + r"; ".join([VecDef('1', self.A, self.a),VecDef('2',self.B,self.b), VecDef('3',self.C,self.c), VecDef('4',self.D,self.d)]) + r"\\\indent $\sum\vec{\mathbf{F}}=$\A{$" + VecGradingDesc(self.S,self.s) + r"$}"
+        
+Doubles = [] #List to hold Double Vector Sum problems
+for i in range(0,5): # Change the number of problems here.
+    Doubles.append(DoubleVectorSum.random())
+
+Triples = [] #List to hold Triple Vector Sum problems
+for i in range(0,10): # Change the number of problems here.
+    Triples.append(TripleVectorSum.random())
+ 
+Quadruples = [] #List to hold Quadruple Vector Sum problems
+for i in range(0,5): # Change the number of problems here.
+    Quadruples.append(QuadrupleVectorSum.random())
+                    
+def Problems(Ps):
+    return (r"\\"+"\n").join(map(str,Ps))
+
+ \end{sagesilent}
+
+%\sagestr{Problems(Doubles)}
+%\Q $\vec{\mathbf{F}}_{1}=59\,\text{N}\angle 8^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{2}=56\,\text{N}\angle 30^{\circ}\text{N of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$95.4\,\text{N}\angle 25^{\circ}\text{N of E}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=79\,\text{N}\angle 42^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{2}=35\,\text{N}\angle 38^{\circ}\text{S of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$91.8\,\text{N}\angle 20^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=890\,\text{N}\angle 34^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{2}=820\,\text{N}\angle 16^{\circ}\text{N of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$1384.0\,\text{N}\angle 22^{\circ}\text{W of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=880\,\text{N}\angle 23^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{2}=310\,\text{N}\angle 21^{\circ}\text{S of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$570.3\,\text{N}\angle 24^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=260\,\text{N}\angle 19^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{2}=360\,\text{N}\angle 13^{\circ}\text{E of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$196.1\,\text{N}\angle 32^{\circ}\text{W of N}$}
+
+%\sagestr{Problems(Triples)}
+%\Q $\vec{\mathbf{F}}_{1}=830\,\text{N}\angle 19^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{2}=300\,\text{N}\angle 13^{\circ}\text{S of W}$; $\vec{\mathbf{F}}_{3}=270\,\text{N}\angle 12^{\circ}\text{S of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$704.1\,\text{N}\angle 20^{\circ}\text{N of E}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=26\,\text{N}\angle 36^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{2}=86\,\text{N}\angle 7^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{3}=99\,\text{N}\angle 26^{\circ}\text{E of N}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$54.1\,\text{N}\angle 27^{\circ}\text{E of N}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=3600\,\text{N}\angle 14^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{2}=3500\,\text{N}\angle 13^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{3}=5000\,\text{N}\angle 41^{\circ}\text{N of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$8075.2\,\text{N}\angle 4^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=7100\,\text{N}\angle 26^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=9600\,\text{N}\angle 4^{\circ}\text{N of E}$; $\vec{\mathbf{F}}_{3}=8100\,\text{N}\angle 29^{\circ}\text{E of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$20972.2\,\text{N}\angle 38^{\circ}\text{W of N}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=21\,\text{N}\angle 25^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=74\,\text{N}\angle 5^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{3}=65\,\text{N}\angle 32^{\circ}\text{W of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$19.1\,\text{N}\angle 1^{\circ}\text{W of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=8400\,\text{N}\angle 15^{\circ}\text{S of E}$; $\vec{\mathbf{F}}_{2}=5200\,\text{N}\angle 1^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{3}=8100\,\text{N}\angle 33^{\circ}\text{W of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$14665.5\,\text{N}\angle 15^{\circ}\text{N of W}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=23\,\text{N}\angle 28^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=81\,\text{N}\angle 10^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{3}=67\,\text{N}\angle 4^{\circ}\text{E of N}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$88.4\,\text{N}\angle 43^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=910\,\text{N}\angle 27^{\circ}\text{S of E}$; $\vec{\mathbf{F}}_{2}=530\,\text{N}\angle 16^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{3}=880\,\text{N}\angle 39^{\circ}\text{N of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$1764.9\,\text{N}\angle 22^{\circ}\text{E of N}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=470\,\text{N}\angle 42^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=750\,\text{N}\angle 45^{\circ}\text{N of E}$; $\vec{\mathbf{F}}_{3}=960\,\text{N}\angle 32^{\circ}\text{N of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$690.5\,\text{N}\angle 3^{\circ}\text{N of E}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=240\,\text{N}\angle 32^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{2}=860\,\text{N}\angle 1^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{3}=380\,\text{N}\angle 14^{\circ}\text{N of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$741.5\,\text{N}\angle 40^{\circ}\text{N of W}$}
+
+%\sagestr{Problems(Quadruples)}
+%\Q $\vec{\mathbf{F}}_{1}=6100\,\text{N}\angle 26^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{2}=8700\,\text{N}\angle 22^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{3}=5200\,\text{N}\angle 25^{\circ}\text{S of W}$; $\vec{\mathbf{F}}_{4}=2500\,\text{N}\angle 1^{\circ}\text{E of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$9748.7\,\text{N}\angle 25^{\circ}\text{S of E}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=80\,\text{N}\angle 34^{\circ}\text{S of E}$; $\vec{\mathbf{F}}_{2}=29\,\text{N}\angle 5^{\circ}\text{N of E}$; $\vec{\mathbf{F}}_{3}=60\,\text{N}\angle 18^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{4}=97\,\text{N}\angle 27^{\circ}\text{S of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$165.7\,\text{N}\angle 10^{\circ}\text{W of N}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=520\,\text{N}\angle 35^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=930\,\text{N}\angle 33^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{3}=460\,\text{N}\angle 30^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{4}=210\,\text{N}\angle 18^{\circ}\text{W of N}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$1031.3\,\text{N}\angle 41^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=29\,\text{N}\angle 19^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{2}=71\,\text{N}\angle 31^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{3}=84\,\text{N}\angle 18^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{4}=80\,\text{N}\angle 24^{\circ}\text{W of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$87.3\,\text{N}\angle 21^{\circ}\text{S of W}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=23\,\text{N}\angle 15^{\circ}\text{N of E}$; $\vec{\mathbf{F}}_{2}=85\,\text{N}\angle 18^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{3}=54\,\text{N}\angle 11^{\circ}\text{S of E}$; $\vec{\mathbf{F}}_{4}=31\,\text{N}\angle 42^{\circ}\text{S of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$96.2\,\text{N}\angle 35^{\circ}\text{E of N}$}
+
+\sagestr{str(DoubleVectorSum(59,unNESW(8,'W','N'),56,unNESW(30,'N','E')))}
+
+\sagestr{str(DoubleVectorSum(79,unNESW(42,'N','W'),35,unNESW(38,'S','W')))}
+
+\sagestr{str(DoubleVectorSum(890,unNESW(34,'W','S'),820,unNESW(16,'N','W')))}
+
+\sagestr{str(DoubleVectorSum(880,unNESW(23,'N','W'),310,unNESW(21,'S','E')))}
+
+\sagestr{str(DoubleVectorSum(260,unNESW(19,'E','N'),360,unNESW(13,'E','S')))}
+
+\sagestr{str(TripleVectorSum(830,unNESW(19,'E','N'),300,unNESW(13,'S','W'),270,unNESW(12,'S','E')))}
+
+\sagestr{str(TripleVectorSum(26,unNESW(36,'E','N'),86,unNESW(7,'W','S'),99,unNESW(26,'E','N')))}
+
+\sagestr{str(TripleVectorSum(3600,unNESW(14,'W','S'),3500,unNESW(13,'N','W'),5000,unNESW(41,'N','W')))}
+
+\sagestr{str(TripleVectorSum(7100,unNESW(26,'E','S'),9600,unNESW(4,'N','E'),8100,unNESW(29,'E','S')))}
+
+\sagestr{str(TripleVectorSum(21,unNESW(25,'E','S'),74,unNESW(5,'E','N'),65,unNESW(32,'W','S')))}
+
+\sagestr{str(TripleVectorSum(8400,unNESW(15,'S','E'),5200,unNESW(1,'E','S'),8100,unNESW(33,'W','S')))}
+
+\sagestr{str(TripleVectorSum(23,unNESW(28,'E','S'),81,unNESW(10,'N','W'),67,unNESW(4,'E','N')))}
+
+\sagestr{str(TripleVectorSum(910,unNESW(27,'S','E'),530,unNESW(16,'E','N'),880,unNESW(39,'N','E')))}
+
+\sagestr{str(TripleVectorSum(470,unNESW(42,'E','S'),750,unNESW(45,'N','E'),960,unNESW(32,'N','W')))}
+
+\sagestr{str(TripleVectorSum(240,unNESW(32,'E','N'),860,unNESW(1,'W','S'),380,unNESW(14,'N','E')))}
+
+\sagestr{str(QuadrupleVectorSum(6100,unNESW(26,'W','N'),8700,unNESW(22,'E','N'),5200,unNESW(25,'S','W'),2500,unNESW(1,'E','S')))}
+
+\sagestr{str(QuadrupleVectorSum(80,unNESW(34,'S','E'),29,unNESW(5,'N','E'),60,unNESW(18,'W','N'),97,unNESW(27,'S','E')))}
+
+\sagestr{str(QuadrupleVectorSum(520,unNESW(35,'E','S'),930,unNESW(33,'N','W'),460,unNESW(30,'W','N'),210,unNESW(18,'W','N')))}
+
+\sagestr{str(QuadrupleVectorSum(29,unNESW(19,'W','S'),71,unNESW(31,'E','S'),84,unNESW(18,'W','N'),80,unNESW(24,'W','S')))}
+
+\sagestr{str(QuadrupleVectorSum(23,unNESW(15,'N','E'),85,unNESW(18,'E','N'),54,unNESW(11,'S','E'),31,unNESW(42,'S','W')))}
+
+% new page for key
+\vfill\eject
+\renewcommand{\A}[1]{#1} % redefines the answer macro for the key
+\setcounter{Qcounter}{0}
+
+\myheading
+
+
+%\sagestr{Problems(Doubles)}
+%\Q $\vec{\mathbf{F}}_{1}=59\,\text{N}\angle 8^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{2}=56\,\text{N}\angle 30^{\circ}\text{N of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$95.4\,\text{N}\angle 25^{\circ}\text{N of E}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=79\,\text{N}\angle 42^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{2}=35\,\text{N}\angle 38^{\circ}\text{S of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$91.8\,\text{N}\angle 20^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=890\,\text{N}\angle 34^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{2}=820\,\text{N}\angle 16^{\circ}\text{N of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$1384.0\,\text{N}\angle 22^{\circ}\text{W of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=880\,\text{N}\angle 23^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{2}=310\,\text{N}\angle 21^{\circ}\text{S of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$570.3\,\text{N}\angle 24^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=260\,\text{N}\angle 19^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{2}=360\,\text{N}\angle 13^{\circ}\text{E of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$196.1\,\text{N}\angle 32^{\circ}\text{W of N}$}
+
+%\sagestr{Problems(Triples)}
+%\Q $\vec{\mathbf{F}}_{1}=830\,\text{N}\angle 19^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{2}=300\,\text{N}\angle 13^{\circ}\text{S of W}$; $\vec{\mathbf{F}}_{3}=270\,\text{N}\angle 12^{\circ}\text{S of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$704.1\,\text{N}\angle 20^{\circ}\text{N of E}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=26\,\text{N}\angle 36^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{2}=86\,\text{N}\angle 7^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{3}=99\,\text{N}\angle 26^{\circ}\text{E of N}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$54.1\,\text{N}\angle 27^{\circ}\text{E of N}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=3600\,\text{N}\angle 14^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{2}=3500\,\text{N}\angle 13^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{3}=5000\,\text{N}\angle 41^{\circ}\text{N of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$8075.2\,\text{N}\angle 4^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=7100\,\text{N}\angle 26^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=9600\,\text{N}\angle 4^{\circ}\text{N of E}$; $\vec{\mathbf{F}}_{3}=8100\,\text{N}\angle 29^{\circ}\text{E of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$20972.2\,\text{N}\angle 38^{\circ}\text{W of N}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=21\,\text{N}\angle 25^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=74\,\text{N}\angle 5^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{3}=65\,\text{N}\angle 32^{\circ}\text{W of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$19.1\,\text{N}\angle 1^{\circ}\text{W of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=8400\,\text{N}\angle 15^{\circ}\text{S of E}$; $\vec{\mathbf{F}}_{2}=5200\,\text{N}\angle 1^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{3}=8100\,\text{N}\angle 33^{\circ}\text{W of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$14665.5\,\text{N}\angle 15^{\circ}\text{N of W}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=23\,\text{N}\angle 28^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=81\,\text{N}\angle 10^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{3}=67\,\text{N}\angle 4^{\circ}\text{E of N}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$88.4\,\text{N}\angle 43^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=910\,\text{N}\angle 27^{\circ}\text{S of E}$; $\vec{\mathbf{F}}_{2}=530\,\text{N}\angle 16^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{3}=880\,\text{N}\angle 39^{\circ}\text{N of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$1764.9\,\text{N}\angle 22^{\circ}\text{E of N}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=470\,\text{N}\angle 42^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=750\,\text{N}\angle 45^{\circ}\text{N of E}$; $\vec{\mathbf{F}}_{3}=960\,\text{N}\angle 32^{\circ}\text{N of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$690.5\,\text{N}\angle 3^{\circ}\text{N of E}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=240\,\text{N}\angle 32^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{2}=860\,\text{N}\angle 1^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{3}=380\,\text{N}\angle 14^{\circ}\text{N of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$741.5\,\text{N}\angle 40^{\circ}\text{N of W}$}
+
+%\sagestr{Problems(Quadruples)}
+%\Q $\vec{\mathbf{F}}_{1}=6100\,\text{N}\angle 26^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{2}=8700\,\text{N}\angle 22^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{3}=5200\,\text{N}\angle 25^{\circ}\text{S of W}$; $\vec{\mathbf{F}}_{4}=2500\,\text{N}\angle 1^{\circ}\text{E of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$9748.7\,\text{N}\angle 25^{\circ}\text{S of E}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=80\,\text{N}\angle 34^{\circ}\text{S of E}$; $\vec{\mathbf{F}}_{2}=29\,\text{N}\angle 5^{\circ}\text{N of E}$; $\vec{\mathbf{F}}_{3}=60\,\text{N}\angle 18^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{4}=97\,\text{N}\angle 27^{\circ}\text{S of E}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$165.7\,\text{N}\angle 10^{\circ}\text{W of N}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=520\,\text{N}\angle 35^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{2}=930\,\text{N}\angle 33^{\circ}\text{N of W}$; $\vec{\mathbf{F}}_{3}=460\,\text{N}\angle 30^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{4}=210\,\text{N}\angle 18^{\circ}\text{W of N}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$1031.3\,\text{N}\angle 41^{\circ}\text{E of S}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=29\,\text{N}\angle 19^{\circ}\text{W of S}$; $\vec{\mathbf{F}}_{2}=71\,\text{N}\angle 31^{\circ}\text{E of S}$; $\vec{\mathbf{F}}_{3}=84\,\text{N}\angle 18^{\circ}\text{W of N}$; $\vec{\mathbf{F}}_{4}=80\,\text{N}\angle 24^{\circ}\text{W of S}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$87.3\,\text{N}\angle 21^{\circ}\text{S of W}$}\\
+%\Q $\vec{\mathbf{F}}_{1}=23\,\text{N}\angle 15^{\circ}\text{N of E}$; $\vec{\mathbf{F}}_{2}=85\,\text{N}\angle 18^{\circ}\text{E of N}$; $\vec{\mathbf{F}}_{3}=54\,\text{N}\angle 11^{\circ}\text{S of E}$; $\vec{\mathbf{F}}_{4}=31\,\text{N}\angle 42^{\circ}\text{S of W}$\\\indent $\sum\vec{\mathbf{F}}=$\A{$96.2\,\text{N}\angle 35^{\circ}\text{E of N}$}
+
+\sagestr{str(DoubleVectorSum(59,unNESW(8,'W','N'),56,unNESW(30,'N','E')))}
+
+\sagestr{str(DoubleVectorSum(79,unNESW(42,'N','W'),35,unNESW(38,'S','W')))}
+
+\sagestr{str(DoubleVectorSum(890,unNESW(34,'W','S'),820,unNESW(16,'N','W')))}
+
+\sagestr{str(DoubleVectorSum(880,unNESW(23,'N','W'),310,unNESW(21,'S','E')))}
+
+\sagestr{str(DoubleVectorSum(260,unNESW(19,'E','N'),360,unNESW(13,'E','S')))}
+
+\sagestr{str(TripleVectorSum(830,unNESW(19,'E','N'),300,unNESW(13,'S','W'),270,unNESW(12,'S','E')))}
+
+\sagestr{str(TripleVectorSum(26,unNESW(36,'E','N'),86,unNESW(7,'W','S'),99,unNESW(26,'E','N')))}
+
+\sagestr{str(TripleVectorSum(3600,unNESW(14,'W','S'),3500,unNESW(13,'N','W'),5000,unNESW(41,'N','W')))}
+
+\sagestr{str(TripleVectorSum(7100,unNESW(26,'E','S'),9600,unNESW(4,'N','E'),8100,unNESW(29,'E','S')))}
+
+\sagestr{str(TripleVectorSum(21,unNESW(25,'E','S'),74,unNESW(5,'E','N'),65,unNESW(32,'W','S')))}
+
+\sagestr{str(TripleVectorSum(8400,unNESW(15,'S','E'),5200,unNESW(1,'E','S'),8100,unNESW(33,'W','S')))}
+
+\sagestr{str(TripleVectorSum(23,unNESW(28,'E','S'),81,unNESW(10,'N','W'),67,unNESW(4,'E','N')))}
+
+\sagestr{str(TripleVectorSum(910,unNESW(27,'S','E'),530,unNESW(16,'E','N'),880,unNESW(39,'N','E')))}
+
+\sagestr{str(TripleVectorSum(470,unNESW(42,'E','S'),750,unNESW(45,'N','E'),960,unNESW(32,'N','W')))}
+
+\sagestr{str(TripleVectorSum(240,unNESW(32,'E','N'),860,unNESW(1,'W','S'),380,unNESW(14,'N','E')))}
+
+\sagestr{str(QuadrupleVectorSum(6100,unNESW(26,'W','N'),8700,unNESW(22,'E','N'),5200,unNESW(25,'S','W'),2500,unNESW(1,'E','S')))}
+
+\sagestr{str(QuadrupleVectorSum(80,unNESW(34,'S','E'),29,unNESW(5,'N','E'),60,unNESW(18,'W','N'),97,unNESW(27,'S','E')))}
+
+\sagestr{str(QuadrupleVectorSum(520,unNESW(35,'E','S'),930,unNESW(33,'N','W'),460,unNESW(30,'W','N'),210,unNESW(18,'W','N')))}
+
+\sagestr{str(QuadrupleVectorSum(29,unNESW(19,'W','S'),71,unNESW(31,'E','S'),84,unNESW(18,'W','N'),80,unNESW(24,'W','S')))}
+
+\sagestr{str(QuadrupleVectorSum(23,unNESW(15,'N','E'),85,unNESW(18,'E','N'),54,unNESW(11,'S','E'),31,unNESW(42,'S','W')))}
+
+\end{document}
+ 

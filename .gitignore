@@ -8,6 +8,10 @@
 *.pdf
 *.png
 *.pre
+*.sagetex.py
+*.sagetex.sage
+*.sagetex.scmd
+*.sagetex.sout
 *.snm
 *.synctex.gz
 *.toc

@@ -1,0 +1,202 @@
+%!TEX TS-program = sage+XeLaTeX
+% rubber: module xelatex
+\documentclass[letterpaper,11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+\usepackage{sagetex}
+
+
+\usepackage{mathpazo}
+\usepackage{fontspec}% provides font selecting commands 
+\defaultfontfeatures{Mapping=tex-text} % fix TeX quotes
+%\setmainfont{Gentium}
+%\setmainfont{Palatino}
+%\setmainfont{Hoefler Text}
+\setmainfont{Charis SIL}
+%\setmainfont{Optima}
+\setsansfont{Arial}
+\setmonofont{Courier New}
+
+\usepackage[margin=.5in]{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{nccmath}
+
+\author{Brian Vancil}
+\title{}
+\date{\today}
+%\theoremstyle{definition}
+%\newtheorem{obj}{Objective}
+%\theoremstyle{definition}
+%\newtheorem{Q}{}
+\newcounter{Qcounter}
+\newcommand{\Q}{\noindent\stepcounter{Qcounter}\textbf{\arabic{Qcounter}.}\ } % Do this before a new problem.
+\newcommand{\A}[1]{} % will be redefined later to print the answers on the key.
+
+
+\newcommand{\blankfor}[1]{\underline{\hspace{#1em}}}
+
+\newenvironment{answers}
+{\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+  \renewcommand{\theenumi}{\alph{enumi}}
+  \renewcommand{\labelenumi}{(\theenumi)}
+}
+{\end{enumerate}}
+
+\newcommand{\myheading}{%
+\noindent{{\large\fontspec{Anaktoria}Vector Addition Diagram Practice}\hfill Name:~\underline{\hspace{3cm}\A{KEY}\hspace{3cm}}~Period:~\underline{\hspace{1cm}}}\\
+%{\scriptsize
+%\begin{obj}objective\end{obj}
+%}
+{\footnotesize\noindent\textbf{Instructions:} For the list of force vectors in each problem below, draw an accurate Vector~Addition~Diagram to scale in your lab notebook (or on separate sheets of paper if you don't have it).  Be sure to indicate the problem, write your scale calculations (how many newtons (N) for each centimeter), label the vector, and annotate any angles you measured on the diagram.  No credit will be given without work shown.  Write the magnitude and direction of the net force for your answer.
+
+Remember that the notation ``$50\,\text{N}\angle20^{\circ}\text{S of W}$'' means that a force vector with magnitude 50 newtons (N) points in the direction that is $20^{\circ}$ toward south from the direction west using a conventionally oriented compass rose.}
+}
+
+\pagestyle{empty}
+\begin{document}
+\thispagestyle{empty}
+\myheading
+
+\begin{sagesilent}
+import random # for choice
+
+# Conversions between radians and degrees
+radians(theta) = theta/180*pi
+degrees(theta) = theta/pi*180
+
+# Polar to rectangular conversion
+V(r, theta) = (r*cos(radians(theta)), r*sin(radians(theta)))
+
+def NESW(theta):
+    "Turn angle N of E into (degrees, toward direction, from reference direction)"
+    while(theta<0):
+        theta += 360
+    if theta <= 45:
+        return (theta, 'N', 'E')
+    elif theta <= 90:
+        return (90-theta, 'E', 'N')
+    elif theta <= 135:
+        return (theta-90, 'W', 'N')
+    elif theta <= 180:
+        return (180-theta, 'N', 'W')
+    elif theta <= 225:
+        return (theta-180, 'S', 'W')
+    elif theta <= 270:
+        return (270-theta, 'W', 'S')
+    elif theta <= 315:
+        return (theta-270, 'E', 'S')
+    else: # theta < 360
+        return (360-theta, 'S', 'E')
+
+def VecDesc(r, theta):
+    "LaTeX string describing a single vector"
+    theta, dir, ref = NESW(theta)
+    return str(r)+r"\,\text{N}\angle "+str(theta)+r"^{\circ}\text{"+dir+r" of "+ref+r"}"
+    
+def VecName(subscript):
+    "LaTeX string naming a single vector"
+    return r"\vec{\mathbf{F}}_{"+str(subscript)+r"}"
+    
+def VecDef(subscript, r, theta):
+    "LaTeX string defining a single vector"
+    return r"$"+VecName(subscript)+r"="+VecDesc(r, theta)+r"$"
+    
+# Define the problem data
+class DoubleVectorSum:
+    "Now that I've written this procedurally, this could probably be refactored with methods in the class, but oh well."
+    def __init__(self):
+        scaleFactor = random.choice([1,10,100])
+        self.A = ZZ.random_element(20,100)*scaleFactor
+        self.a = ZZ.random_element(0,359)
+        self.B = ZZ.random_element(20,100)*scaleFactor
+        self.b = ZZ.random_element(0,359)
+        self.Ss = (V(self.A,self.a)+V(self.B,self.b)).n()
+        self.S=round(self.Ss.norm(),ndigits=1)
+        self.s=round(degrees(atan2(self.Ss[0],self.Ss[1])).n())
+    def __str__(self):
+        "LaTeX string defining a single problem"
+        return r"\Q " + r"; ".join([VecDef('1', self.A, self.a),VecDef('2',self.B,self.b)]) + r"\\\indent $\sum\vec{\mathbf{F}}=$\A{$" + VecDesc(self.S,self.s) + r"$}"
+
+class TripleVectorSum:
+    "Now that I've written this procedurally, this could probably be refactored with methods in the class, but oh well."
+    def __init__(self):
+        scaleFactor = random.choice([1,10,100])
+        self.A = ZZ.random_element(20,100)*scaleFactor
+        self.a = ZZ.random_element(0,359)
+        self.B = ZZ.random_element(20,100)*scaleFactor
+        self.b = ZZ.random_element(0,359)
+        self.C = ZZ.random_element(20,100)*scaleFactor
+        self.c = ZZ.random_element(0,359)
+        self.Ss = (V(self.A,self.a)+V(self.B,self.b)+V(self.C,self.c)).n()
+        self.S=round(self.Ss.norm(),ndigits=1)
+        self.s=round(degrees(atan2(self.Ss[0],self.Ss[1])).n())
+    def __str__(self):
+        "LaTeX string defining a single problem"
+        return r"\Q " + r"; ".join([VecDef('1', self.A, self.a),VecDef('2',self.B,self.b), VecDef('3',self.C,self.c)]) + r"\\\indent $\sum\vec{\mathbf{F}}=$\A{$" + VecDesc(self.S,self.s) + r"$}"
+
+class QuadrupleVectorSum:
+    "Now that I've written this procedurally, this could probably be refactored with methods in the class, but oh well."
+    def __init__(self):
+        scaleFactor = random.choice([1,10,100])
+        self.A = ZZ.random_element(20,100)*scaleFactor
+        self.a = ZZ.random_element(0,359)
+        self.B = ZZ.random_element(20,100)*scaleFactor
+        self.b = ZZ.random_element(0,359)
+        self.C = ZZ.random_element(20,100)*scaleFactor
+        self.c = ZZ.random_element(0,359)
+        self.D = ZZ.random_element(20,100)*scaleFactor
+        self.d = ZZ.random_element(0,359)        
+        self.Ss = (V(self.A,self.a)+V(self.B,self.b)+V(self.C,self.c)+V(self.D,self.d)).n()
+        self.S=round(self.Ss.norm(),ndigits=1)
+        self.s=round(degrees(atan2(self.Ss[0],self.Ss[1])).n())
+    def __str__(self):
+        "LaTeX string defining a single problem"
+        return r"\Q " + r"; ".join([VecDef('1', self.A, self.a),VecDef('2',self.B,self.b), VecDef('3',self.C,self.c), VecDef('4',self.D,self.d)]) + r"\\\indent $\sum\vec{\mathbf{F}}=$\A{$" + VecDesc(self.S,self.s) + r"$}"
+        
+Doubles = [] #List to hold Double Vector Sum problems
+for i in range(0,5): # Change the number of problems here.
+    Doubles.append(DoubleVectorSum())
+
+Triples = [] #List to hold Triple Vector Sum problems
+for i in range(0,10): # Change the number of problems here.
+    Triples.append(TripleVectorSum())
+ 
+Quadruples = [] #List to hold Quadruple Vector Sum problems
+for i in range(0,5): # Change the number of problems here.
+    Quadruples.append(QuadrupleVectorSum())
+                    
+def Problems(Ps):
+    return (r"\\"+"\n").join(map(str,Ps))
+
+ \end{sagesilent}
+
+\sagestr{Problems(Doubles)}
+
+\sagestr{Problems(Triples)}
+
+\sagestr{Problems(Quadruples)}
+
+% new page for key
+\vfill\eject
+\renewcommand{\A}[1]{\textcolor{purple}{#1}} % redefines the answer macro for the key
+\setcounter{Qcounter}{0}
+
+\myheading
+
+
+\sagestr{Problems(Doubles)}
+
+\sagestr{Problems(Triples)}
+
+\sagestr{Problems(Quadruples)}
+
+\end{document}
+ 
