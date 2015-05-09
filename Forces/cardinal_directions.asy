@@ -2,7 +2,9 @@ size(6cm,0);
 
 pen compass_rose_p = linewidth(1.2)+gray(0.5)+fontsize(12);
 pen x_p = compass_rose_p + gray(0.3);
+compass_rose_p += fontsize(16);
 pen label_p = black+fontsize(12);
+pen arrow_p = black;
 
 pair NofE = unit(E+NE);
 pair EofN = unit(N+NE);
@@ -36,3 +38,12 @@ label_dir("S of W",SofW);
 label_dir("W of S",WofS);
 label_dir("E of S",EofS);
 label_dir("S of E",SofE);
+
+//directional arrows
+int arc_start = 3; // degrees
+int arc_end = 20; // degrees
+real arc_radius = 0.7; 
+for(int angle = 0; angle < 360; angle += 90) {
+  draw(arc((0,0),arc_radius, angle+arc_start, angle+arc_end), arrow_p, EndArcArrow(4));
+  draw(arc((0,0),arc_radius, angle-arc_start, angle-arc_end), arrow_p, EndArcArrow(4));
+}
