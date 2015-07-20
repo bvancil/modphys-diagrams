@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Make a system schema.</title>
+		<style>
+      path {
+        stroke-width: 3;
+				fill: none;
+      }
+      path.gravitational {
+        stroke: #00f;
+      }
+      path.normal {
+        stroke: #0f0;
+      }
+      path.frictional {
+        stroke: #f00;
+      }
+      path.magnetic {
+        stroke: #ff0;
+      }
+      path.elastic {
+        stroke: #f0f;
+      }
+      circle {
+        fill: #999;
+      }
+      circle.system {
+        fill: #333;
+      }
+      circle.label {
+        visibility: hidden;
+      }
+      text {
+        fill: #000;
+      }
+      text.system {
+        fill: #fff;
+      }
+			text.label {
+				fill: #000;
+			}
+			text.gravitational {
+				fill: #00f;
+			}
+			text.normal {
+				fill: #0f0;
+			}
+			text.frictional {
+				fill: #f00;
+			}
+			text.magnetic {
+				fill: #ff0;
+			}
+			text.elastic {
+				fill: #f0f;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div id="visualization"></div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+		<script>
+		// Utility functions
+		// N.B. I'm not sure which compose I like best, so I'm including them both.  I got the code from http://scott.sauyet.com/Javascript/Talk/Compose/2013-05-22/#slide-14
+		var compose = function() {
+			var funcs = arguments;
+			return function() {
+        var args = arguments;
+        for (var i = funcs.length; i --> 0;) {
+          args = [funcs[i].apply(this, args)];
+        }
+        return args[0];
+			};
+		};
+		Function.prototype.compose = function(g) {
+			var f = this;
+			return function() {
+				return f.call(this, g.apply(this, arguments));
+			};
+		};
+
+		function randomChoice(choices) {
+			return choices[Math.floor(Math.random()*choices.length)];
+		}
+
+		// Data Accessors
+    function name(d) {
+      return d.name;
+    }
+		function type(d) {
+			return d.type;
+		}
+    function part(d) {
+      return d.part;
+    }
+		function radius(d) {
+			return 30;
+		}
+    function strength(d) {
+      switch (d.type) {
+        case "gravitational": return 0.01;
+        case "normal": return 10;
+        case "frictional": return 10;
+        default: return 1;
+      }
+    }
+
+		// Global parameters
+		var width = 600;
+		var height = 600;
+
+		// Data
+    var dataset = {
+      objects: [
+        { name: "Book"    , part: "system" },
+        { name: "Table"   , part: "" },
+        { name: "Floor"   , part: "" },
+        { name: "Earth"   , part: "" },
+        { name: "Person"  , part: "" },
+      ],
+      interactions: [
+        { source: 3, target: 0, type: "gravitational" },
+        { source: 3, target: 1, type: "gravitational" },
+        { source: 3, target: 2, type: "gravitational" },
+        { source: 3, target: 4, type: "gravitational" },
+        { source: 0, target: 1, type: "normal" },
+        { source: 0, target: 4, type: "normal" },
+        { source: 1, target: 2, type: "normal" },
+        { source: 2, target: 3, type: "normal" },
+        { source: 2, target: 4, type: "normal" },
+        { source: 0, target: 1, type: "frictional" },
+        { source: 1, target: 2, type: "frictional" },
+        { source: 2, target: 3, type: "frictional" },
+        { source: 2, target: 4, type: "frictional" },
+      ]
+    }
+    // Create intermediate nodes for bezier paths between nodes and to serve as label anchors
+    var nodes = dataset.objects;
+    var links = [];
+    var bezierlinks = [];
+    dataset.interactions.forEach(function(i) {
+      var type = i.type;
+      var source = nodes[i.source];
+      var target = nodes[i.target];
+      var intermediate = { name: type, part: "label" };
+      nodes.push(intermediate);
+      links.push({source: source, target: intermediate, type: type});
+      links.push({source: intermediate, target: target, type: type});
+      bezierlinks.push({
+        nodes: [source, intermediate, target],
+        type: type
+      })
+    });
+
+    // Initialize
+    var svg = d3.select("div#visualization")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+    var force = d3.layout.force()
+      .nodes(nodes)
+      .links(links)
+      .gravity(1)
+      .linkDistance(function(d) {return 20*strength(d);})
+      .charge(-6000)
+      .linkStrength(strength)
+      .size([width, height])
+      .start();
+    var interactions = svg.selectAll("path")
+      .data(bezierlinks)
+      .enter()
+      .append("path")
+      .attr("class", type);
+    var objects = svg.selectAll("g.object")
+      .data(dataset.objects)
+      .enter()
+      .append("g")
+      .attr("class", "object");
+    objects
+      .append("circle")
+      .attr("class", part)
+      .attr("r", radius)
+      .call(force.drag);
+    objects
+      .append("text")
+      .attr("class", function(d) {
+        return part(d)+" "+name(d);
+      })
+      .attr("text-anchor", "middle")
+      .text(name);
+    // Updates
+    var updateNode = function() {
+      this.attr("transform", function(d) {
+        return "translate(" + d.x + "," + d.y + ")";
+      });
+    }
+    var updateLink = function() {
+      this
+        .attr("d", function(d) {
+          return "M" + d.nodes[0].x + "," + d.nodes[0].y
+               + "S" + d.nodes[1].x + "," + d.nodes[1].y
+               + " " + d.nodes[2].x + "," + d.nodes[2].y;
+        });
+    }
+    force.on("tick", function() {
+      interactions.call(updateLink);
+      objects.call(updateNode);
+    });
+		</script>
+	</body>
+</html>
