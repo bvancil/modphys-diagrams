@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Make a scatterplot graph.</title>
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			TeX: {
+				extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+			},
+			tex2jax: {
+				inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+				displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+				processEscapes: true
+			}
+		});
+		</script>
+		<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG'></script>
+		<style>
+		text.label {
+			font-family: serif;
+			font-size: 16px;
+			fill: blue;
+/*			fill-opacity: 0;*/
+/*			-moz-transition: all 0.3s;
+      -o-transition: all 0.3s;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s*/
+		}
+		text.label:hover {
+			fill-opacity: 1;
+		}
+		text.title {
+			fill: purple;
+		}
+		circle {
+/*			-moz-transition: all 0.3s;
+      -o-transition: all 0.3s;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s*/
+		}
+		circle:hover {
+			fill: orange;
+		}
+		.axis path,
+		.axis line {
+			fill: none;
+			stroke: black;
+			shape-rendering: crispEdges;
+		}
+		.axis text {
+			font-family: sans-serif;
+			font-size: 11px;
+			fill: black;
+		}
+		table {
+			border-collapse: collapse;
+		}
+		caption {
+			padding: 0.3em;
+		}
+		th, td {
+			caption-side: bottom;
+			border-left: 2px solid white;
+			border-right: 2px solid white;
+			padding-left: 0.2em;
+			padding-right: 0.2em;
+		}
+		thead {
+			border-top: 2px solid orange;
+			border-bottom: 1px solid orange;
+		}
+		tbody {
+			border-bottom: 2px solid orange;
+		}
+		tbody tr:nth-child(odd) {
+			background-color: #FFF;
+		}
+		tbody tr:nth-child(even) {
+			background-color: #CCC;
+		}
+		th {
+			text-align: center;
+			vertical-align: middle;
+			background-color: black;
+			color: white;
+		}
+		td {
+			text-align: right;
+			vertical-align: middle;
+		}
+		</style>
+
+	</head>
+	<body>
+		<div id="visualization"></div>
+		<p>Click on this text to update the chart with new data values.</p>
+		<div>
+			<table id="datatable">
+				<caption>Enter data to graph here.</caption>
+				<thead>
+					<tr>
+						<th>Abscissa</th>
+						<th>Ordinate</th>
+					</tr>
+					<tr>
+						<th>$x$ / foo</th>
+						<th>$y$ / bar</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+		<script>
+		// Utility functions
+		// N.B. I'm not sure which compose I like best, so I'm including them both.  I got the code from http://scott.sauyet.com/Javascript/Talk/Compose/2013-05-22/#slide-14
+		var compose = function() {
+			var funcs = arguments;
+			return function() {
+        var args = arguments;
+        for (var i = funcs.length; i --> 0;) {
+          args = [funcs[i].apply(this, args)];
+        }
+        return args[0];
+			};
+		};
+		Function.prototype.compose = function(g) {
+			var f = this;
+			return function() {
+				return f.call(this, g.apply(this, arguments));
+			};
+		};
+
+		function randomChoice(choices) {
+			return choices[Math.floor(Math.random()*choices.length)];
+		}
+
+		// Data Accessors
+		function abscissa(d) {
+			return d[0];
+		}
+		function ordinate(d) {
+			return d[1];
+		}
+		function radius(d) {
+			return Math.sqrt(d[0]*d[1]);
+		}
+		function label(d) {
+			return "("+abscissa(d)+" foo, "+ordinate(d)+" bar)";
+		}
+
+		// Global parameters
+		var width = 600;
+		var height = 371;
+		var padding = 50;
+
+		// Data
+//		var dataset = [
+//      [  5, 20],
+//			[480, 90],
+//			[250, 50],
+//			[100, 33],
+//			[330, 95],
+//      [410, 12],
+//			[475, 44],
+//			[ 25, 67],
+//			[ 85, 21],
+//			[220, 88],
+//			[600,150],
+ //   ];
+		//Dynamic, random dataset
+		var datasetGenerator = function() {
+			var dataset = [];
+			var numDataPoints = 50;
+			var xRange = Math.random() * 1000;
+			var yRange = Math.random() * 1000;
+			for (var i = 0; i < numDataPoints; i++) {
+				var newNumber1 = Math.floor(Math.random() * xRange);
+				var newNumber2 = Math.floor(Math.random() * yRange);
+				dataset.push([newNumber1, newNumber2]);
+			}
+			return dataset;
+		}
+		var dataset = datasetGenerator();
+
+		// Data Table
+		var tbody = d3.select("#datatable tbody");
+		tbody.selectAll("tr")
+			.data(dataset)
+			.sort(function(a, b) { // TODO: Fix this so that it works, and update it below.
+				return d3.ascending(abscissa(a), abscissa(b));
+			})
+			.enter()
+			.append("tr")
+			.each(function(d, i) {
+				d3.select(this)
+					.append("td")
+					.attr("class", "x cell")
+					.attr("contentEditable", "true")
+					.text(abscissa);
+				d3.select(this)
+					.append("td")
+					.attr("class", "y cell")
+					.attr("contentEditable", "true")
+					.text(ordinate);
+			});
+		// Create SVG element within the "body" element, setting dimensions.
+		var svg = d3.select("div#visualization")
+			.append("svg")
+			.attr("width", width)
+			.attr("height", height);
+
+		// Define clipping path
+		svg.append("clipPath")
+			.attr("id", "chart-area")
+			.append("rect")
+			.attr("x", padding)
+			.attr("y", padding)
+			.attr("width", width - padding * 3)
+			.attr("height", height - padding * 2);
+
+		// Scales
+		var xScale = d3.scale.linear()
+			.domain([0, d3.max(dataset, abscissa)])
+			.range([0+padding, width-padding*2]);
+		var yScale = d3.scale.linear()
+			.domain([0, d3.max(dataset, ordinate)])
+			.range([height-padding, 0+padding]);
+
+		var rScale = d3.scale.linear()
+			.domain([0, d3.max(dataset, radius)])
+			.range([0,5])
+			.clamp(true);
+
+		// Data representations
+		svg.append("g")
+			.attr("id", "circles")
+			.attr("clip-path", "url(#chart-area)") // Make sure that dots are clippsed.
+			.selectAll("circle")
+			.data(dataset) // Loads data from dataset variable.
+			.enter()
+			.append("circle") // Actually makes the circles.
+			.attr("class", "datapoint")
+			.attr("cx", compose(xScale, abscissa)) // Take horizontal coordinate x for center of circle from abscissa of datum d.
+			.attr("cy", compose(yScale, ordinate)) // Take vertical coordinate y for center of circle from ordinate of datum d.
+			.attr("r", compose(rScale, radius)) // Set radius of circle.
+			.append("title")
+			.text(label)
+			;
+
+		// Labels for dots in scatterplot
+/*		svg.selectAll("text")
+				.data(dataset)
+				.enter()
+				.append("text")
+				.text(function(d) { // Construct label for datum d.
+					return "(" + d[0] + " foo, " + d[1] + " bar)";
+				})
+				.attr("x", function(d) { // Set horizontal coordinate of left of text.
+					return xScale(d[0]);
+				})
+				.attr("y", function(d) { // Set vertical coordinate of bottom of text.
+					return yScale(d[1]);
+				});
+*/
+		// Axes
+		var xAxis = d3.svg.axis()
+			.scale(xScale)
+			.orient("bottom")
+			.ticks(5); // This is only an approximate number of ticks. Leave off to have D3 guess.
+		svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + (height-padding) + ")")
+			.call(xAxis);
+		var yAxis = d3.svg.axis()
+			.scale(yScale)
+			.orient("left")
+			.ticks(5); // This is only an approximate number of ticks. Leave off to have D3 guess.
+		svg.append("g")
+			.attr("class", "y axis")
+			.attr("transform", "translate(" + padding + ",0)")
+			.call(yAxis);
+		svg.append("text")
+			.attr("class", "x label")
+			.attr("text-anchor", "middle")
+			.attr("x", width / 2)
+			.attr("y", height - padding / 4)
+			.text("Abscissa / foo");
+		svg.append("text")
+			.attr("class", "y label")
+			.attr("text-anchor", "middle")
+			.attr("x", padding / 4)
+			.attr("y", height / 2)
+			.attr("transform", "rotate(-90,"+padding/4+","+height/2+")")
+			.text("Ordinate / bar");
+
+		// Title
+		svg.append("text")
+			.attr("class", "title")
+			.attr("text-anchor", "middle")
+			.attr("x", width / 2)
+			.attr("y", padding / 2)
+			.text("Ordinate versus Abscissa for Some Ridiculous Situation");
+
+		// Handle updates
+		var newData = function() {
+			// Rebind to new data.
+			dataset = datasetGenerator();
+		}
+		var updateViews = function() {
+			// Update scales
+			xScale = xScale.domain([0, d3.max(dataset, abscissa)]);
+			yScale = yScale.domain([0, d3.max(dataset, ordinate)]);
+			rScale = rScale.domain([0, d3.max(dataset, radius)])
+				.clamp(true);
+			// Update dots
+			var easing = randomChoice(["cubic-in-out", "quad-in-out", "linear", "circle", "elastic", "bounce"]); // See https://github.com/mbostock/d3/wiki/Transitions#d3_ease for options.
+			var duration = Math.random() * 2000;
+			console.log(easing);
+			// Update dots
+			svg.selectAll("circle")
+				.data(dataset)
+				.transition()
+				.duration(duration) // How long the transition lasts in milliseconds
+				.ease(easing)
+				.each("start", function() {
+					d3.select(this)
+						.attr("fill", "magenta");
+				})
+				.attr("cx", compose(xScale, abscissa)) // Take horizontal coordinate x for center of circle from abscissa of datum d.
+				.attr("cy", compose(yScale, ordinate)) // Take vertical coordinate y for center of circle from ordinate of datum d.
+				.attr("r", compose(rScale, radius)) // Set radius of circle.
+				.each("end", function() {
+					d3.select(this)
+						.attr("fill", "black")
+				})
+				;
+			// Update tooltips
+			svg.selectAll("title")
+				.data(dataset)
+				.text(label)
+			// Update axes
+			xAxis = xAxis.scale(xScale);
+			yAxis = yAxis.scale(yScale);
+			svg.selectAll(".x.axis")
+				.transition()
+				.duration(duration)
+				.call(xAxis);
+			svg.selectAll(".y.axis")
+				.transition()
+				.duration(duration)
+				.call(yAxis);
+			// Update table
+			tbody.selectAll(".x.cell")
+				.data(dataset)
+				.text(abscissa);
+			tbody.selectAll(".y.cell")
+				.data(dataset)
+				.text(ordinate);
+		}
+		d3.select("p")
+			.on("click", function() {
+				newData();
+				updateViews();
+			});
+		d3.select("td")
+			.on("keyup", updateViews); // TODO: Fix event so that new data is incorporated into javascript data structure.
+		</script>
+	</body>
+</html>
