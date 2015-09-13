@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <title>Examples of Scatterplots from JavaScript Charting Libraries</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+		<!--<script src="http://vega.github.io/vega/lib/d3.geo.projection.min.js"></script>-->
+		<!--<script src="http://vega.github.io/vega/lib/topojson.js"></script>-->
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script src="http://vega.github.io/vega/vega.js"></script>
+		<!--<script src="http://vega.github.io/vega/vega.min.js"></script>-->
+		<script src="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.js"></script>
+		<!--<script src="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.min.js"></script>-->
+		<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css"/>
+	</head>
+  <body>
+		<script type="text/javascript">
+			// Data from https://github.com/vega/vega-editor/blob/master/app/data/iris.json
+			// from https://en.wikipedia.org/wiki/Iris_flower_data_set
+			var iris =
+				[
+					{"sepalLength": 5.1, "sepalWidth": 3.5, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.9, "sepalWidth": 3.0, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.7, "sepalWidth": 3.2, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.6, "sepalWidth": 3.1, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.0, "sepalWidth": 3.6, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.4, "sepalWidth": 3.9, "petalLength": 1.7, "petalWidth": 0.4, "species": "setosa"},
+					{"sepalLength": 4.6, "sepalWidth": 3.4, "petalLength": 1.4, "petalWidth": 0.3, "species": "setosa"},
+					{"sepalLength": 5.0, "sepalWidth": 3.4, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.4, "sepalWidth": 2.9, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.9, "sepalWidth": 3.1, "petalLength": 1.5, "petalWidth": 0.1, "species": "setosa"},
+					{"sepalLength": 5.4, "sepalWidth": 3.7, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.8, "sepalWidth": 3.4, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.8, "sepalWidth": 3.0, "petalLength": 1.4, "petalWidth": 0.1, "species": "setosa"},
+					{"sepalLength": 4.3, "sepalWidth": 3.0, "petalLength": 1.1, "petalWidth": 0.1, "species": "setosa"},
+					{"sepalLength": 5.8, "sepalWidth": 4.0, "petalLength": 1.2, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.7, "sepalWidth": 4.4, "petalLength": 1.5, "petalWidth": 0.4, "species": "setosa"},
+					{"sepalLength": 5.4, "sepalWidth": 3.9, "petalLength": 1.3, "petalWidth": 0.4, "species": "setosa"},
+					{"sepalLength": 5.1, "sepalWidth": 3.5, "petalLength": 1.4, "petalWidth": 0.3, "species": "setosa"},
+					{"sepalLength": 5.7, "sepalWidth": 3.8, "petalLength": 1.7, "petalWidth": 0.3, "species": "setosa"},
+					{"sepalLength": 5.1, "sepalWidth": 3.8, "petalLength": 1.5, "petalWidth": 0.3, "species": "setosa"},
+					{"sepalLength": 5.4, "sepalWidth": 3.4, "petalLength": 1.7, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.1, "sepalWidth": 3.7, "petalLength": 1.5, "petalWidth": 0.4, "species": "setosa"},
+					{"sepalLength": 4.6, "sepalWidth": 3.6, "petalLength": 1.0, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.1, "sepalWidth": 3.3, "petalLength": 1.7, "petalWidth": 0.5, "species": "setosa"},
+					{"sepalLength": 4.8, "sepalWidth": 3.4, "petalLength": 1.9, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.0, "sepalWidth": 3.0, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.0, "sepalWidth": 3.4, "petalLength": 1.6, "petalWidth": 0.4, "species": "setosa"},
+					{"sepalLength": 5.2, "sepalWidth": 3.5, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.2, "sepalWidth": 3.4, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.7, "sepalWidth": 3.2, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.8, "sepalWidth": 3.1, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.4, "sepalWidth": 3.4, "petalLength": 1.5, "petalWidth": 0.4, "species": "setosa"},
+					{"sepalLength": 5.2, "sepalWidth": 4.1, "petalLength": 1.5, "petalWidth": 0.1, "species": "setosa"},
+					{"sepalLength": 5.5, "sepalWidth": 4.2, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.9, "sepalWidth": 3.1, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.0, "sepalWidth": 3.2, "petalLength": 1.2, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.5, "sepalWidth": 3.5, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.9, "sepalWidth": 3.6, "petalLength": 1.4, "petalWidth": 0.1, "species": "setosa"},
+					{"sepalLength": 4.4, "sepalWidth": 3.0, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.1, "sepalWidth": 3.4, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.0, "sepalWidth": 3.5, "petalLength": 1.3, "petalWidth": 0.3, "species": "setosa"},
+					{"sepalLength": 4.5, "sepalWidth": 2.3, "petalLength": 1.3, "petalWidth": 0.3, "species": "setosa"},
+					{"sepalLength": 4.4, "sepalWidth": 3.2, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.0, "sepalWidth": 3.5, "petalLength": 1.6, "petalWidth": 0.6, "species": "setosa"},
+					{"sepalLength": 5.1, "sepalWidth": 3.8, "petalLength": 1.9, "petalWidth": 0.4, "species": "setosa"},
+					{"sepalLength": 4.8, "sepalWidth": 3.0, "petalLength": 1.4, "petalWidth": 0.3, "species": "setosa"},
+					{"sepalLength": 5.1, "sepalWidth": 3.8, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 4.6, "sepalWidth": 3.2, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.3, "sepalWidth": 3.7, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 5.0, "sepalWidth": 3.3, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
+					{"sepalLength": 7.0, "sepalWidth": 3.2, "petalLength": 4.7, "petalWidth": 1.4, "species": "versicolor"},
+					{"sepalLength": 6.4, "sepalWidth": 3.2, "petalLength": 4.5, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 6.9, "sepalWidth": 3.1, "petalLength": 4.9, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 5.5, "sepalWidth": 2.3, "petalLength": 4.0, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 6.5, "sepalWidth": 2.8, "petalLength": 4.6, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 5.7, "sepalWidth": 2.8, "petalLength": 4.5, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 6.3, "sepalWidth": 3.3, "petalLength": 4.7, "petalWidth": 1.6, "species": "versicolor"},
+					{"sepalLength": 4.9, "sepalWidth": 2.4, "petalLength": 3.3, "petalWidth": 1.0, "species": "versicolor"},
+					{"sepalLength": 6.6, "sepalWidth": 2.9, "petalLength": 4.6, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 5.2, "sepalWidth": 2.7, "petalLength": 3.9, "petalWidth": 1.4, "species": "versicolor"},
+					{"sepalLength": 5.0, "sepalWidth": 2.0, "petalLength": 3.5, "petalWidth": 1.0, "species": "versicolor"},
+					{"sepalLength": 5.9, "sepalWidth": 3.0, "petalLength": 4.2, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 6.0, "sepalWidth": 2.2, "petalLength": 4.0, "petalWidth": 1.0, "species": "versicolor"},
+					{"sepalLength": 6.1, "sepalWidth": 2.9, "petalLength": 4.7, "petalWidth": 1.4, "species": "versicolor"},
+					{"sepalLength": 5.6, "sepalWidth": 2.9, "petalLength": 3.6, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 6.7, "sepalWidth": 3.1, "petalLength": 4.4, "petalWidth": 1.4, "species": "versicolor"},
+					{"sepalLength": 5.6, "sepalWidth": 3.0, "petalLength": 4.5, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 5.8, "sepalWidth": 2.7, "petalLength": 4.1, "petalWidth": 1.0, "species": "versicolor"},
+					{"sepalLength": 6.2, "sepalWidth": 2.2, "petalLength": 4.5, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 5.6, "sepalWidth": 2.5, "petalLength": 3.9, "petalWidth": 1.1, "species": "versicolor"},
+					{"sepalLength": 5.9, "sepalWidth": 3.2, "petalLength": 4.8, "petalWidth": 1.8, "species": "versicolor"},
+					{"sepalLength": 6.1, "sepalWidth": 2.8, "petalLength": 4.0, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 6.3, "sepalWidth": 2.5, "petalLength": 4.9, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 6.1, "sepalWidth": 2.8, "petalLength": 4.7, "petalWidth": 1.2, "species": "versicolor"},
+					{"sepalLength": 6.4, "sepalWidth": 2.9, "petalLength": 4.3, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 6.6, "sepalWidth": 3.0, "petalLength": 4.4, "petalWidth": 1.4, "species": "versicolor"},
+					{"sepalLength": 6.8, "sepalWidth": 2.8, "petalLength": 4.8, "petalWidth": 1.4, "species": "versicolor"},
+					{"sepalLength": 6.7, "sepalWidth": 3.0, "petalLength": 5.0, "petalWidth": 1.7, "species": "versicolor"},
+					{"sepalLength": 6.0, "sepalWidth": 2.9, "petalLength": 4.5, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 5.7, "sepalWidth": 2.6, "petalLength": 3.5, "petalWidth": 1.0, "species": "versicolor"},
+					{"sepalLength": 5.5, "sepalWidth": 2.4, "petalLength": 3.8, "petalWidth": 1.1, "species": "versicolor"},
+					{"sepalLength": 5.5, "sepalWidth": 2.4, "petalLength": 3.7, "petalWidth": 1.0, "species": "versicolor"},
+					{"sepalLength": 5.8, "sepalWidth": 2.7, "petalLength": 3.9, "petalWidth": 1.2, "species": "versicolor"},
+					{"sepalLength": 6.0, "sepalWidth": 2.7, "petalLength": 5.1, "petalWidth": 1.6, "species": "versicolor"},
+					{"sepalLength": 5.4, "sepalWidth": 3.0, "petalLength": 4.5, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 6.0, "sepalWidth": 3.4, "petalLength": 4.5, "petalWidth": 1.6, "species": "versicolor"},
+					{"sepalLength": 6.7, "sepalWidth": 3.1, "petalLength": 4.7, "petalWidth": 1.5, "species": "versicolor"},
+					{"sepalLength": 6.3, "sepalWidth": 2.3, "petalLength": 4.4, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 5.6, "sepalWidth": 3.0, "petalLength": 4.1, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 5.5, "sepalWidth": 2.5, "petalLength": 4.0, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 5.5, "sepalWidth": 2.6, "petalLength": 4.4, "petalWidth": 1.2, "species": "versicolor"},
+					{"sepalLength": 6.1, "sepalWidth": 3.0, "petalLength": 4.6, "petalWidth": 1.4, "species": "versicolor"},
+					{"sepalLength": 5.8, "sepalWidth": 2.6, "petalLength": 4.0, "petalWidth": 1.2, "species": "versicolor"},
+					{"sepalLength": 5.0, "sepalWidth": 2.3, "petalLength": 3.3, "petalWidth": 1.0, "species": "versicolor"},
+					{"sepalLength": 5.6, "sepalWidth": 2.7, "petalLength": 4.2, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 5.7, "sepalWidth": 3.0, "petalLength": 4.2, "petalWidth": 1.2, "species": "versicolor"},
+					{"sepalLength": 5.7, "sepalWidth": 2.9, "petalLength": 4.2, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 6.2, "sepalWidth": 2.9, "petalLength": 4.3, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 5.1, "sepalWidth": 2.5, "petalLength": 3.0, "petalWidth": 1.1, "species": "versicolor"},
+					{"sepalLength": 5.7, "sepalWidth": 2.8, "petalLength": 4.1, "petalWidth": 1.3, "species": "versicolor"},
+					{"sepalLength": 6.3, "sepalWidth": 3.3, "petalLength": 6.0, "petalWidth": 2.5, "species": "virginica"},
+					{"sepalLength": 5.8, "sepalWidth": 2.7, "petalLength": 5.1, "petalWidth": 1.9, "species": "virginica"},
+					{"sepalLength": 7.1, "sepalWidth": 3.0, "petalLength": 5.9, "petalWidth": 2.1, "species": "virginica"},
+					{"sepalLength": 6.3, "sepalWidth": 2.9, "petalLength": 5.6, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 6.5, "sepalWidth": 3.0, "petalLength": 5.8, "petalWidth": 2.2, "species": "virginica"},
+					{"sepalLength": 7.6, "sepalWidth": 3.0, "petalLength": 6.6, "petalWidth": 2.1, "species": "virginica"},
+					{"sepalLength": 4.9, "sepalWidth": 2.5, "petalLength": 4.5, "petalWidth": 1.7, "species": "virginica"},
+					{"sepalLength": 7.3, "sepalWidth": 2.9, "petalLength": 6.3, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 6.7, "sepalWidth": 2.5, "petalLength": 5.8, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 7.2, "sepalWidth": 3.6, "petalLength": 6.1, "petalWidth": 2.5, "species": "virginica"},
+					{"sepalLength": 6.5, "sepalWidth": 3.2, "petalLength": 5.1, "petalWidth": 2.0, "species": "virginica"},
+					{"sepalLength": 6.4, "sepalWidth": 2.7, "petalLength": 5.3, "petalWidth": 1.9, "species": "virginica"},
+					{"sepalLength": 6.8, "sepalWidth": 3.0, "petalLength": 5.5, "petalWidth": 2.1, "species": "virginica"},
+					{"sepalLength": 5.7, "sepalWidth": 2.5, "petalLength": 5.0, "petalWidth": 2.0, "species": "virginica"},
+					{"sepalLength": 5.8, "sepalWidth": 2.8, "petalLength": 5.1, "petalWidth": 2.4, "species": "virginica"},
+					{"sepalLength": 6.4, "sepalWidth": 3.2, "petalLength": 5.3, "petalWidth": 2.3, "species": "virginica"},
+					{"sepalLength": 6.5, "sepalWidth": 3.0, "petalLength": 5.5, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 7.7, "sepalWidth": 3.8, "petalLength": 6.7, "petalWidth": 2.2, "species": "virginica"},
+					{"sepalLength": 7.7, "sepalWidth": 2.6, "petalLength": 6.9, "petalWidth": 2.3, "species": "virginica"},
+					{"sepalLength": 6.0, "sepalWidth": 2.2, "petalLength": 5.0, "petalWidth": 1.5, "species": "virginica"},
+					{"sepalLength": 6.9, "sepalWidth": 3.2, "petalLength": 5.7, "petalWidth": 2.3, "species": "virginica"},
+					{"sepalLength": 5.6, "sepalWidth": 2.8, "petalLength": 4.9, "petalWidth": 2.0, "species": "virginica"},
+					{"sepalLength": 7.7, "sepalWidth": 2.8, "petalLength": 6.7, "petalWidth": 2.0, "species": "virginica"},
+					{"sepalLength": 6.3, "sepalWidth": 2.7, "petalLength": 4.9, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 6.7, "sepalWidth": 3.3, "petalLength": 5.7, "petalWidth": 2.1, "species": "virginica"},
+					{"sepalLength": 7.2, "sepalWidth": 3.2, "petalLength": 6.0, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 6.2, "sepalWidth": 2.8, "petalLength": 4.8, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 6.1, "sepalWidth": 3.0, "petalLength": 4.9, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 6.4, "sepalWidth": 2.8, "petalLength": 5.6, "petalWidth": 2.1, "species": "virginica"},
+					{"sepalLength": 7.2, "sepalWidth": 3.0, "petalLength": 5.8, "petalWidth": 1.6, "species": "virginica"},
+					{"sepalLength": 7.4, "sepalWidth": 2.8, "petalLength": 6.1, "petalWidth": 1.9, "species": "virginica"},
+					{"sepalLength": 7.9, "sepalWidth": 3.8, "petalLength": 6.4, "petalWidth": 2.0, "species": "virginica"},
+					{"sepalLength": 6.4, "sepalWidth": 2.8, "petalLength": 5.6, "petalWidth": 2.2, "species": "virginica"},
+					{"sepalLength": 6.3, "sepalWidth": 2.8, "petalLength": 5.1, "petalWidth": 1.5, "species": "virginica"},
+					{"sepalLength": 6.1, "sepalWidth": 2.6, "petalLength": 5.6, "petalWidth": 1.4, "species": "virginica"},
+					{"sepalLength": 7.7, "sepalWidth": 3.0, "petalLength": 6.1, "petalWidth": 2.3, "species": "virginica"},
+					{"sepalLength": 6.3, "sepalWidth": 3.4, "petalLength": 5.6, "petalWidth": 2.4, "species": "virginica"},
+					{"sepalLength": 6.4, "sepalWidth": 3.1, "petalLength": 5.5, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 6.0, "sepalWidth": 3.0, "petalLength": 4.8, "petalWidth": 1.8, "species": "virginica"},
+					{"sepalLength": 6.9, "sepalWidth": 3.1, "petalLength": 5.4, "petalWidth": 2.1, "species": "virginica"},
+					{"sepalLength": 6.7, "sepalWidth": 3.1, "petalLength": 5.6, "petalWidth": 2.4, "species": "virginica"},
+					{"sepalLength": 6.9, "sepalWidth": 3.1, "petalLength": 5.1, "petalWidth": 2.3, "species": "virginica"},
+					{"sepalLength": 5.8, "sepalWidth": 2.7, "petalLength": 5.1, "petalWidth": 1.9, "species": "virginica"},
+					{"sepalLength": 6.8, "sepalWidth": 3.2, "petalLength": 5.9, "petalWidth": 2.3, "species": "virginica"},
+					{"sepalLength": 6.7, "sepalWidth": 3.3, "petalLength": 5.7, "petalWidth": 2.5, "species": "virginica"},
+					{"sepalLength": 6.7, "sepalWidth": 3.0, "petalLength": 5.2, "petalWidth": 2.3, "species": "virginica"},
+					{"sepalLength": 6.3, "sepalWidth": 2.5, "petalLength": 5.0, "petalWidth": 1.9, "species": "virginica"},
+					{"sepalLength": 6.5, "sepalWidth": 3.0, "petalLength": 5.2, "petalWidth": 2.0, "species": "virginica"},
+					{"sepalLength": 6.2, "sepalWidth": 3.4, "petalLength": 5.4, "petalWidth": 2.3, "species": "virginica"},
+					{"sepalLength": 5.9, "sepalWidth": 3.0, "petalLength": 5.1, "petalWidth": 1.8, "species": "virginica"}
+				]
+		</script>
+		<div id="dimple">
+			<h1><a href="http://dimplejs.org/">dimple</a></h1>
+			<div id="dimpleVisualization"></div>
+			<script type="text/javascript">
+
+			</script>
+		</div>
+		<div id="GoogleCharts">
+			<h1><a href="https://developers.google.com/chart/">GoogleCharts</a> (not offline)</h1>
+			<div id="GoogleChartsVisualization"></div>
+			<script type="text/javascript">
+				google.load("visualization", "1.1", {packages:["scatter"]});
+				google.setOnLoadCallback(drawChart);
+				function dataArrayColumns(data, col1, col2) {
+					// data: the array of JSON objects, like iris above
+					// col1: 1st column to extract
+					// col2: 2nd column to extract
+					return [[col1, col2]].concat(data.map(function(datum) {
+							return [datum[col1], datum[col2]];
+					}));
+				}
+				function drawChart() {
+					var data = google.visualization.arrayToDataTable(dataArrayColumns(iris, 'sepalWidth', 'petalLength'));
+					// Create custom tooltips, since the defaults suck.
+					data.addColumn({type: 'string', role: 'tooltip'});
+					for(var i=1; i<data.length; i++) {
+						data.setCell(i,2, '('+data.getCell(i,0)+' cm, '+data.getCell(i,1)+' cm)');
+					}
+					var options = {
+						width: 549,
+						height: 343,
+						chart: {
+							title: "Petal Length Versus Sepal Width",
+							subtitle: "for Sir Ronald Fisher's Iris Data Set"
+						},
+						axes: {
+							x: {
+								all: {
+									label: 'Sepal Width / cm',
+									style: {}
+								}
+							},
+							y: {
+								all: {
+									label: 'Petal Length / cm',
+									style: {}
+								}
+							},
+						},
+						legend: {
+								title: 'Species',
+								label: 'Species 2',
+								position: 'top',
+						},
+						series: {},
+						trendlines: {
+							0: {
+								type: 'linear',
+								color: 'green',
+								lineWidth: 3,
+								opacity: 0.3,
+								showR2: true,
+								visibleInLegend: true
+							},
+						},
+						tooltip: {
+							focusTarget: 'category',
+							isHtml: true
+						},
+					};
+					// Instantiate and draw our chart, passing in some options.
+					var chart = new google.charts.Scatter(document.getElementById('GoogleChartsVisualization'));
+					var new_options = google.charts.Scatter.convertOptions(options);
+					console.log(new_options); // for debugging
+					chart.draw(data, new_options);
+					return chart;
+				}
+			</script>
+		</div>
+
+		<div id="NVD3">
+				<h1><a href="http://nvd3.org/">NVD3</a></h1>
+				<div id="NVD3Visualization"></div>
+			<script type="text/javascript">
+				// Utility functions
+				function isUnique(value, index, self) {
+					return self.indexOf(value) === index;
+				}
+				function removedKey(key, hash) {
+					// Top-level copy only
+					new_hash = {};
+					Object.keys(hash).forEach(function(k) {
+						if (k != key) new_hash[k] = hash[k];
+					});
+					return new_hash;
+				}
+				function collateBy(key, hashes) {
+					key_values = hashes.map(function(d) { return d[key]; })
+														 .filter(isUnique)
+														 .sort();
+					return key_values.map(function(cohort) { // iterating over values of the key to group by
+						return { // new hash for each set of cohort data
+							key: cohort,
+							values: hashes.filter(function(d) { return d[key]===cohort; }) // grab only the cohort
+														.map(function(d) { return removedKey(key, d); }), // remove the now superfluous key, since it is stored at top level
+						};
+					});
+				}
+
+				nv.addGraph(function() {
+					// Transform data to group by species:
+					var shapes = ['circle', 'cross', 'triangle-up', 'triangle-down', 'diamond', 'square'];
+					function shapeMap(species) {
+						switch(species) {
+							case 'setosa':
+								return shapes[0];
+							case 'versicolor':
+								return shapes[1];
+							case 'virginica':
+								return shapes[2];
+						}
+					}
+					var data = iris.map(function(d) {
+						return {
+							x: d.sepalWidth,
+							y: d.petalLength,
+							size: 5,
+							shape: shapeMap(d.species),
+							species: d.species,
+						};
+					});
+					data = collateBy('species', data);
+
+					var chart = nv.models.scatterChart()
+												.showDistX(true)    //showDist, when true, will display those little distribution lines on the axis.
+												.showDistY(true)
+					//							.transitionDuration(350) // Fails
+												.color(d3.scale.category10().range());
+
+					//Configure how the tooltip looks.
+					chart.tooltip.contentGenerator(function(obj) { // todo: deprecated
+							// console.log(obj); // for debugging
+							return '<span style="font-size: 8px;">('+obj.point.x+' cm, '+obj.point.y+' cm)</span>';
+					});
+
+					//Axis settings
+					chart.xAxis.tickFormat(d3.format('.01f'));
+					chart.yAxis.tickFormat(d3.format('.01f'));
+
+					//Axis labels
+					chart.xAxis.axisLabel('Sepal Width / cm');
+					chart.yAxis.axisLabel('Petal Length / cm');
+
+					// Chart size doesn't seem to work properly. SVG styled below is still crappy but better.
+					// chart.width(404);
+					// chart.height(250);
+
+					d3.select('#NVD3Visualization')
+							.append("svg")
+							.style('width', '459px')
+							.style('height', '343px')
+							.datum(data)
+							.call(chart);
+
+					nv.utils.windowResize(chart.update);
+
+					return chart;
+				});
+			</script>
+		</div>
+
+    <div id="Vega">
+      <h1><a href="http://trifacta.github.io/vega/">Vega</a></h1>
+			<div id="VegaVisualization"></div>
+			<script type="text/javascript">
+				vg.parse.spec(
+				{
+					"width": 404,
+					"height": 250,
+
+					"data": [
+						{
+							"name": "iris",
+							"values": iris
+						},
+					],
+					"signals": [
+						{
+							"name": "tooltip",
+							"init": {},
+							"streams": [
+								{type: "symbol:mouseover", "expr": "datum"},
+								{type: "symbol:mouseout", "expr": "{}"},
+							],
+						},
+					],
+					"predicates": [
+				    {
+				      "name": "ifTooltip", "type": "==",
+				      "operands": [{"signal": "tooltip._id"}, {"arg": "id"}]
+				    }
+				  ],
+					"scales": [
+						{
+							"name": "x", "type": "linear",
+							"range": "width", "zero": false,
+							"domain": {"data": "iris", "field": "sepalWidth"}
+						},
+						{
+							"name": "y", "type": "linear",
+							"range": "height",
+							"nice": true, "zero": false,
+							"domain": {"data": "iris", "field": "petalLength"}
+						},
+						{
+							"name": "c",
+							"type": "ordinal",
+							"domain": {"data": "iris", "field": "species"},
+							"range": "category10"
+						}
+					],
+
+					"legends": [
+				    {
+				      "fill": "c",
+				      "title": "Species",
+				      "offset": 10,
+				      "properties": {
+				        "symbols": {
+				          "fillOpacity": {"value": 0.5},
+				          "stroke": {"value": "transparent"}
+				        }
+				      }
+				    }
+				  ],
+
+					"axes": [
+						{
+							"type": "x",
+							"scale": "x",
+							"offset": 0,
+							"ticks": 10,
+							"title": "Sepal Width / cm",
+							"grid": true,
+						},
+						{
+							"type": "y",
+							"scale": "y",
+							"offset": 0,
+							"ticks": 10,
+							"title": "Petal Length / cm",
+							"grid": true,
+						},
+						{ // Fake 2nd x-axis to spoof a title.
+							"type": "x",
+							"scale": "x",
+							"title": "Petal Length Versus Sepal Width for Sir Ronald Fisher's Iris Data Set",
+							"orient": "top",
+							"values": [],
+							"properties": {
+								"title": {
+									"fill": { "value": "black" },
+									"fontSize": { "value": 12 },
+								},
+								"axis": {
+									"strokeOpacity": { "value": 0 }
+								}
+							}
+						}
+					],
+
+					"marks": [
+						{
+							"type": "symbol",
+							"from": {"data": "iris"},
+							"properties": {
+								"enter": {
+									"x": {"scale": "x", "field": "sepalWidth"},
+									"y": {"scale": "y", "field": "petalLength"},
+									"fill": {"scale": "c", "field": "species"},
+									"fillOpacity": {"value": 0.5},
+									"size": {"value": 50}
+								},
+								"update": {
+									"size": {"value": 50},
+									//"stroke": {"value": "transparent"},
+									"text": {"signal": "tooltip.petalLength"},
+								},
+								"hover": {
+									"size": {"value": 100},
+									"stroke": {"value": "white"},
+									"fillOpacity": {value: 1},
+								}
+							}
+						},
+						{
+				      "type": "text",
+				      "properties": {
+				        "enter": {
+				          "align": {"value": "center"},
+				          "fill": {"value": "#000"},
+									"fontSize": {"value": 14},
+
+				        },
+				        "update": {
+				          "x": {"scale": "x", "signal": "tooltip.sepalWidth"},
+				          "y": {"scale": "y", "signal": "tooltip.petalLength", "offset": -10},
+				          "text": {"template": "({{tooltip.sepalWidth | number:'0.1f'}} cm, {{tooltip.petalLength | number:'0.1f'}} cm)"},
+				          "fillOpacity": {
+				            "rule": [
+				              {
+				                "predicate": {
+				                  "name": "ifTooltip",
+				                  "id": {"value": null}
+				                },
+				                "value": 0
+				              },
+				              {"value": 1}
+				            ]
+				          }
+				        }
+				      }
+						},
+					]
+				},
+				function(chart) { chart({el:"#VegaVisualization"}).update(); });
+			</script>
+    </div>
+		<div id="Vega-lite">
+			<h1><a href="https://github.com/uwdata/vega-lite">Vega-lite</a></h1>
+			<div id="Vega-liteVisualization"></div>
+			<script type="text/javascript">
+			/*
+			{
+			  "marktype": "point",
+			  "encoding": {
+			    "x": {
+			      "name": "sepalWidth",
+			      "type": "Q"
+			    },
+			    "y": {
+			      "name": "petalLength",
+			      "type": "Q"
+			    }
+			  },
+			  "data": {
+			    "values": iris
+			  }
+			}
+			*/
+			</script>
+		</div>
+  </body>
+</html>

@@ -1,0 +1,107 @@
+% XeLaTeX can use any Mac OS X font. See the setromanfont command below.
+% Input to XeLaTeX is full Unicode, so Unicode characters can be typed directly into the source.
+
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt,twocolumn]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+\geometry{top=1cm,bottom=2cm,outer=1cm,inner=2cm}
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[linewidth=1.4pt]{mdframed}
+\usepackage{booktabs}
+
+% Will Robertson's fontspec.sty can be used to simplify font choices.
+% To experiment, open /Applications/Font Book to examine the fonts provided on Mac OS X,
+% and change "Hoefler Text" to any of these choices.
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Didot}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+\setmonofont[Scale=MatchLowercase]{Andale Mono}
+
+\title{Pragmatic Error Analysis for the Serious Student of Physics}
+\author{Mr.~Brian~Vancil}
+%\date{}                                           % Activate to display a given date or no date
+
+\newcommand{\aX}{\overline X}
+\newcommand{\aY}{\overline Y}
+\newcommand{\dX}{\delta\overline X}
+\newcommand{\dY}{\delta\overline Y}
+\newcommand{\eX}{\epsilon_X}
+\newcommand{\eY}{\epsilon_Y}
+\newcommand{\quadrature}[2]{\sqrt{\left({#1}\right)^2+\left({#2}\right)^2}}
+
+\begin{document}
+\maketitle
+%\pagestyle{empty}
+\thispagestyle{empty}
+
+\begin{mdframed}
+\noindent
+\underline{Notations}: In the following, let $X=\aX\pm\dX$ and $Y=\aY\pm\dY$ be two quantities with associated absolute uncertainty. Let $\aX\pm\eX$ and $\aY\pm\eY$ be the same quantities expressed with relative uncertainty. Let $c$ and $n$ be exact constants.
+\end{mdframed}
+
+\begin{mdframed}
+\noindent The \emph{relative uncertainty} for $X$ is defined as the ratio of $\dX$ to $\lvert \aX\rvert$.
+\begin{align}
+\eX &= \text{relative uncertainty of }X \\
+	&= \frac{\dX}{\lvert \aX\vert}
+\end{align}
+It is also common to use \emph{percent uncertainty}, which is just the relative uncertainty expressed as a percentage, which is the only way to tell relative uncertainty from absolute uncertainty in practice.
+%\begin{equation}
+%\begin{split}
+%&\text{percent uncertainty of }X \\
+%&= \text{relative uncertainty of }X\cdot 100\% \\
+%&= \eX = \frac{\dX}{\lvert \aX\vert}\cdot 100\%
+%\end{split}
+%\end{equation}
+\end{mdframed}
+
+\noindent The following table lists absolute uncertainties for expressions of $X$ and $Y$.
+
+{\centering
+\begin{tabular}{@{}l@{\quad$\pm$\quad}l@{}} \toprule
+Expression & Uncertainty \\ \midrule
+$X\pm Y$ 		& $\quadrature{\dX}{\dY}$ \\
+$XY^{\pm1}$ 	& $\left\lvert \aX \aY^{\pm1}\right\rvert\cdot\quadrature{\frac{\dX}{\aX}}{\frac{\dY}{\aY}}$ \\
+$cX$			& $\lvert c \rvert \dX $ \\
+$X^n$			& $\left\lvert \aX^n\right\rvert\cdot\lvert n\rvert\cdot \frac{\dX}{\lvert \aX\rvert}$ \\
+$X^Y$			& $\lvert \aX^{\aY}\rvert\cdot\quadrature{\frac{\aY}{\aX}\cdot\dX}{\ln \aX\cdot\dY}$ \\
+$f(X,Y)$ 		& $\quadrature{\frac{\partial f}{\partial X}\cdot\dX}{\frac{\partial f}{\partial Y}\cdot\dY}$ \\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{1em}
+\noindent The following table lists relative uncertainties for expressions of $X$ and $Y$ in cases in which the relative form is easier.
+
+{\centering
+\begin{tabular}{@{}l@{\quad$\pm$\quad}l@{}} \toprule
+Expression & Relative Uncertainty \\ \midrule
+$XY^{\pm1}$ 	& $\quadrature{\eX}{\eY}$ \\
+$cX$			& $\eX$ \\
+$X^n$			& $\lvert n\rvert\cdot\eX$ \\
+$X^Y$			& $\lvert \aY\rvert\cdot\quadrature{\eX}{\ln \aX\cdot\eY}$ \\
+$f(X,Y)$ 		& $\quadrature{\frac{\partial\ln f}{\partial\ln X}\cdot\eX}{\frac{\partial\ln f}{\partial\ln Y}\cdot\eY}$ \\
+\bottomrule
+\end{tabular}
+}
+
+\begin{mdframed}
+\noindent If you repeat a measurement (of $X$) $N$ times, with values, say, $X_1, X_2, \ldots, X_N$, then a best estimate for the value $\overline{X}$ and uncertainty $\delta\overline{X}$ can be calculated.
+\begin{align}
+\overline{X} &= \frac{\sum\limits_{i=1}^{N} X_i}{N} \\
+\delta\overline{X} &= \frac{s_X}{\sqrt{N}}=\sqrt{\frac{\sum\limits_{i=1}^{N} (X_i-\overline{X})^2}{N(N-1)}}
+\end{align}
+\end{mdframed}
+
+\end{document}  
